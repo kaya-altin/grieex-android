@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_season_collected"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/season_collected"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_season_not_collected"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/season_not_collected"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_season_watched"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/season_watched"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_season_not_watched"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/season_not_watched"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_season_favorite"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/season_favorite"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_season_not_favorite"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/season_not_favorite"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_delete_season"
+        android:menuCategory="system"
+        android:orderInCategory="100"
+        android:title="@string/delete_season"
+        app:showAsAction="never"/>
+
+</menu>

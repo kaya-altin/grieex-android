@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+
+android {
+    compileSdk 32
+    buildToolsVersion '32.0.0'
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 32
+        versionName "1.0.0"
+    }
+    productFlavors {
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+        }
+    }
+}
+
+dependencies {
+}

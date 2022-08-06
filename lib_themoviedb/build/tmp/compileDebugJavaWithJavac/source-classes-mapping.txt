@@ -1,0 +1,220 @@
+info/movito/themoviedbapi/model/tv/Network.java
+ info.movito.themoviedbapi.model.tv.Network
+info/movito/themoviedbapi/model/core/IdElement.java
+ info.movito.themoviedbapi.model.core.IdElement
+info/movito/themoviedbapi/TmdbTimezones.java
+ info.movito.themoviedbapi.TmdbTimezones
+info/movito/themoviedbapi/tools/ApiUrl.java
+ info.movito.themoviedbapi.tools.ApiUrl
+info/movito/themoviedbapi/model/people/PersonCast.java
+ info.movito.themoviedbapi.model.people.PersonCast
+info/movito/themoviedbapi/TmdbTvEpisodes.java
+ info.movito.themoviedbapi.TmdbTvEpisodes
+ info.movito.themoviedbapi.TmdbTvEpisodes$EpisodeMethod
+info/movito/themoviedbapi/TmdbJobs.java
+ info.movito.themoviedbapi.TmdbJobs
+ info.movito.themoviedbapi.TmdbJobs$JobDepartmentResults
+info/movito/themoviedbapi/TmdbSearch.java
+ info.movito.themoviedbapi.TmdbSearch
+ info.movito.themoviedbapi.TmdbSearch$CollectionResultsPage
+ info.movito.themoviedbapi.TmdbSearch$CompanyResultsPage
+ info.movito.themoviedbapi.TmdbSearch$KeywordResultsPage
+ info.movito.themoviedbapi.TmdbSearch$MultiListResultsPage
+info/movito/themoviedbapi/model/tv/TvSeries.java
+ info.movito.themoviedbapi.model.tv.TvSeries
+info/movito/themoviedbapi/model/people/PersonCredits.java
+ info.movito.themoviedbapi.model.people.PersonCredits
+info/movito/themoviedbapi/TmdbCompany.java
+ info.movito.themoviedbapi.TmdbCompany
+ info.movito.themoviedbapi.TmdbCompany$CollectionResultsPage
+info/movito/themoviedbapi/model/core/NamedStringIdElement.java
+ info.movito.themoviedbapi.model.core.NamedStringIdElement
+info/movito/themoviedbapi/model/AlternativeTitle.java
+ info.movito.themoviedbapi.model.AlternativeTitle
+info/movito/themoviedbapi/model/changes/ChangedMovie.java
+ info.movito.themoviedbapi.model.changes.ChangedMovie
+info/movito/themoviedbapi/model/core/NamedElement.java
+ info.movito.themoviedbapi.model.core.NamedElement
+info/movito/themoviedbapi/model/people/PersonPeople.java
+ info.movito.themoviedbapi.model.people.PersonPeople
+info/movito/themoviedbapi/TmdbChanges.java
+ info.movito.themoviedbapi.TmdbChanges
+info/movito/themoviedbapi/model/core/ResultPageHelper.java
+ info.movito.themoviedbapi.model.core.ResultPageHelper
+ info.movito.themoviedbapi.model.core.ResultPageHelper$1
+ info.movito.themoviedbapi.model.core.ResultPageHelper$ResultPageProvider
+info/movito/themoviedbapi/model/people/PersonCredit.java
+ info.movito.themoviedbapi.model.people.PersonCredit
+info/movito/themoviedbapi/model/core/NamedIdElement.java
+ info.movito.themoviedbapi.model.core.NamedIdElement
+info/movito/themoviedbapi/model/ExternalIds.java
+ info.movito.themoviedbapi.model.ExternalIds
+info/movito/themoviedbapi/model/core/AccountID.java
+ info.movito.themoviedbapi.model.core.AccountID
+info/movito/themoviedbapi/TmdbAuthentication.java
+ info.movito.themoviedbapi.TmdbAuthentication
+info/movito/themoviedbapi/model/ListItemStatus.java
+ info.movito.themoviedbapi.model.ListItemStatus
+info/movito/themoviedbapi/model/Company.java
+ info.movito.themoviedbapi.model.Company
+info/movito/themoviedbapi/model/config/Account.java
+ info.movito.themoviedbapi.model.config.Account
+info/movito/themoviedbapi/model/changes/ChangesItems.java
+ info.movito.themoviedbapi.model.changes.ChangesItems
+info/movito/themoviedbapi/model/tv/TvEpisode.java
+ info.movito.themoviedbapi.model.tv.TvEpisode
+info/movito/themoviedbapi/TvEpisodesResultsPage.java
+ info.movito.themoviedbapi.TvEpisodesResultsPage
+info/movito/themoviedbapi/TmdbGenre.java
+ info.movito.themoviedbapi.TmdbGenre
+ info.movito.themoviedbapi.TmdbGenre$Genres
+info/movito/themoviedbapi/model/ProductionCountry.java
+ info.movito.themoviedbapi.model.ProductionCountry
+info/movito/themoviedbapi/model/Translation.java
+ info.movito.themoviedbapi.model.Translation
+info/movito/themoviedbapi/model/changes/ChangeKeyItem.java
+ info.movito.themoviedbapi.model.changes.ChangeKeyItem
+info/movito/themoviedbapi/model/config/TokenSession.java
+ info.movito.themoviedbapi.model.config.TokenSession
+info/movito/themoviedbapi/Utils.java
+ info.movito.themoviedbapi.Utils
+info/movito/themoviedbapi/model/tv/TvSeason.java
+ info.movito.themoviedbapi.model.tv.TvSeason
+info/movito/themoviedbapi/model/config/ConfigResults.java
+ info.movito.themoviedbapi.model.config.ConfigResults
+info/movito/themoviedbapi/model/tv/AbstractTvElement.java
+ info.movito.themoviedbapi.model.tv.AbstractTvElement
+info/movito/themoviedbapi/model/ReleaseInfo.java
+ info.movito.themoviedbapi.model.ReleaseInfo
+info/movito/themoviedbapi/model/Reviews.java
+ info.movito.themoviedbapi.model.Reviews
+info/movito/themoviedbapi/model/changes/ChangedItem.java
+ info.movito.themoviedbapi.model.changes.ChangedItem
+info/movito/themoviedbapi/model/core/AbstractJsonMapping.java
+ info.movito.themoviedbapi.model.core.AbstractJsonMapping
+info/movito/themoviedbapi/TmdbCollections.java
+ info.movito.themoviedbapi.TmdbCollections
+info/movito/themoviedbapi/AbstractTmdbApi.java
+ info.movito.themoviedbapi.AbstractTmdbApi
+info/movito/themoviedbapi/model/JobDepartment.java
+ info.movito.themoviedbapi.model.JobDepartment
+info/movito/themoviedbapi/model/people/PersonType.java
+ info.movito.themoviedbapi.model.people.PersonType
+info/movito/themoviedbapi/tools/WebBrowser.java
+ info.movito.themoviedbapi.tools.WebBrowser
+info/movito/themoviedbapi/model/core/ResponseStatusException.java
+ info.movito.themoviedbapi.model.core.ResponseStatusException
+info/movito/themoviedbapi/TmdbDiscover.java
+ info.movito.themoviedbapi.TmdbDiscover
+info/movito/themoviedbapi/tools/RequestMethod.java
+ info.movito.themoviedbapi.tools.RequestMethod
+info/movito/themoviedbapi/model/core/MovieResultsPage.java
+ info.movito.themoviedbapi.model.core.MovieResultsPage
+info/movito/themoviedbapi/tools/RequestCountLimitException.java
+ info.movito.themoviedbapi.tools.RequestCountLimitException
+info/movito/themoviedbapi/TmdbTV.java
+ info.movito.themoviedbapi.TmdbTV
+ info.movito.themoviedbapi.TmdbTV$TvMethod
+info/movito/themoviedbapi/model/Multi.java
+ info.movito.themoviedbapi.model.Multi
+ info.movito.themoviedbapi.model.Multi$MediaType
+info/movito/themoviedbapi/model/core/ResponseStatus.java
+ info.movito.themoviedbapi.model.core.ResponseStatus
+info/movito/themoviedbapi/TmdbMovies.java
+ info.movito.themoviedbapi.TmdbMovies
+ info.movito.themoviedbapi.TmdbMovies$KeywordResults
+ info.movito.themoviedbapi.TmdbMovies$MovieMethod
+ info.movito.themoviedbapi.TmdbMovies$ReleaseInfoResults
+info/movito/themoviedbapi/model/ArtworkType.java
+ info.movito.themoviedbapi.model.ArtworkType
+info/movito/themoviedbapi/model/CollectionInfo.java
+ info.movito.themoviedbapi.model.CollectionInfo
+info/movito/themoviedbapi/model/people/PersonCrew.java
+ info.movito.themoviedbapi.model.people.PersonCrew
+info/movito/themoviedbapi/model/FindResults.java
+ info.movito.themoviedbapi.model.FindResults
+info/movito/themoviedbapi/TmdbConfig.java
+ info.movito.themoviedbapi.TmdbConfig
+info/movito/themoviedbapi/model/core/MovieKeywords.java
+ info.movito.themoviedbapi.model.core.MovieKeywords
+info/movito/themoviedbapi/TmdbReviews.java
+ info.movito.themoviedbapi.TmdbReviews
+ info.movito.themoviedbapi.TmdbReviews$ReviewResultsPage
+info/movito/themoviedbapi/model/MovieListCreationStatus.java
+ info.movito.themoviedbapi.model.MovieListCreationStatus
+info/movito/themoviedbapi/TmdbLists.java
+ info.movito.themoviedbapi.TmdbLists
+info/movito/themoviedbapi/model/core/ResultDates.java
+ info.movito.themoviedbapi.model.core.ResultDates
+info/movito/themoviedbapi/TmdbApi.java
+ info.movito.themoviedbapi.TmdbApi
+info/movito/themoviedbapi/model/core/SessionToken.java
+ info.movito.themoviedbapi.model.core.SessionToken
+info/movito/themoviedbapi/model/core/ResultsPage.java
+ info.movito.themoviedbapi.model.core.ResultsPage
+info/movito/themoviedbapi/TvResultsPage.java
+ info.movito.themoviedbapi.TvResultsPage
+info/movito/themoviedbapi/TmdbTvSeasons.java
+ info.movito.themoviedbapi.TmdbTvSeasons
+ info.movito.themoviedbapi.TmdbTvSeasons$SeasonMethod
+info/movito/themoviedbapi/TmdbAccount.java
+ info.movito.themoviedbapi.TmdbAccount
+ info.movito.themoviedbapi.TmdbAccount$MediaType
+ info.movito.themoviedbapi.TmdbAccount$MovieListResultsPage
+info/movito/themoviedbapi/model/config/Timezone.java
+ info.movito.themoviedbapi.model.config.Timezone
+info/movito/themoviedbapi/model/MovieDb.java
+ info.movito.themoviedbapi.model.MovieDb
+info/movito/themoviedbapi/model/config/TokenAuthorisation.java
+ info.movito.themoviedbapi.model.config.TokenAuthorisation
+info/movito/themoviedbapi/model/ProductionCompany.java
+ info.movito.themoviedbapi.model.ProductionCompany
+info/movito/themoviedbapi/TmdbFind.java
+ info.movito.themoviedbapi.TmdbFind
+ info.movito.themoviedbapi.TmdbFind$ExternalSource
+info/movito/themoviedbapi/tools/UrlReader.java
+ info.movito.themoviedbapi.tools.UrlReader
+info/movito/themoviedbapi/model/MovieList.java
+ info.movito.themoviedbapi.model.MovieList
+info/movito/themoviedbapi/model/MoviesAlternativeTitles.java
+ info.movito.themoviedbapi.model.MoviesAlternativeTitles
+info/movito/themoviedbapi/model/Artwork.java
+ info.movito.themoviedbapi.model.Artwork
+info/movito/themoviedbapi/tools/MovieDbException.java
+ info.movito.themoviedbapi.tools.MovieDbException
+info/movito/themoviedbapi/model/Credits.java
+ info.movito.themoviedbapi.model.Credits
+info/movito/themoviedbapi/model/MovieImages.java
+ info.movito.themoviedbapi.model.MovieImages
+com/themoviedb/BuildConfig.java
+ com.themoviedb.BuildConfig
+info/movito/themoviedbapi/model/MovieTranslations.java
+ info.movito.themoviedbapi.model.MovieTranslations
+info/movito/themoviedbapi/model/people/Person.java
+ info.movito.themoviedbapi.model.people.Person
+info/movito/themoviedbapi/TmdbKeywords.java
+ info.movito.themoviedbapi.TmdbKeywords
+ info.movito.themoviedbapi.TmdbKeywords$KeywordResultsPage
+info/movito/themoviedbapi/model/Language.java
+ info.movito.themoviedbapi.model.Language
+info/movito/themoviedbapi/model/Video.java
+ info.movito.themoviedbapi.model.Video
+ info.movito.themoviedbapi.model.Video$Results
+info/movito/themoviedbapi/TmdbPeople.java
+ info.movito.themoviedbapi.TmdbPeople
+ info.movito.themoviedbapi.TmdbPeople$PersonResultsPage
+info/movito/themoviedbapi/model/keywords/Keyword.java
+ info.movito.themoviedbapi.model.keywords.Keyword
+info/movito/themoviedbapi/model/core/StringIdElement.java
+ info.movito.themoviedbapi.model.core.StringIdElement
+info/movito/themoviedbapi/model/config/TmdbConfiguration.java
+ info.movito.themoviedbapi.model.config.TmdbConfiguration
+info/movito/themoviedbapi/model/Collection.java
+ info.movito.themoviedbapi.model.Collection
+info/movito/themoviedbapi/model/keywords/KeywordMovie.java
+ info.movito.themoviedbapi.model.keywords.KeywordMovie
+info/movito/themoviedbapi/model/Genre.java
+ info.movito.themoviedbapi.model.Genre
+info/movito/themoviedbapi/model/Discover.java
+ info.movito.themoviedbapi.model.Discover
+ info.movito.themoviedbapi.model.Discover$1

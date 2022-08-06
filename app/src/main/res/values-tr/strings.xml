@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+
+
+    <string name="app_name">GrieeX</string>
+    <string name="about">Hakkında</string>
+    <string name="ok">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="submit">Gönder</string>
+    <string name="no_record">Kayıt bulunamadı.</string>
+    <string name="please_wait">Lütfen bekleyiniz&#8230;</string>
+    <string name="no_connection">Lütfen internet bağlantınızı kontrol edip tekrar deneyiniz.</string>
+    <string name="crash_toast_text">Beklenmeyen bir hata oluştu!</string>
+    <string name="download_ticker">Film bilgileri alınıyor&#8230;</string>
+    <string name="version">Sürüm</string>
+    <string name="author">Yapımcı</string>
+    <string name="license">Lisans</string>
+    <string name="web">Web</string>
+    <string name="more">Daha fazla</string>
+    <string name="action_settings">Tercihler</string>
+    <string name="action_menu">Menü</string>
+    <string name="menu_show">Görüntüle</string>
+    <string name="menu_delete">Sil</string>
+    <string name="movies">Filmler</string>
+    <string name="series">Diziler</string>
+    <string name="collection">Koleksiyonum</string>
+    <string name="search_imdb">Film Ekle</string>
+    <string name="character_list">Character List</string>
+    <string name="imdb_250">Top 250</string>
+    <string name="settings">Tercihler</string>
+    <string name="search">Ara</string>
+    <string name="add">Ekle</string>
+    <string name="add_to_collection">Koleksiyona Ekle</string>
+    <string name="edit">Düzenle</string>
+    <string name="delete">Sil</string>
+    <string name="show">Göster</string>
+    <string name="list">Liste Görünümü</string>
+    <string name="gallery">Galeri Görünümü</string>
+    <string name="general">Genel</string>
+    <string name="cast">Oyuncular</string>
+    <string name="comments">Yorumlar</string>
+    <string name="director">Yönetmen</string>
+    <string name="writer">Senaryo</string>
+    <string name="country">Ülke</string>
+    <string name="language">Dil</string>
+    <string name="plot">Konu</string>
+    <string name="english_plot">İngilizce Konu</string>
+    <string name="other_plot">Türkçe Konu</string>
+    <string name="subtitle">Altyazı</string>
+    <string name="dubbing">Dublaj</string>
+    <string name="budget">Bütçe</string>
+    <string name="production_company">Yapım Şirketi</string>
+    <string name="release_date">Çıkış Tarihi</string>
+    <string name="seen_checked">İzlendi olarak işaretlendi.</string>
+    <string name="seen_unchecked">İzlenmedi olarak işaretlendi.</string>
+    <string name="alert_import">Veritabanı güncelleme dosyası bulundu. Güncelleme yapılsın mı?</string>
+    <string name="grieex_updating">GrieeX güncelleniyor.\nLütfen bekleyiniz…</string>
+    <string name="grieex_updating_error1">Güncelleme tamamlanamadı.</string>
+    <string name="grieex_updating_error2">Güncelleme işlemi için internet bağlantısı gerekmektedir.</string>
+    <string name="grieex_updating_try">Tekrar dene</string>
+    <string name="get_info">Bilgi Al</string>
+    <string name="imdb">www.imdb.com</string>
+    <string name="tmdb">www.themoviedb.org</string>
+    <string name="sinemalar">www.sinemalar.com</string>
+    <string name="beyazperde">www.beyazperde.com</string>
+    <string name="start">Başlat</string>
+    <string name="stop">Durdur</string>
+    <string name="getting_backdrops_please_wait">Arkaplanlar yükleniyor. Lütfen Bekleyiniz…</string>
+    <string name="batch_processing">Toplu İşlemler</string>
+    <string name="batch_processing_started">İşlem başlatıldı. İlerlemeyi bildirim çubuğundan takip edebilirsiniz.</string>
+    <string name="batch_processing_completed">Toplu işlem tamamlandı.</string>
+    <string name="archives_number">Arşiv No</string>
+    <string name="user_column1">1. Alan</string>
+    <string name="user_column2">2. Alan</string>
+    <string name="user_column3">3. Alan</string>
+    <string name="user_column4">4. Alan</string>
+    <string name="user_column5">5. Alan</string>
+    <string name="user_column6">6. Alan</string>
+    <string name="delete_movie">Seçtiğiniz film silinecektir. Emin misiniz?</string>
+    <string name="delete_series">Seçtiğiniz dizi silinecektir. Emin misiniz?</string>
+    <string name="clear_cache">Önbelleği Temizle (%s)</string>
+    <string name="clear_cache_alert">Önbelliği temizlemek istediğinize emin misiniz?</string>
+    <string name="list_name">Liste Adı</string>
+    <string name="add_to_list">Listeye ekle</string>
+    <string name="add_multiple_to_the_list">Listeye birden fazla ekle</string>
+    <string name="new_list_name">Yeni Liste Adı</string>
+    <string name="lists">Listeler</string>
+    <string name="added_to_the_list">Listeye eklendi.</string>
+    <string name="movie_title">Film Adı</string>
+    <string name="movie_added">Film eklendi. Film bilgileri otomatik yüklenecektir.</string>
+    <string name="series_added">Dizi eklendi. Dizi bilgileri otomatik yüklenecektir.</string>
+    <string name="can_not_be_empty">Boş bırakılamaz!</string>
+    <string name="alert1">Seçtiğiniz film silinecektir. Emin misiniz?</string>
+    <string name="alert2">Seçtiğiniz liste silinecektir. Emin misiniz?</string>
+    <string name="alert3">Liste seçimi yapınız!</string>
+    <string name="alert4">Bu fonksiyonu kullanabilmeniz için Pro versiyona geçmelisiniz!</string>
+    <string name="alert5">Veritabanı Dropbox\'a gönderilecektir. Emin misiniz?</string>
+    <string name="alert6">Veritabanı Dropbox\'tan alınacak ve mevcut veritabanınız ile değiştirilecektir. Emin misiniz?</string>
+    <string name="alert7">Ücretsiz versiyonda kayıt sınırına ulaşmış bulunmaktasınız. Daha fazla ekleyebilmek için Pro versiyona geçmelisiniz!</string>
+    <string name="alert8">Lütfen geçerli bir yedek dosya seçiniz!</string>
+    <string name="alert9">Lütfen geçerli bir değer dosya seçiniz!</string>
+    <string name="imdb_info">imdb info</string>
+    <string name="go_pro_version">Pro Versiyon\'a Geç</string>
+    <string name="choose_language">Dil Seç</string>
+    <string name="filter">Filtre</string>
+    <string name="clear">Temizle</string>
+    <string name="seen_state">İzlenme Durumu</string>
+    <string name="genre">Tür</string>
+    <string name="remove_list">Listeden Kaldır</string>
+    <string name="remove_list_multiple">Listeden Toplu Kaldır</string>
+    <string name="get_movie_infos">Film Bilgilerini Al</string>
+    <string name="get_backdrops">Arkaplanları Al</string>
+    <string name="get_posters">Posterleri Al</string>
+    <string name="backup">Yedekle/Yedekten Geri Al</string>
+    <string name="backup_database">Veritabanını yedekle.</string>
+    <string name="restore_database">Veritabanını yedekten geri al.</string>
+    <string name="dropbox">Dropbox Yedekle/Yedekten Geri Al</string>
+    <string name="backup_dropbox">Dropbox\'a Yedekle</string>
+    <string name="restore_dropbox">Dropbox\'tan Al</string>
+    <string name="restore_completed">Geri alma tamamlandı.</string>
+    <string name="backup_completed">Yedekleme tamamlandı.</string>
+    <string name="dropbox_download">Veritabanını Dropbox\'tan al.</string>
+    <string name="dropbox_downloaded">Veritabanı Dropbox\'tan alındı.</string>
+    <string name="dropbox_upload">Veritabanını Dropbox\'a gönder.</string>
+    <string name="dropbox_uploaded">Veritabanı Dropbox\'a gönderildi.</string>
+    <string name="refresh">Tazele</string>
+    <string name="content_providers">İçerik Sağlayıcılar</string>
+    <string name="marked_as_seen">İzlendi olarak işaretlendi</string>
+    <string name="marked_as_not_seen">İzlenmedi olarak işaretlendi</string>
+    <string name="completed">Tamamlandı</string>
+    <string name="not_completed">Tamamlanamadı</string>
+    <string name="rate_google_play">Google Play\'de GrieeX\'e puan ver</string>
+    <string name="public_lists">Genel Listeler</string>
+    <string name="popular">Popüler</string>
+    <string name="now_playing">Vizyondakiler</string>
+    <string name="upcoming">Yakında Gelecekler</string>
+    <string name="files">Dosyalar</string>
+    <string name="video">Görüntü</string>
+    <string name="screen_resolution">Çözünürlük</string>
+    <string name="video_codec">Görüntü Codec</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="fps">FPS</string>
+    <string name="video_aspect_ratio">Görüntü Oranı</string>
+    <string name="runningtime">Süre</string>
+    <string name="total_frames">Toplam Kare Sayısı</string>
+    <string name="video_size">Görüntü Boyutu</string>
+    <string name="file_size">Dosya Boyutu</string>
+    <string name="audio">Ses</string>
+    <string name="audio_codec">Ses Codec</string>
+    <string name="channels">Kanal Sayısı</string>
+    <string name="sample_rate">Örnekleme</string>
+    <string name="audio_size">Ses Boyutu</string>
+    <string name="rta_dialog_title">Bu uygulamaya puan verin</string>
+    <string name="rta_dialog_message">Eğer GrieeX\'den memnun kaldıysanız, lütfen birkaç dakikanızı ayırarak puan veriniz. Desteğiniz için teşekkürler!</string>
+    <string name="rta_dialog_ok">Puan ver</string>
+    <string name="rta_dialog_cancel">Sonra hatırlat</string>
+    <string name="rta_dialog_no">Hayır, teşekkürler</string>
+    <string name="rls_type">Release Tür</string>
+    <string name="rls_group">Release Grup</string>
+    <string name="personal_rating">Kişisel Puan</string>
+    <string name="ranking">Sıralama</string>
+    <string name="ranking_original_name">Film Adı</string>
+    <string name="ranking_archives_number">Arşiv No</string>
+    <string name="ranking_insert_date">Eklenme Tarihi</string>
+    <string name="ranking_update_date">Güncellenme Tarihi</string>
+    <string name="ranking_imdb_rating">Imdb Puan</string>
+    <string name="ranking_tmdb_rating">Tmdb Puan</string>
+    <string name="barcode_not_found">Barkod bulunamadı!</string>
+    <string name="share">Paylaş</string>
+    <string name="via_imdb">imdb.com linki ile</string>
+    <string name="via_tmdb">themoviedb.org linki ile</string>
+    <string name="twice_back">Uygulamadan çıkmak için tekrar basın</string>
+    <string name="links">Linkler</string>
+    <string name="theme">Tema</string>
+    <string name="english_only_please">Lütfen sadece ingilizce yorum giriniz.</string>
+    <string name="comment_min_alert">Yorumlar en az 5 kelime olmalıdır.</string>
+    <string name="post_comment">Post Comment</string>
+    <string name="comment_published">Yorumunuz yayınlandı.</string>
+    <string name="watch_trailer">Fragman İzle</string>
+    <string name="detail">Detaylar</string>
+    <string name="exist_movie_message">Film daha önce veritabanına eklenmiştir. Devam etmek istediğinize eminmisiniz?</string>
+    <string name="logout">Çıkış Yap</string>
+
+    <!-- Series -->
+    <string name="overview">Genel Bakış</string>
+    <string name="seasons">Sezonlar</string>
+    <string name="season">Sezon</string>
+    <string name="series_title">Dizi Adı</string>
+    <string name="continuing">Devam ediyor</string>
+    <string name="ended">Sona erdi</string>
+    <string name="minute">%s dk</string>
+    <string name="season_watched">Sezonu izlendi olarak işaretle</string>
+    <string name="season_not_watched">Sezonu izlenmedi olarak işaretle</string>
+    <string name="season_collected">Sezonu koleksiyonumda olarak işaretle</string>
+    <string name="season_not_collected">Sezonu koleksiyonumda değil olarak işaretle</string>
+    <string name="season_favorite">Sezonu favori olarak işaretle</string>
+    <string name="season_not_favorite">Sezonu favori değil olarak işaretle</string>
+    <string name="release_date_unknown">Yayın tarihi bilinmiyor</string>
+    <string name="watched">İzlendi</string>
+    <string name="unwatched">İzlenmedi</string>
+    <string name="collected">Koleksiyonumda</string>
+    <string name="uncollected">Koleksiyonumda değil</string>
+    <string name="favorite">Favori</string>
+    <string name="unfavorite">Favori değil</string>
+    <string name="specials">Özel Bölümler</string>
+    <string name="series_notification_time">Dizi Bildirim Zamanı</string>
+    <string name="series_notification_comment">Yayınlanacak yeni bölüm için bildirim ayarlama</string>
+    <string name="notification_time">Bildirim Zamanı</string>
+    <string name="navigation_drawer_open">Menüyü aç</string>
+    <string name="navigation_drawer_close">Menüyü kapat</string>
+    <string name="next_episode">Sıradaki Bölüm</string>
+    <string name="set_as_seen">İzlendi olarak işaretle >></string>
+    <string name="delete_season">Sezonu Sil</string>
+    <string name="delete_season_are_you_sure">Seçtiğiniz sezon silinecektir. Emin misiniz?</string>
+
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_title">@string/login_sign_in</string>
+    <string name="login_failed">Login in failed. Please try again.</string>
+    <string name="logging_in">Logging in…</string>
+    <string name="login_successful">Login successful.</string>
+    <string name="login_description">Sign in to through the Trakt website and give GrieeX access to your account</string>
+    <string name="login_error_unknown">Unable to fetch token, please try again</string>
+    <string name="login_error_5xx">Trakt has encountered a server error, please try again</string>
+
+    <string name="day_sunday">Pazar</string>
+    <string name="day_monday">Pazartesi</string>
+    <string name="day_tuesday">Salı</string>
+    <string name="day_wednesday">Çarşamba</string>
+    <string name="day_thursday">Perşembe</string>
+    <string name="day_friday">Cuma</string>
+    <string name="day_saturday">Cumartesi</string>
+
+    <string-array name="ranking_values">
+        <item>Yok</item>
+        <item>Artan</item>
+        <item>Azalan</item>
+    </string-array>
+
+
+    <string-array name="array1">
+        <item>Liste Adını Düzenle</item>
+        <item>Listeyi Sil</item>
+    </string-array>
+    <string-array name="array2">
+        <item>Tümü</item>
+        <item>İzlendi</item>
+        <item>İzlenmedi</item>
+    </string-array>
+    <string-array name="saSearchTypes">
+        <item>imdb.com</item>
+        <item>tmdb.org</item>
+        <item>beyazperde.com</item>
+    </string-array>
+    <string-array name="MovieTabs">
+        <item>Genel</item>
+        <item>Oyuncular</item>
+        <item>Diğer</item>
+    </string-array>
+    <string-array name="MovieTabs2">
+        <item>Genel</item>
+        <item>Oyuncular</item>
+    </string-array>
+    <string-array name="MovieTabs3">
+        <item>Genel</item>
+        <item>Oyuncular</item>
+        <item>Diğer</item>
+        <item>Dosyalar</item>
+    </string-array>
+    <string-array name="SeriesTabs">
+        <item>Bilgiler</item>
+        <item>Bölümler</item>
+        <item>Oyuncular</item>
+    </string-array>
+    <string-array name="Languages">
+        <item>İngilizce</item>
+        <item>Türkçe</item>
+    </string-array>
+    <string-array name="genres">
+        <item>Tümü</item>
+        <item>Ailesel</item>
+        <item>Aksiyon</item>
+        <item>Animasyon</item>
+        <item>Bilim-Kurgu</item>
+        <item>Biyografik</item>
+        <item>Dökümantasyon</item>
+        <item>Drama</item>
+        <item>Fantastik</item>
+        <item>Gerilim</item>
+        <item>Gizem</item>
+        <item>Kısa Film</item>
+        <item>Komedi</item>
+        <item>Konser</item>
+        <item>Korku</item>
+        <item>Macera</item>
+        <item>Müzik</item>
+        <item>Müzikal</item>
+        <item>Polisiye</item>
+        <item>Romantik</item>
+        <item>Savaş</item>
+        <item>Sihir</item>
+        <item>Spor</item>
+        <item>Tarihi</item>
+        <item>Vahşi Batı</item>
+    </string-array>
+
+    <string-array name="series_notifications">
+        <item>Bildirim gösterme</item>
+        <item>Başladığında</item>
+        <item>15 dakika önce</item>
+        <item>30 dakika önce</item>
+        <item>1 saat önce</item>
+        <item>2 saat önce</item>
+        <item>3 saat önce</item>
+        <item>6 saat önce</item>
+    </string-array>
+
+    <integer name="viewfinder_border_width">4</integer>
+    <integer name="viewfinder_border_length">60</integer>
+
+    <string name="title_activity_search_movie">Film Ara</string>
+    <string name="title_activity_search_series">Dizi Ara</string>
+
+
+    <string name="about_open_source_licenses">Open Source Licenses</string>
+       <string name="about_uil">Copyright 2011-2014 Sergey Tarasevich\n
+https://github.com/nostra13/Android-Universal-Image-Loader
+\n\nLicensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+     <string name="about_retrofit">Copyright 2013 Square, Inc.\n
+http://square.github.io/retrofit/
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");\n
+you may not use this file except in compliance with the License.\n
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+                <string name="about_parallax_scroll">Copyright 2014 Nir Hartmann\n
+https://github.com/nirhart/ParallaxScroll
+\n\n
+The MIT License (MIT)
+\n\n
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+\n\n
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+\n\n
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</string>
+
+            <string name="about_trakt_java">
+Copyright 2013-2015 Uwe Trottmann\n
+https://github.com/UweTrottmann/trakt-java
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+            </string>
+
+                <string name="about_tvdb_api_android">
+https://github.com/sburba/Tvdb-Api-Android
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+            </string>
+
+                    <string name="about_themoviedbapi">
+Copyright 2014, Holger Brandl\n
+https://github.com/holgerbrandl/themoviedbapi
+\n\n
+All rights reserved.
+\n\n
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+\n\n
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+\n\n
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\n\n
+The views and conclusions contained in the software and documentation are those
+of the authors and should not be interpreted as representing official policies,
+either expressed or implied, of the FreeBSD Project.
+            </string>
+         <string name="about_view_pager_indicator">
+Copyright 2012 Jake Wharton\n
+Copyright 2011 Patrik Åkerfeldt\n
+Copyright 2011 Francisco Figueiredo Jr.\n
+https://github.com/JakeWharton/ViewPagerIndicator
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+            </string>
+</resources>

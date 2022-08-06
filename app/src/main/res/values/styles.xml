@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimaryLight">@color/primary_light</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorDrawerBack">@color/drawer_back</item>
+        <item name="colorDrawerSelected">@color/drawer_selected</item>
+        <item name="colorDrawerText">@color/drawer_text</item>
+        <item name="colorIndicator">@color/indicator_back</item>
+        <item name="colorTabText">@color/secondary_text2</item>
+        <item name="colorTabSelectedText">@color/primary</item>
+    </style>
+
+    <style name="AppTheme2" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_indigo</item>
+        <item name="colorPrimaryDark">@color/primary_dark_indigo</item>
+        <item name="colorPrimaryLight">@color/primary_light_indigo</item>
+        <item name="colorAccent">@color/accent_indigo</item>
+        <item name="colorDrawerBack">@color/drawer_back_indigo</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_indigo</item>
+        <item name="colorDrawerText">@color/drawer_text_indigo</item>
+        <item name="colorIndicator">@color/indicator_back_indigo</item>
+        <item name="colorTabText">@color/secondary_text2_indigo</item>
+        <item name="colorTabSelectedText">@color/primary_indigo</item>
+    </style>
+
+    <style name="AppTheme3" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_red</item>
+        <item name="colorPrimaryDark">@color/primary_dark_red</item>
+        <item name="colorPrimaryLight">@color/primary_light_red</item>
+        <item name="colorAccent">@color/accent_red</item>
+        <item name="colorDrawerBack">@color/drawer_back_red</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_red</item>
+        <item name="colorDrawerText">@color/drawer_text_red</item>
+        <item name="colorIndicator">@color/indicator_back_red</item>
+        <item name="colorTabText">@color/secondary_text2_red</item>
+        <item name="colorTabSelectedText">@color/primary_red</item>
+    </style>
+
+    <style name="AppTheme4" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_brown</item>
+        <item name="colorPrimaryDark">@color/primary_dark_brown</item>
+        <item name="colorPrimaryLight">@color/primary_light_brown</item>
+        <item name="colorAccent">@color/accent_brown</item>
+        <item name="colorDrawerBack">@color/drawer_back_brown</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_brown</item>
+        <item name="colorDrawerText">@color/drawer_text_brown</item>
+        <item name="colorIndicator">@color/indicator_back_brown</item>
+        <item name="colorTabText">@color/secondary_text2_brown</item>
+        <item name="colorTabSelectedText">@color/primary_brown</item>
+    </style>
+
+    <style name="AppTheme5" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_purple</item>
+        <item name="colorPrimaryDark">@color/primary_dark_purple</item>
+        <item name="colorPrimaryLight">@color/primary_light_purple</item>
+        <item name="colorAccent">@color/accent_purple</item>
+        <item name="colorDrawerBack">@color/drawer_back_purple</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_purple</item>
+        <item name="colorDrawerText">@color/drawer_text_purple</item>
+        <item name="colorIndicator">@color/indicator_back_purple</item>
+        <item name="colorTabText">@color/secondary_text2_purple</item>
+        <item name="colorTabSelectedText">@color/primary_purple</item>
+    </style>
+
+    <style name="AppTheme6" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_deep_purple</item>
+        <item name="colorPrimaryDark">@color/primary_dark_deep_purple</item>
+        <item name="colorPrimaryLight">@color/primary_light_deep_purple</item>
+        <item name="colorAccent">@color/accent_deep_purple</item>
+        <item name="colorDrawerBack">@color/drawer_back_deep_purple</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_deep_purple</item>
+        <item name="colorDrawerText">@color/drawer_text_deep_purple</item>
+        <item name="colorIndicator">@color/indicator_back_deep_purple</item>
+        <item name="colorTabText">@color/secondary_text2_deep_purple</item>
+        <item name="colorTabSelectedText">@color/primary_deep_purple</item>
+    </style>
+
+    <style name="AppTheme7" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_teal</item>
+        <item name="colorPrimaryDark">@color/primary_dark_teal</item>
+        <item name="colorPrimaryLight">@color/primary_light_teal</item>
+        <item name="colorAccent">@color/accent_teal</item>
+        <item name="colorDrawerBack">@color/drawer_back_teal</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_teal</item>
+        <item name="colorDrawerText">@color/drawer_text_teal</item>
+        <item name="colorIndicator">@color/indicator_back_teal</item>
+        <item name="colorTabText">@color/secondary_text2_teal</item>
+        <item name="colorTabSelectedText">@color/primary_teal</item>
+    </style>
+
+    <style name="AppTheme8" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorPrimaryDark">@color/primary_dark_green</item>
+        <item name="colorPrimaryLight">@color/primary_light_green</item>
+        <item name="colorAccent">@color/accent_green</item>
+        <item name="colorDrawerBack">@color/drawer_back_green</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_green</item>
+        <item name="colorDrawerText">@color/drawer_text_green</item>
+        <item name="colorIndicator">@color/indicator_back_green</item>
+        <item name="colorTabText">@color/secondary_text2_green</item>
+        <item name="colorTabSelectedText">@color/primary_green</item>
+    </style>
+
+    <style name="AppTheme9" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_light_green</item>
+        <item name="colorPrimaryDark">@color/primary_dark_light_green</item>
+        <item name="colorPrimaryLight">@color/primary_light_light_green</item>
+        <item name="colorAccent">@color/accent_light_green</item>
+        <item name="colorDrawerBack">@color/drawer_back_light_green</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_light_green</item>
+        <item name="colorDrawerText">@color/drawer_text_light_green</item>
+        <item name="colorIndicator">@color/indicator_back_light_green</item>
+        <item name="colorTabText">@color/secondary_text2_light_green</item>
+        <item name="colorTabSelectedText">@color/primary_light_green</item>
+    </style>
+
+
+    <style name="AppTheme10" parent="AppTheme" >
+        <item name="colorPrimary">@color/primary_blue_grey</item>
+        <item name="colorPrimaryDark">@color/primary_dark_blue_grey</item>
+        <item name="colorPrimaryLight">@color/primary_light_blue_grey</item>
+        <item name="colorAccent">@color/accent_blue_grey</item>
+        <item name="colorDrawerBack">@color/drawer_back_blue_grey</item>
+        <item name="colorDrawerSelected">@color/drawer_selected_blue_grey</item>
+        <item name="colorDrawerText">@color/drawer_text_blue_grey</item>
+        <item name="colorIndicator">@color/indicator_back_blue_grey</item>
+        <item name="colorTabText">@color/secondary_text2_blue_grey</item>
+        <item name="colorTabSelectedText">@color/primary_blue_grey</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:background">?android:listDivider</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0.5dip</item>
+        <item name="android:layout_marginTop">5dip</item>
+        <item name="android:layout_marginBottom">5dip</item>
+    </style>
+
+    <style name="Card"/>
+
+    <style name="Card.Title">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">?android:attr/colorPrimaryDark</item>
+    </style>
+
+    <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+    </style>
+    <style name="btnStyleBlackpearl" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@drawable/custom_btn_black_pearl</item>
+        <item name="android:padding">10.0dip</item>
+        <item name="android:shadowColor">#ff000000</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">0.6</item>
+    </style>
+
+    <style name="btnStyleBreakerBay" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/custom_btn_breaker_bay</item>
+        <item name="android:padding">10.0dip</item>
+        <item name="android:shadowColor">#ff000000</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">0.6</item>
+    </style>
+
+    <style name="SideIndexOverlayText">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textColor">#801ca0f2</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="btnStyleRadioButton" parent="@android:style/Widget.Button">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/colorDrawerText</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <item name="android:background">@drawable/selector_toggle_button</item>
+        <item name="android:padding">3dip</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/scale_up</item>
+        <item name="android:windowExitAnimation">@anim/scale_down</item>
+    </style>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+</resources>

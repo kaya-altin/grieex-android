@@ -1,0 +1,346 @@
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/personal_rating"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPersonalRating"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/archives_number"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvArchivesNumber"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/rls_type"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRlsType"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/rls_group"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRlsGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/user_column1"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserColumn1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/user_column2"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserColumn2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/user_column3"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserColumn3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/user_column4"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserColumn4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/user_column5"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserColumn5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_back"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:text="@string/user_column6"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserColumn6"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:textSize="@dimen/movie_detail_textSize"
+                android:focusable="true" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

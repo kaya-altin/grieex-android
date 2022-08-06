@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list"
+    android:orientation="horizontal"
+    android:padding="5dip">
+
+    <FrameLayout
+        android:id="@+id/flPoster"
+        android:layout_width="@dimen/movie_list_poster_layout_width"
+        android:layout_height="@dimen/movie_list_poster_layout_height"
+        android:background="@drawable/placeholder_movie_with_border">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/video_multi"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+    <TextView android:id="@+id/tvFilterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:textColor="#E6E6E6"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvOriginalName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/flPoster"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/flPoster"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#ff040404"
+        android:textSize="@dimen/movie_list_tvOriginalName_textSize"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/tvOtherName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvOriginalName"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/flPoster"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textSize="@dimen/movie_list_tvOtherName_textSize"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/tvDirector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvOtherName"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/flPoster"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textSize="@dimen/movie_list_tvDirector_textSize" />
+
+    <TextView
+        android:id="@+id/tvDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/tvOriginalName"
+        android:layout_marginEnd="25dp"
+        android:gravity="end"
+        android:maxLength="3"
+        android:textColor="#ffd5d5d5"
+        android:textSize="@dimen/movie_list_tvDuration_textSize"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/chkSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

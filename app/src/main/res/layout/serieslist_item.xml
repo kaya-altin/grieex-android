@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="@dimen/series_list_poster_layout_width"
+        android:layout_height="@dimen/series_list_poster_layout_height"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/placeholder_movie_with_border">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/tv"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tvSeriesName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toEndOf="@id/thumbnail"
+        android:ellipsize="end"
+        android:paddingRight="40dp"
+        android:paddingEnd="40dp"
+        android:singleLine="true"
+        android:textColor="#ff040404"
+        android:textSize="@dimen/movie_list_tvOriginalName_textSize"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/tvDateInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSeriesName"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/thumbnail"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textSize="@dimen/movie_list_tvOtherName_textSize"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDateInfo"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/thumbnail"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textSize="@dimen/movie_list_tvOtherName_textSize"
+        android:typeface="sans" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tvSeriesName"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@id/thumbnail">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="0" />
+
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivCollected"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:alpha=".3"
+        android:src="@drawable/collected"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+    <CheckBox
+        android:id="@+id/chkSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

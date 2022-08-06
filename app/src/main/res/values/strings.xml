@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+
+    <!-- This is an ad unit ID for a test ad. Replace with your own banner ad unit id. -->
+    <string name="banner_ad_unit_id">ca-app-pub-9637466047541795/2234777117</string>
+    <string name="facebook_app_id">1656758407875630</string>
+    <string name="dropbox_app_key">v949u8qg4zk87kq</string>
+
+    <string name="app_name">GrieeX</string>
+    <string name="about">About</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="submit">Submit</string>
+    <string name="no_record">Record not found.</string>
+    <string name="please_wait">Please wait&#8230;</string>
+    <string name="no_connection">Please check your internet connection and try again.</string>
+    <string name="crash_toast_text">An unexpected error has occurred!</string>
+    <string name="download_ticker">Loading to movie details&#8230;</string>
+    <string name="version">Version</string>
+    <string name="author">Author</string>
+    <string name="license">License</string>
+    <string name="web">Web</string>
+    <string name="more">More</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_menu">Menu</string>
+    <string name="menu_show">Show</string>
+    <string name="menu_delete">Delete</string>
+    <string name="movies">Movies</string>
+    <string name="series">TV Shows</string>
+    <string name="collection">Collection</string>
+    <string name="search_imdb">Add</string>
+    <string name="character_list">Character List</string>
+    <string name="imdb_250">Top 250</string>
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="add">Add</string>
+    <string name="add_to_collection">Add to Collection</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="show">Show</string>
+    <string name="list">List View</string>
+    <string name="gallery">Gallery View</string>
+    <string name="general">General</string>
+    <string name="cast">Cast</string>
+    <string name="comments">Comments</string>
+    <string name="director">Director</string>
+    <string name="writer">Writer</string>
+    <string name="country">Country</string>
+    <string name="language">Language</string>
+    <string name="plot">Plot</string>
+    <string name="english_plot">Plot</string>
+    <string name="other_plot">Other Plot</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="dubbing">Dubbing</string>
+    <string name="budget">Budget</string>
+    <string name="production_company">Production Company</string>
+    <string name="release_date">Release Date</string>
+    <string name="seen_checked">Marked as watched.</string>
+    <string name="seen_unchecked">Marked as unwatched.</string>
+    <string name="alert_import">Found an update database file. Do you want to update file?</string>
+    <string name="grieex_updating">Updating GrieeX.\nPlease wait…</string>
+    <string name="grieex_updating_error1">Update has not been completed.</string>
+    <string name="grieex_updating_error2">The internet connection is needed for the updating.</string>
+    <string name="grieex_updating_try">Try again</string>
+    <string name="get_info">Get Info</string>
+    <string name="imdb">www.imdb.com</string>
+    <string name="tmdb">www.themoviedb.org</string>
+    <string name="sinemalar">www.sinemalar.com</string>
+    <string name="beyazperde">www.beyazperde.com</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="getting_backdrops_please_wait">Backdrops loading. Please wait…</string>
+    <string name="batch_processing">Batch Processing</string>
+    <string name="batch_processing_started">Process has been started. You can track the process on the statusbar.</string>
+    <string name="batch_processing_completed">Batch processing completed</string>
+    <string name="archives_number">Archives Number</string>
+    <string name="user_column1">User Column 1</string>
+    <string name="user_column2">User Column 2</string>
+    <string name="user_column3">User Column 3</string>
+    <string name="user_column4">User Column 4</string>
+    <string name="user_column5">User Column 5</string>
+    <string name="user_column6">User Column 6</string>
+    <string name="delete_movie">Your choice movie will be deleted. Are you sure?</string>
+    <string name="delete_series">Your choice TV show will be deleted. Are you sure?</string>
+    <string name="clear_cache">Clear Cache (%s)</string>
+    <string name="clear_cache_alert">Do you really want to clear the cache?</string>
+    <string name="list_name">List Name</string>
+    <string name="add_to_list">Add to the list</string>
+    <string name="add_multiple_to_the_list">Add multiple to the list</string>
+    <string name="new_list_name">New List Name</string>
+    <string name="lists">Lists</string>
+    <string name="added_to_the_list">Added to the list.</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_added">Movie has been added. Details will be updated automatically.</string>
+    <string name="series_added">TV show has been added. Details will be updated automatically.</string>
+    <string name="can_not_be_empty">Can not be empty!</string>
+    <string name="alert1">Your choice movie will be deleted. Are you sure?</string>
+    <string name="alert2">Your choice custom list will be deleted. Are you sure?</string>
+    <string name="alert3">Select a list!</string>
+    <string name="alert4">You should download GrieeX Pro to use this function!</string>
+    <string name="alert5">The database will be uploaded on Dropbox. Are you sure?</string>
+    <string name="alert6">The database will be imported from Dropbox and changed with your current database. Are you sure?</string>
+    <string name="alert7">You are on the maximum record limits on the free version of GrieeX. You should download GrieeX Pro to add more records!</string>
+    <string name="alert8">Please select a valid backup file!</string>
+    <string name="alert9">Please select a valid item!</string>
+    <string name="imdb_info">imdb info</string>
+    <string name="go_pro_version">Go Pro Version</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="filter">Filter</string>
+    <string name="clear">Clear</string>
+    <string name="seen_state">Seen State</string>
+    <string name="genre">Genre</string>
+    <string name="remove_list">Remove from list</string>
+    <string name="remove_list_multiple">Multiple remove from list</string>
+    <string name="get_movie_infos">Get Movie Info</string>
+    <string name="get_backdrops">Get Backdrops</string>
+    <string name="get_posters">Get Posters</string>
+    <string name="backup">Backup/Restore</string>
+    <string name="backup_database">Backup database</string>
+    <string name="restore_database">Restore database</string>
+    <string name="dropbox">Backup/Restore Dropbox</string>
+    <string name="backup_dropbox">Backup Dropbox</string>
+    <string name="restore_dropbox">Restore Dropbox</string>
+    <string name="restore_completed">Restore Completed</string>
+    <string name="backup_completed">Backup Completed</string>
+    <string name="dropbox_download">Download database from Dropbox.</string>
+    <string name="dropbox_downloaded">Downloading is completed.</string>
+    <string name="dropbox_upload">Upload database to dropbox</string>
+    <string name="dropbox_uploaded">Uploading is completed.</string>
+    <string name="refresh">Refresh</string>
+    <string name="content_providers">Content Providers</string>
+    <string name="marked_as_seen">Marked as watched</string>
+    <string name="marked_as_not_seen">Marked as unwatched</string>
+    <string name="completed">Completed</string>
+    <string name="not_completed">Not Completed</string>
+    <string name="rate_google_play">Rate GrieeX on Google Play</string>
+    <string name="public_lists">Public Lists</string>
+    <string name="popular">Popular</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="files">Files</string>
+    <string name="video">Video</string>
+    <string name="screen_resolution">Screen Resolution</string>
+    <string name="video_codec">Video Codec</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="fps">FPS</string>
+    <string name="video_aspect_ratio">Video Aspect Ratio</string>
+    <string name="runningtime">Runtime</string>
+    <string name="total_frames">Total Frames</string>
+    <string name="video_size">Video Size</string>
+    <string name="file_size">File Size</string>
+    <string name="audio">Audio</string>
+    <string name="audio_codec">Audio Codec</string>
+    <string name="channels">Channels</string>
+    <string name="sample_rate">Sample Rate</string>
+    <string name="audio_size">Audio Size</string>
+    <string name="rta_dialog_title">Please rate us!</string>
+    <string name="rta_dialog_message">If you like GrieeX, please rate us only in a few minutes. Thank you for your support.</string>
+    <string name="rta_dialog_ok">Rate Now</string>
+    <string name="rta_dialog_cancel">Later</string>
+    <string name="rta_dialog_no">No thanks</string>
+    <string name="rls_type">Release Type</string>
+    <string name="rls_group">Release Group</string>
+    <string name="personal_rating">Personal Rating</string>
+    <string name="ranking">Ranking</string>
+    <string name="ranking_original_name">Original Name</string>
+    <string name="ranking_archives_number">Archives Number</string>
+    <string name="ranking_insert_date">Insert Date</string>
+    <string name="ranking_update_date">Update Date</string>
+    <string name="ranking_imdb_rating">Imdb Rating</string>
+    <string name="ranking_tmdb_rating">Tmdb Rating</string>
+    <string name="barcode_not_found">Barcode not found!</string>
+    <string name="share">Share</string>
+    <string name="via_imdb">Via imdb.com link</string>
+    <string name="via_tmdb">Via themoviedb.org link</string>
+    <string name="twice_back">Press back again to exit application</string>
+    <string name="links">Links</string>
+    <string name="theme">Theme</string>
+    <string name="english_only_please">English only please.</string>
+    <string name="comment_min_alert">Comments must be at least 5 words.</string>
+    <string name="post_comment">Post Comment</string>
+    <string name="comment_published">Your comment has been published.</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="detail">Detail</string>
+    <string name="exist_movie_message">Movie was added to the database previously. Are you sure you want to continue?</string>
+    <string name="logout">Logout</string>
+
+    <!-- Series -->
+    <string name="overview">Overview</string>
+    <string name="seasons">Seasons</string>
+    <string name="season">Season</string>
+    <string name="series_title">TV show Title</string>
+    <string name="continuing">Continuing</string>
+    <string name="ended">Ended</string>
+    <string name="minute">%s min</string>
+    <string name="season_watched">Mark season as watched</string>
+    <string name="season_not_watched">Mark season as not watched</string>
+    <string name="season_collected">Mark season as collected</string>
+    <string name="season_not_collected">Mark season as not collected</string>
+    <string name="season_favorite">Mark season as favorite</string>
+    <string name="season_not_favorite">Mark season as not favorite</string>
+    <string name="release_date_unknown">Release Date Unknown</string>
+    <string name="watched">Watched</string>
+    <string name="unwatched">Unwatched</string>
+    <string name="collected">Collected</string>
+    <string name="uncollected">Uncollected</string>
+    <string name="favorite">Favorite</string>
+    <string name="unfavorite">Unfavorite</string>
+    <string name="specials">Specials</string>
+    <string name="series_notification_time">TV Show Notification Time</string>
+    <string name="series_notification_comment">When you want to get notified for an episode</string>
+    <string name="notification_time">Notification Time</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="next_episode">Next Episode</string>
+    <string name="set_as_seen">Set as seen >></string>
+    <string name="delete_season">Delete Season</string>
+    <string name="delete_season_are_you_sure">Your choice season will be deleted. Are you sure?</string>
+
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_title">@string/login_sign_in</string>
+    <string name="login_failed">Login in failed. Please try again.</string>
+    <string name="logging_in">Logging in…</string>
+    <string name="login_successful">Login successful.</string>
+    <string name="login_description">Sign in to through the Trakt website and give GrieeX access to your account</string>
+    <string name="login_error_unknown">Unable to fetch token, please try again</string>
+    <string name="login_error_5xx">Trakt has encountered a server error, please try again</string>
+
+
+
+    <string name="day_sunday">Sunday</string>
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+
+    <string-array name="ranking_values">
+        <item>None</item>
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
+
+    <string-array name="saSearchTypes">
+        <item>imdb.com</item>
+        <item>tmdb.org</item>
+        <item>beyazperde.com</item>
+    </string-array>
+    <string-array name="MovieTabs">
+        <item>General</item>
+        <item>Cast</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="MovieTabs2">
+        <item>General</item>
+        <item>Cast</item>
+    </string-array>
+    <string-array name="MovieTabs3">
+        <item>General</item>
+        <item>Cast</item>
+        <item>Other</item>
+        <item>Files</item>
+    </string-array>
+    <string-array name="SeriesTabs">
+        <item>Info</item>
+        <item>Seasons</item>
+        <item>Cast</item>
+    </string-array>
+    <string-array name="array1">
+        <item>Rename of list</item>
+        <item>Delete list</item>
+    </string-array>
+    <string-array name="array2">
+        <item>All</item>
+        <item>Seen</item>
+        <item>Not Seen</item>
+    </string-array>
+    <string-array name="Languages">
+        <item>English</item>
+        <item>Turkish</item>
+    </string-array>
+    <string-array name="genres">
+        <item>All</item>
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Animation</item>
+        <item>Biography</item>
+        <item>Comedy</item>
+        <item>Concert</item>
+        <item>Crime</item>
+        <item>Documentary</item>
+        <item>Drama</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>Historical</item>
+        <item>Horror</item>
+        <item>Magic</item>
+        <item>Music</item>
+        <item>Musicals</item>
+        <item>Mystery</item>
+        <item>Romantic</item>
+        <item>Science Fiction</item>
+        <item>Short</item>
+        <item>Sport</item>
+        <item>Thriller</item>
+        <item>War</item>
+        <item>Western</item>
+    </string-array>
+
+    <string-array name="series_notifications">
+        <item>Don\'t show notification</item>
+        <item>When playing</item>
+        <item>15 minutes before</item>
+        <item>30 minutes before</item>
+        <item>1 hour before</item>
+        <item>2 hour before</item>
+        <item>3 hour before</item>
+        <item>6 hour before</item>
+    </string-array>
+
+    <integer name="viewfinder_border_width">4</integer>
+    <integer name="viewfinder_border_length">60</integer>
+
+    <string name="title_activity_search_movie">Search Movie</string>
+    <string name="title_activity_search_series">Search TV Show</string>
+
+
+    <string name="about_open_source_licenses">Open Source Licenses</string>
+       <string name="about_uil">Copyright 2011-2014 Sergey Tarasevich\n
+https://github.com/nostra13/Android-Universal-Image-Loader
+\n\nLicensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+    <string name="about_retrofit">Copyright 2013 Square, Inc.\n
+http://square.github.io/retrofit/
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");\n
+you may not use this file except in compliance with the License.\n
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+
+            <string name="about_parallax_scroll">Copyright 2014 Nir Hartmann\n
+https://github.com/nirhart/ParallaxScroll
+\n\n
+The MIT License (MIT)
+\n\n
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+\n\n
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+\n\n
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</string>
+
+            <string name="about_trakt_java">
+Copyright 2013-2015 Uwe Trottmann\n
+https://github.com/UweTrottmann/trakt-java
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+            </string>
+
+                <string name="about_tvdb_api_android">
+https://github.com/sburba/Tvdb-Api-Android
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+            </string>
+
+                    <string name="about_themoviedbapi">
+Copyright 2014, Holger Brandl\n
+https://github.com/holgerbrandl/themoviedbapi
+\n\n
+All rights reserved.
+\n\n
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+\n\n
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+\n\n
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\n\n
+The views and conclusions contained in the software and documentation are those
+of the authors and should not be interpreted as representing official policies,
+either expressed or implied, of the FreeBSD Project.
+            </string>
+
+     <string name="about_view_pager_indicator">
+Copyright 2012 Jake Wharton\n
+Copyright 2011 Patrik Åkerfeldt\n
+Copyright 2011 Francisco Figueiredo Jr.\n
+https://github.com/JakeWharton/ViewPagerIndicator
+\n\n
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+\n\n
+   http://www.apache.org/licenses/LICENSE-2.0
+\n\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+            </string>
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="130dp"
+        android:layout_height="90dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/placeholder_movie_with_border">
+
+
+        <ImageView
+            android:id="@+id/ivEpisodeImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tvEpisodeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toEndOf="@id/thumbnail"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#ff040404"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/tvDateInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEpisodeName"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/thumbnail"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textSize="@dimen/movie_list_tvOtherName_textSize"
+        android:typeface="sans" />
+
+    <Button
+        android:id="@+id/btSetAsSeen"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/selector_button1"
+        android:paddingEnd="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingStart="5dp"
+        android:stateListAnimator="@null"
+        android:text="@string/set_as_seen"
+        android:textAllCaps="false"
+        android:textColor="@color/secondary_text" />
+
+</RelativeLayout>

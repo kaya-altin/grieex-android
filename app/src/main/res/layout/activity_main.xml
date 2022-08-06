@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.grieex.ui.MainActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <!-- The main content view -->
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <include layout="@layout/toolbar" />
+
+            <ProgressBar
+                android:id="@+id/progress_top"
+                style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                tools:ignore="MissingPrefix"
+                tools:visibility="visible" />
+
+
+            <FrameLayout
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0" />
+
+
+        </LinearLayout>
+        <!-- The navigation drawer -->
+
+        <LinearLayout
+            android:id="@+id/left_drawer"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_margin="0.0dip"
+            android:background="?attr/colorDrawerBack"
+            android:orientation="vertical"
+            android:padding="0.0dip"
+            android:tag="left">
+
+            <ListView
+                android:id="@+id/lvMenuList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="fill_vertical"
+                android:layout_weight="1.0"
+                android:cacheColorHint="@android:color/transparent"
+                android:choiceMode="singleChoice"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:focusableInTouchMode="true"
+                android:listSelector="#00000000" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:background="#ff222222" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:background="#ff696969" />
+
+            <LinearLayout
+                android:id="@+id/llBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorDrawerBack"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dip"
+                    android:background="?attr/colorDrawerBack"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio0"
+                        style="@style/btnStyleRadioButton"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:drawableTop="@drawable/slide_menu_list"
+                        android:drawableTint="?attr/colorDrawerText"
+                        android:text="@string/list"
+                        android:textAlignment="center"
+                        tools:ignore="UnusedAttribute" />
+
+                    <RadioButton
+                        android:id="@+id/radio1"
+                        style="@style/btnStyleRadioButton"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:drawableTop="@drawable/slide_menu_gallery"
+                        android:drawableTint="?attr/colorDrawerText"
+                        android:text="@string/gallery"
+                        android:textAlignment="center"
+                        tools:ignore="UnusedAttribute" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

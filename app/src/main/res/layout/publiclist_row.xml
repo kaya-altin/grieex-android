@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_list"
+    android:orientation="horizontal"
+    android:padding="5.0dip">
+
+    <FrameLayout
+        android:id="@+id/flPoster"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:background="@drawable/placeholder_movie_with_border">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/video_multi"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+
+
+
+    <TextView
+        android:id="@+id/tvOriginalName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/flPoster"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/flPoster"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingRight="40dip"
+        android:paddingEnd="40dp"
+        android:textColor="#ff040404"
+        android:textSize="@dimen/public_movie_list_tvOriginalName_textSize"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <TextView
+        android:id="@+id/tvPlot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvOriginalName"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/flPoster"
+        android:layout_toEndOf="@+id/flPoster"
+        android:ellipsize="end"
+        android:maxLines="@integer/public_movie_list_tvPlot_maxLines"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/movie_list_tvOtherName_textSize"
+        android:typeface="sans" />
+
+
+</RelativeLayout>

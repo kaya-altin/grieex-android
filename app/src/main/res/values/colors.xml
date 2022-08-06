@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#ff303030</color>
+    <color name="primary_dark">#1A1A1A</color>
+    <color name="primary_light">#e0e0e0</color>
+    <color name="accent">#666666</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="secondary_text2">#ADADAD</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="drawer_back">#FF404040</color>
+    <color name="drawer_selected">#ff666666</color>
+    <color name="drawer_text">#ffffff</color>
+    <color name="indicator_back">#FFE082</color>
+
+
+    <color name="primary_indigo">#3F51B5</color>
+    <color name="primary_dark_indigo">#303F9F</color>
+    <color name="primary_light_indigo">#C5CAE9</color>
+    <color name="accent_indigo">#5C6BC0</color>
+    <color name="primary_text_indigo">#212121</color>
+    <color name="secondary_text_indigo">#727272</color>
+    <color name="secondary_text2_indigo">#C5CAE9</color>
+    <color name="icons_indigo">#FFFFFF</color>
+    <color name="divider_indigo">#B6B6B6</color>
+    <color name="drawer_back_indigo">#FF404040</color>
+    <color name="drawer_selected_indigo">#ff666666</color>
+    <color name="drawer_text_indigo">#ffffff</color>
+    <color name="indicator_back_indigo">#5C6BC0</color>
+
+
+    <color name="primary_red">#F44336</color>
+    <color name="primary_dark_red">#D32F2F</color>
+    <color name="primary_light_red">#FFCDD2</color>
+    <color name="accent_red">#ef5350</color>
+    <color name="primary_text_red">#212121</color>
+    <color name="secondary_text_red">#727272</color>
+    <color name="secondary_text2_red">#ffcdd2</color>
+    <color name="icons_red">#FFFFFF</color>
+    <color name="divider_red">#B6B6B6</color>
+    <color name="drawer_back_red">#FF404040</color>
+    <color name="drawer_selected_red">#ff666666</color>
+    <color name="drawer_text_red">#ffffff</color>
+    <color name="indicator_back_red">#ef5350</color>
+
+
+    <color name="primary_brown">#795548</color>
+    <color name="primary_dark_brown">#5D4037</color>
+    <color name="primary_light_brown">#D7CCC8</color>
+    <color name="accent_brown">#8D6E63</color>
+    <color name="primary_text_brown">#212121</color>
+    <color name="secondary_text_brown">#727272</color>
+    <color name="secondary_text2_brown">#D7CCC8</color>
+    <color name="icons_brown">#FFFFFF</color>
+    <color name="divider_brown">#B6B6B6</color>
+    <color name="drawer_back_brown">#FF404040</color>
+    <color name="drawer_selected_brown">#ff666666</color>
+    <color name="drawer_text_brown">#ffffff</color>
+    <color name="indicator_back_brown">#8D6E63</color>
+
+
+    <color name="primary_purple">#9C27B0</color>
+    <color name="primary_dark_purple">#7B1FA2</color>
+    <color name="primary_light_purple">#E1BEE7</color>
+    <color name="accent_purple">#AB47BC</color>
+    <color name="primary_text_purple">#212121</color>
+    <color name="secondary_text_purple">#727272</color>
+    <color name="secondary_text2_purple">#E1BEE7</color>
+    <color name="icons_purple">#FFFFFF</color>
+    <color name="divider_purple">#B6B6B6</color>
+    <color name="drawer_back_purple">#FF404040</color>
+    <color name="drawer_selected_purple">#ff666666</color>
+    <color name="drawer_text_purple">#ffffff</color>
+    <color name="indicator_back_purple">#AB47BC</color>
+
+    <color name="primary_deep_purple">#673AB7</color>
+    <color name="primary_dark_deep_purple">#512DA8</color>
+    <color name="primary_light_deep_purple">#D1C4E9</color>
+    <color name="accent_deep_purple">#7E57C2</color>
+    <color name="primary_text_deep_purple">#212121</color>
+    <color name="secondary_text_deep_purple">#727272</color>
+    <color name="secondary_text2_deep_purple">#D1C4E9</color>
+    <color name="icons_deep_purple">#FFFFFF</color>
+    <color name="divider_deep_purple">#B6B6B6</color>
+    <color name="drawer_back_deep_purple">#FF404040</color>
+    <color name="drawer_selected_deep_purple">#ff666666</color>
+    <color name="drawer_text_deep_purple">#ffffff</color>
+    <color name="indicator_back_deep_purple">#7E57C2</color>
+
+    <color name="primary_teal">#009688</color>
+    <color name="primary_dark_teal">#00796B</color>
+    <color name="primary_light_teal">#B2DFDB</color>
+    <color name="accent_teal">#26A69A</color>
+    <color name="primary_text_teal">#212121</color>
+    <color name="secondary_text_teal">#727272</color>
+    <color name="secondary_text2_teal">#B2DFDB</color>
+    <color name="icons_teal">#FFFFFF</color>
+    <color name="divider_teal">#B6B6B6</color>
+    <color name="drawer_back_teal">#FF404040</color>
+    <color name="drawer_selected_teal">#ff666666</color>
+    <color name="drawer_text_teal">#ffffff</color>
+    <color name="indicator_back_teal">#26A69A</color>
+
+    <color name="primary_green">#4CAF50</color>
+    <color name="primary_dark_green">#388E3C</color>
+    <color name="primary_light__green">#C8E6C9</color>
+    <color name="accent_green">#66BB6A</color>
+    <color name="primary_text_green">#212121</color>
+    <color name="secondary_text_green">#727272</color>
+    <color name="secondary_text2_green">#C8E6C9</color>
+    <color name="icons_green">#FFFFFF</color>
+    <color name="divider_green">#B6B6B6</color>
+    <color name="drawer_back_green">#FF404040</color>
+    <color name="drawer_selected_green">#ff666666</color>
+    <color name="drawer_text_green">#ffffff</color>
+    <color name="indicator_back_green">#66BB6A</color>
+
+    <color name="primary_light_green">#8BC34A</color>
+    <color name="primary_dark_light_green">#689F38</color>
+    <color name="primary_light_light_green">#DCEDC8</color>
+    <color name="accent_light_green">#9CCC65</color>
+    <color name="primary_text_light_green">#212121</color>
+    <color name="secondary_text_light_green">#727272</color>
+    <color name="secondary_text2_light_green">#DCEDC8</color>
+    <color name="icons_light_green">#212121</color>
+    <color name="divider_light_green">#B6B6B6</color>
+    <color name="drawer_back_light_green">#FF404040</color>
+    <color name="drawer_selected_light_green">#ff666666</color>
+    <color name="drawer_text_light_green">#ffffff</color>
+    <color name="indicator_back_light_green">#9CCC65</color>
+
+    <color name="primary_blue_grey">#607D8B</color>
+    <color name="primary_dark_blue_grey">#455A64</color>
+    <color name="primary_light_blue_grey">#CFD8DC</color>
+    <color name="accent_blue_grey">#78909C</color>
+    <color name="primary_text_blue_grey">#212121</color>
+    <color name="secondary_text_blue_grey">#727272</color>
+    <color name="secondary_text2_blue_grey">#CFD8DC</color>
+    <color name="icons_blue_grey">#FFFFFF</color>
+    <color name="divider_blue_grey">#B6B6B6</color>
+    <color name="drawer_back_blue_grey">#FF404040</color>
+    <color name="drawer_selected_blue_grey">#ff666666</color>
+    <color name="drawer_text_blue_grey">#ffffff</color>
+    <color name="indicator_back_blue_grey">#78909C</color>
+
+    <color name="grieex_yellow">#78BA38</color>
+    <color name="transparent">#00000000</color>
+    <color name="background">#ff111111</color>
+    <color name="yellow">#FFD321</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#FF000000</color>
+    <color name="red">#ffff0000</color>
+    <color name="buttonpressed">#ff1ca0f2</color>
+    <color name="light_grey">#e0e0e0</color>
+    <color name="dark_grey">#7b7b7b</color>
+    <color name="gray1">#757575</color>
+    <color name="gray2">#DBDBDB</color>
+    <color name="gray3">#D1D1D1</color>
+    <color name="gray4">#919191</color>
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="theme_dark_background">#FF404040</color>
+    <color name="theme_dark_text_color">#FFFFFF</color>
+    <color name="fab_normal">#262626</color>
+    <color name="fab_pressed">#4d4d4d</color>
+    <color name="fab_ripple">#40000000</color>
+    <color name="hint_color">#cdcdcd</color>
+    <color name="transparent_black">#E6000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="viewfinder_border">#ffafed44</color>
+    <color name="placeholderBackground">#FF1C1C1E</color>
+
+
+</resources>

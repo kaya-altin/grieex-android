@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/btnUpload"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:background="@drawable/selector_button2"
+            android:padding="20dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/dropbox_upload"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/dropbox_upload" />
+
+        <ImageButton
+            android:id="@+id/btnDownload"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_button2"
+            android:padding="20dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/dropbox_download"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/dropbox_download" />
+
+        <Button
+            android:id="@+id/btnLogoutDropbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:text="@string/logout"
+            android:textAllCaps="false"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlPleaseWait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#80000000"
+        android:clickable="true"
+        android:padding="15dp"
+        android:visibility="invisible"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/ivDropboxSync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/time_white"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvPleaseWaitText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivDropboxSync"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/please_wait"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvPleaseWaitText"
+            android:layout_marginTop="5dp"
+            android:maxHeight="5dip"
+            android:minHeight="5dip" />
+    </RelativeLayout>
+
+</RelativeLayout>

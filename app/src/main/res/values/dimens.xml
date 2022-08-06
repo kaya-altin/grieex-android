@@ -1,0 +1,53 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="splash_logo_width_height">200dp</dimen>
+    <dimen name="activity_horizontal_margin">10dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
+    <dimen name="slidingmenu_offset">55dp</dimen>
+    <dimen name="list_padding">10dp</dimen>
+    <dimen name="shadow_width">5dp</dimen>
+    <dimen name="series_list_poster_layout_width">50dp</dimen>
+    <dimen name="series_list_poster_layout_height">68dp</dimen>
+    <dimen name="movie_list_poster_layout_width">41dp</dimen>
+    <dimen name="movie_list_poster_layout_height">58dp</dimen>
+    <dimen name="movie_list_tvOriginalName_textSize">16sp</dimen>
+    <dimen name="movie_list_tvOtherName_textSize">12sp</dimen>
+    <dimen name="movie_list_tvDirector_textSize">12sp</dimen>
+    <dimen name="movie_list_tvDuration_textSize">10sp</dimen>
+    <dimen name="imdb250_list_tvTitle_textSize">14sp</dimen>
+    <dimen name="movie_detail_tvOriginalName_textSize">18sp</dimen>
+    <dimen name="movie_detail_tvOtherName_textSize">12sp</dimen>
+    <dimen name="movie_detail_tvGenre_textSize">14sp</dimen>
+    <dimen name="movie_detail_textSize">14sp</dimen>
+    <dimen name="movie_detail_ivRating_layout_height">15dp</dimen>
+    <dimen name="movie_detail_ivYouTube_layout_width">48dp</dimen>
+    <dimen name="movie_detail_tvUserRating_textSize">12sp</dimen>
+    <dimen name="movie_detail_llImdbRating_layout_marginLeft">15dp</dimen>
+    <dimen name="movie_detail_ivPoster_layout_width">100dp</dimen>
+    <dimen name="movie_detail_ivPoster_layout_min_height">140dp</dimen>
+    <dimen name="series_detail_Rating_layout_marginLeft">15dp</dimen>
+    <dimen name="series_detail_ivRating_layout_height">15dp</dimen>
+    <dimen name="series_detail_tvUserRating_textSize">12sp</dimen>
+    <dimen name="public_movie_list_tvOriginalName_textSize">16sp</dimen>
+    <dimen name="public_movie_list_tvPlot_textSize">10sp</dimen>
+    <integer name="public_movie_list_tvPlot_maxLines">5</integer>
+    <dimen name="slide_menu_image_width_height">25dp</dimen>
+    <dimen name="slide_menu_text_size">14sp</dimen>
+    <dimen name="slide_menu_min_height">20dp</dimen>
+    <dimen name="slide_menu_separator_margin_top">0dp</dimen>
+    <dimen name="slide_menu_separator_text_size">20sp</dimen>
+    <dimen name="upcoming_series_tvSeriesName_textSize">18sp</dimen>
+
+
+    <integer name="recylerviewColumnCount">3</integer>
+    <integer name="recylerviewColumnCountSearch">2</integer>
+    <dimen name="cardCornerRadius">2dp</dimen>
+    <dimen name="showItemMinHeight">72dp</dimen>
+    <dimen name="cardViewLayoutMargin">2dp</dimen>
+    <dimen name="cardView_add_button_width">40dp</dimen>
+    <dimen name="cardView_add_button_margin">3dp</dimen>
+    <dimen name="fab_margin">35dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+</resources>

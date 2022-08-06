@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <attr format="reference" name="colorIndicator"/>
+  <attr format="reference" name="colorDrawerBack"/>
+  <attr format="reference" name="colorDrawerSelected"/>
+  <attr format="reference" name="colorDrawerText"/>
+  <attr format="reference" name="colorPrimaryLight"/>
+  <attr format="reference" name="colorTabText"/>
+  <attr format="reference" name="colorTabSelectedText"/>
+
+
+  <declare-styleable name="AspectRatioImageView">
+    <attr name="ariv_widthRatio" format="integer" />
+    <attr name="ariv_heightRatio" format="integer" />
+  </declare-styleable>
+  <declare-styleable name="AspectRatioView">
+    <attr name="arv_widthRatio" format="integer" />
+    <attr name="arv_heightRatio" format="integer" />
+  </declare-styleable>
+</resources>

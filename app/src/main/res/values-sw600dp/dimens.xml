@@ -1,0 +1,43 @@
+<resources>
+    <dimen name="splash_logo_width_height">300dp</dimen>
+    <dimen name="series_list_poster_layout_width">55dp</dimen>
+    <dimen name="series_list_poster_layout_height">75dp</dimen>
+    <dimen name="movie_list_poster_layout_width">55dp</dimen>
+    <dimen name="movie_list_poster_layout_height">75dp</dimen>
+    <dimen name="movie_list_tvOriginalName_textSize">18sp</dimen>
+    <dimen name="movie_list_tvOtherName_textSize">14sp</dimen>
+    <dimen name="movie_list_tvDirector_textSize">14sp</dimen>
+    <dimen name="movie_list_tvDuration_textSize">10sp</dimen>
+    <dimen name="imdb250_list_tvTitle_textSize">16sp</dimen>
+    <dimen name="movie_detail_tvOriginalName_textSize">26sp</dimen>
+    <dimen name="movie_detail_tvOtherName_textSize">20sp</dimen>
+    <dimen name="movie_detail_tvGenre_textSize">16sp</dimen>
+    <dimen name="movie_detail_textSize">16sp</dimen>
+    <dimen name="movie_detail_ivRating_layout_height">25dp</dimen>
+    <dimen name="movie_detail_ivYouTube_layout_width">50dp</dimen>
+    <dimen name="movie_detail_tvUserRating_textSize">16sp</dimen>
+    <dimen name="movie_detail_llImdbRating_layout_marginLeft">30dp</dimen>
+    <dimen name="movie_detail_ivPoster_layout_width">120dp</dimen>
+    <dimen name="movie_detail_ivPoster_layout_min_height">160dp</dimen>
+    <dimen name="series_detail_Rating_layout_marginLeft">20dp</dimen>
+    <dimen name="series_detail_ivRating_layout_height">20dp</dimen>
+    <dimen name="series_detail_tvUserRating_textSize">16sp</dimen>
+    <dimen name="public_movie_list_tvOriginalName_textSize">19sp</dimen>
+    <dimen name="public_movie_list_tvPlot_textSize">12sp</dimen>
+    <integer name="public_movie_list_tvPlot_maxLines">4</integer>
+    <dimen name="slide_menu_image_width_height">32dp</dimen>
+    <dimen name="slide_menu_text_size">18sp</dimen>
+    <dimen name="slide_menu_min_height">30dp</dimen>
+    <dimen name="slide_menu_separator_margin_top">10dp</dimen>
+    <dimen name="slide_menu_separator_text_size">24sp</dimen>
+    <dimen name="upcoming_series_tvSeriesName_textSize">20sp</dimen>
+
+
+    <integer name="recylerviewColumnCount">3</integer>
+    <integer name="recylerviewColumnCountSearch">3</integer>
+    <dimen name="cardCornerRadius">2dp</dimen>
+    <dimen name="showItemMinHeight">72dp</dimen>
+    <dimen name="cardViewLayoutMargin">5dp</dimen>
+    <dimen name="cardView_add_button_width">50dp</dimen>
+    <dimen name="cardView_add_button_margin">10dp</dimen>
+</resources>

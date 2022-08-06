@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_list"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:orientation="horizontal"
+                android:padding="5.0dip">
+
+
+    <FrameLayout
+        android:id="@+id/flPoster"
+        android:layout_width="@dimen/series_list_poster_layout_width"
+        android:layout_height="@dimen/series_list_poster_layout_height"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/placeholder_movie_with_border">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/tv"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tvSeriesName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/flPoster"
+        android:layout_toEndOf="@id/flPoster"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingRight="40dp"
+        android:paddingEnd="40dp"
+        android:textColor="#ff040404"
+        android:textSize="@dimen/upcoming_series_tvSeriesName_textSize"
+        android:textStyle="bold"
+        android:typeface="sans"/>
+
+    <TextView
+        android:id="@+id/tvEpisodeName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSeriesName"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/flPoster"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:typeface="sans"/>
+
+    <TextView
+        android:id="@+id/tvDateInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEpisodeName"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/flPoster"
+        android:maxLines="1"
+        android:textColor="#ff343434"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:typeface="sans"/>
+
+
+</RelativeLayout>

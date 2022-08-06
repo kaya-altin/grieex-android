@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "934952513609",
+    "firebase_url": "https://grieex-1341.firebaseio.com",
+    "project_id": "grieex-1341",
+    "storage_bucket": "grieex-1341.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934952513609:android:92d0724cc2a54c09b50f98",
+        "android_client_info": {
+          "package_name": "com.grieex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934952513609-6qid2mn2kg4blqkpbkqbfpshpngiu0np.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlY5o9NSczP8cgkK0ytqJrDp-FJ4W9Dz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934952513609-6qid2mn2kg4blqkpbkqbfpshpngiu0np.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934952513609:android:0534506684d1816fb50f98",
+        "android_client_info": {
+          "package_name": "com.grieex.pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934952513609-6qid2mn2kg4blqkpbkqbfpshpngiu0np.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlY5o9NSczP8cgkK0ytqJrDp-FJ4W9Dz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934952513609-6qid2mn2kg4blqkpbkqbfpshpngiu0np.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
