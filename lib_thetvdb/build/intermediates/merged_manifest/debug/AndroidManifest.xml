@@ -3,7 +3,6 @@
     package="com.sburba.tvdbapi" >
 
     <uses-sdk
-        android:maxSdkVersion="28"
         android:minSdkVersion="21"
         android:targetSdkVersion="32" />
 
