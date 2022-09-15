@@ -1,8 +1,6 @@
 # grieex-android
 The Movie and TV Show Collection Program meets all of the needs of enthusiasts with useful and easy to understand interfaces.
 
-GrieeX - The Movie and TV Show Collection Program meets all of the needs of enthusiasts with useful and easy to understand interfaces.
-
 GrieeX is an application that you can manage and access to your movies and TV shows which are been kept in your archives quickly. Only input the movie or TV show name into the application and let GrieeX handle the rest.
 
 If you use the desktop application of GrieeX, you can export your movie list to your Android devices (mobile phones, tablets, etc.) Backup your movie list from the desktop application of GrieeX to Dropbox and import them to your Android devices. That's all!!!
