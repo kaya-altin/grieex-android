@@ -23,3 +23,13 @@ GrieeX Android
 * Batch processing (GrieeX Pro)
 * Search and filter on the list
 
+
+
+http://griee.com
+
+
+
+### Contributing!
+All contributions are super welcome! Check out the Contributing instructions for more info!
+
+GrieeX is [MIT-licensed](./License.md).
