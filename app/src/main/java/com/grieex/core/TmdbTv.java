@@ -1,15 +1,16 @@
 package com.grieex.core;
 
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
+import com.grieex.core.listener.OnTmdbTvEventListener;
 import com.grieex.helper.Constants;
 import com.grieex.helper.Constants.ContentProviders;
 import com.grieex.helper.DateUtils;
 import com.grieex.helper.GrieeXSettings;
 import com.grieex.helper.NLog;
 import com.grieex.helper.Utils;
-import com.grieex.core.listener.OnTmdbTvEventListener;
 import com.grieex.model.tables.Backdrop;
 import com.grieex.model.tables.Cast;
 import com.grieex.model.tables.Movie;
@@ -19,6 +20,8 @@ import com.grieex.model.tables.Trailer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbFind.ExternalSource;
@@ -260,113 +263,101 @@ public class TmdbTv {
     }
 
     public void ParseRatingWithTmdbNumberAsync(final String tmdbNumber) {
-        new AsyncTask<Void, Void, Movie>() {
-            protected void onPostExecute(Movie result) {
-                if (result != null) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                TmdbApi tmdb = new TmdbApi(GrieeXSettings.TmdbApiKey);
+
+                Movie m = new Movie();
+                m.setContentProvider(ContentProviders.TMDb.value);
+                TvSeries mDB = tmdb.getTvSeries().getSeries(Utils.parseInt(tmdbNumber), DEFAULT_LANG, null);
+                if (mDB != null) {
+                    m.setTmdbNumber(tmdbNumber);
+                    m.setVotes(String.valueOf(mDB.getVoteCount()));
+                    m.setUserRating(String.valueOf(mDB.getVoteAverage()));
+                }
+
+                handler.post(() -> {
                     if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
+                        mListener.onCompleted(m);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onNotCompleted(null, "");
-                }
+                });
             }
-
-            @Override
-            protected Movie doInBackground(Void... params) {
-                try {
-                    TmdbApi tmdb = new TmdbApi(GrieeXSettings.TmdbApiKey);
-
-                    Movie m = new Movie();
-                    m.setContentProvider(ContentProviders.TMDb.value);
-                    TvSeries mDB = tmdb.getTvSeries().getSeries(Utils.parseInt(tmdbNumber), DEFAULT_LANG, null);
-                    if (mDB != null) {
-                        m.setTmdbNumber(tmdbNumber);
-                        m.setVotes(String.valueOf(mDB.getVoteCount()));
-                        m.setUserRating(String.valueOf(mDB.getVoteAverage()));
-                    }
-                    return m;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     public void ParseRatingWithImdbNumberAsync(final String imdbNumber) {
-        new AsyncTask<Void, Void, Movie>() {
-            protected void onPostExecute(Movie result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
-                    if (mListener != null)
-                        mListener.onNotCompleted(null, "");
-                }
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Movie doInBackground(Void... params) {
-                try {
-                    TmdbApi tmdb = new TmdbApi(GrieeXSettings.TmdbApiKey);
+        executor.execute(() -> {
+            try {
+                TmdbApi tmdb = new TmdbApi(GrieeXSettings.TmdbApiKey);
 
-                    Movie m = new Movie();
-                    m.setContentProvider(ContentProviders.TMDb.value);
-                    // MovieDb result =
-                    // tmdb.getMovies().getMovie(Integer.parseInt(url), DEFAULT_LANG);
-                    FindResults result = tmdb.getFind().find(imdbNumber, ExternalSource.imdb_id, null);
-                    if (result.getMovieResults().size() == 0) {
+                Movie m = new Movie();
+                m.setContentProvider(ContentProviders.TMDb.value);
+                // MovieDb result =
+                // tmdb.getMovies().getMovie(Integer.parseInt(url), DEFAULT_LANG);
+                FindResults result = tmdb.getFind().find(imdbNumber, ExternalSource.imdb_id, null);
+                if (result.getMovieResults().size() == 0) {
+                    handler.post(() -> {
                         if (mListener != null)
                             mListener.onNotCompleted(null, "");
-
-                        return null;
-                    }
-                    int tmdbNumber = result.getMovieResults().get(0).getId();
-                    TvSeries mDB = tmdb.getTvSeries().getSeries(tmdbNumber, DEFAULT_LANG, null);
-                    m.setTmdbNumber(String.valueOf(tmdbNumber));
-                    m.setVotes(String.valueOf(mDB.getVoteCount()));
-                    m.setUserRating(String.valueOf(mDB.getVoteAverage()));
-                    return m;
-                } catch (Exception e) {
-                    return null;
+                    });
                 }
+                int tmdbNumber = result.getMovieResults().get(0).getId();
+                TvSeries mDB = tmdb.getTvSeries().getSeries(tmdbNumber, DEFAULT_LANG, null);
+                m.setTmdbNumber(String.valueOf(tmdbNumber));
+                m.setVotes(String.valueOf(mDB.getVoteCount()));
+                m.setUserRating(String.valueOf(mDB.getVoteAverage()));
 
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(m);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onNotCompleted(null, "");
+                });
             }
-
-        }.execute();
+        });
     }
 
 
     public void Search(final String SeriesName) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        new AsyncTask<Void, Void, ArrayList<SearchResult>>() {
-            protected void onPostExecute(ArrayList<SearchResult> result) {
-                if (mListener != null)
-                    mListener.onCompleted(result);
-            }
+        executor.execute(() -> {
+            try {
+                ArrayList<SearchResult> sr = new ArrayList<>();
+                TmdbApi tmdb = new TmdbApi(GrieeXSettings.TmdbApiKey);
 
-            @Override
-            protected ArrayList<SearchResult> doInBackground(Void... params) {
-                try {
-                    ArrayList<SearchResult> sr = new ArrayList<>();
-                    TmdbApi tmdb = new TmdbApi(GrieeXSettings.TmdbApiKey);
+                TmdbSearch search = tmdb.getSearch();
 
-                    TmdbSearch search = tmdb.getSearch();
-
-                    TvResultsPage movieResults = search.searchTv(SeriesName, DEFAULT_LANG, null);
-                    for (TvSeries result : movieResults.getResults()) {
-                        sr.add(new SearchResult(String.valueOf(result.getId()), result.getOriginalName(), "https://image.tmdb.org/t/p/" + GrieeXSettings.TmdbPosterSize + result.getPosterPath(), result.getFirstAirDate()));
-                    }
-                    return sr;
-                } catch (Exception e) {
-                    return null;
+                TvResultsPage movieResults = search.searchTv(SeriesName, DEFAULT_LANG, null);
+                for (TvSeries result : movieResults.getResults()) {
+                    sr.add(new SearchResult(String.valueOf(result.getId()), result.getOriginalName(), "https://image.tmdb.org/t/p/" + GrieeXSettings.TmdbPosterSize + result.getPosterPath(), result.getFirstAirDate()));
                 }
 
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(sr);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onNotCompleted(null, "");
+                });
             }
-
-        }.execute();
-
+        });
     }
 
 

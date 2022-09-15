@@ -1,6 +1,7 @@
 package com.grieex.core;
 
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.grieex.core.listener.OnTraktTvEventListener;
@@ -24,10 +25,11 @@ import com.uwetrottmann.trakt5.enums.Extended;
 import com.uwetrottmann.trakt5.enums.Status;
 import com.uwetrottmann.trakt5.services.Shows;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbTV;
@@ -48,38 +50,33 @@ public class TraktTv {
 
 
     public void Search(final String SeriesName) {
-        new AsyncTask<Void, Void, ArrayList<Series>>() {
-            protected void onPostExecute(ArrayList<Series> result) {
-                if (result != null) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                ArrayList<Series> returnList = new ArrayList<>();
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+
+                Response<List<SearchResult>> response = trakt.search().textQueryShow(SeriesName, null, null, null, null, null, null, null, null, null, Extended.FULL, 1, DEFAULT_PAGE_SIZE).execute();
+                if (response.isSuccessful()) {
+                    List<SearchResult> shows = response.body();
+                    for (SearchResult result : shows) {
+                        returnList.add(parseSeries(result.show));
+                    }
+                }
+
+                handler.post(() -> {
                     if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
+                        mListener.onCompleted(returnList);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected ArrayList<Series> doInBackground(Void... params) {
-                ArrayList<Series> returnList = new ArrayList<>();
-
-                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                try {
-                    Response<List<SearchResult>> response = trakt.search().textQueryShow(SeriesName, null, null, null, null, null, null, null, null, null, Extended.FULL, 1, DEFAULT_PAGE_SIZE).execute();
-                    if (response.isSuccessful()) {
-                        List<SearchResult> shows = response.body();
-                        for (SearchResult result : shows) {
-                            returnList.add(parseSeries(result.show));
-                        }
-                    }
-                } catch (IOException e) {
-                    return null;
-                }
-                return returnList;
-
-            }
-
-        }.execute();
+        });
     }
 
 
@@ -126,88 +123,22 @@ public class TraktTv {
     }
 
     public void ParseAsync(final String TraktId, final String locale) {
-        new AsyncTask<Void, Void, Series>() {
-            protected void onPostExecute(Series result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
-                    if (mListener != null)
-                        mListener.onCompleted(null);
-                }
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Series doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Response<Show> showResponse = trakt.shows().summary(TraktId, Extended.FULL).execute();
-                    Response<List<com.uwetrottmann.trakt5.entities.Season>> seasons = trakt.seasons().summary(TraktId, Extended.FULLEPISODES).execute();
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                Response<Show> showResponse = trakt.shows().summary(TraktId, Extended.FULL).execute();
+                Response<List<com.uwetrottmann.trakt5.entities.Season>> seasons = trakt.seasons().summary(TraktId, Extended.FULLEPISODES).execute();
 
-                    TvdbApi tvdbApi = new TvdbApi(GrieeXSettings.TvDbApiKey, locale);
+                TvdbApi tvdbApi = new TvdbApi(GrieeXSettings.TvDbApiKey, locale);
 
-                    Show show = showResponse.body();
-                    Series series = parseSeries(show);
+                Show show = showResponse.body();
+                Series series = parseSeries(show);
 
-                    if (show.ids != null) {
-                        if (!TextUtils.isEmpty(show.ids.imdb)) {
-                            Collection<com.sburba.tvdbapi.model.Series> seriesTvDbList = tvdbApi.getSeriesFromImdbId(show.ids.imdb);
-                            if (seriesTvDbList != null && seriesTvDbList.size() > 0) {
-                                com.sburba.tvdbapi.model.Series seriesTvDb = seriesTvDbList.iterator().next();
-                                if (!TextUtils.isEmpty(seriesTvDb.overview))
-                                    series.setOverview(seriesTvDb.overview);
-                            }
-                        }
-
-                        if (show.ids.tvdb != null) {
-                            Collection<com.sburba.tvdbapi.model.Episode> episodes = tvdbApi.getEpisodes(show.ids.tvdb);
-                            series.setEpisodes(parseEpisodes(episodes, show.airs.timezone, show.airs.time));
-
-                            Collection<com.sburba.tvdbapi.model.Actor> actors = tvdbApi.getActors(show.ids.tvdb);
-                            series.setCast(parseActors(actors));
-                        }
-                    }
-
-                    series.setSeasons(parseSeasons(seasons.body()));
-
-
-                    return series;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
-    }
-
-    public void ParseAsync2(final String TraktId, final String locale) {
-        new AsyncTask<Void, Void, Series>() {
-            protected void onPostExecute(Series result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
-                    if (mListener != null)
-                        mListener.onCompleted(null);
-                }
-            }
-
-            @Override
-            protected Series doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Response<Show> showResponse = trakt.shows().summary(TraktId, Extended.FULL).execute();
-                    //List<com.uwetrottmann.trakt5.entities.Season> seasons = trakt.seasons().summary(TraktId, Extended.FULLIMAGES);
-                    Show show = showResponse.body();
-
-                    TvdbApi tvdbApi = new TvdbApi(GrieeXSettings.TvDbApiKey, locale);
-                    //Collection<com.sburba.tvdbapi.model.Episode> episodes = tvdbApi.getEpisodes(show.ids.tvdb);
-                    Collection<com.sburba.tvdbapi.model.Actor> actors = tvdbApi.getActors(show.ids.tvdb);
-
-                    Series series = parseSeries(show);
-
-                    if (show.ids != null && !TextUtils.isEmpty(show.ids.imdb)) {
+                if (show.ids != null) {
+                    if (!TextUtils.isEmpty(show.ids.imdb)) {
                         Collection<com.sburba.tvdbapi.model.Series> seriesTvDbList = tvdbApi.getSeriesFromImdbId(show.ids.imdb);
                         if (seriesTvDbList != null && seriesTvDbList.size() > 0) {
                             com.sburba.tvdbapi.model.Series seriesTvDb = seriesTvDbList.iterator().next();
@@ -216,403 +147,361 @@ public class TraktTv {
                         }
                     }
 
-                    //series.setSeasons(parseSeasons(seasons));
-                    // series.setEpisodes(parseEpisodes(episodes, show.airs.timezone, show.airs.time));
-                    series.setCast(parseActors(actors));
+                    if (show.ids.tvdb != null) {
+                        Collection<com.sburba.tvdbapi.model.Episode> episodes = tvdbApi.getEpisodes(show.ids.tvdb);
+                        series.setEpisodes(parseEpisodes(episodes, show.airs.timezone, show.airs.time));
 
-                    return series;
-                } catch (Exception e) {
-                    return null;
+                        Collection<com.sburba.tvdbapi.model.Actor> actors = tvdbApi.getActors(show.ids.tvdb);
+                        series.setCast(parseActors(actors));
+                    }
                 }
 
+                series.setSeasons(parseSeasons(seasons.body()));
+
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(series);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(null);
+                });
+            }
+        });
+    }
+
+    public void ParseAsync2(final String TraktId, final String locale) {
+        try {
+            TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+            Response<Show> showResponse = trakt.shows().summary(TraktId, Extended.FULL).execute();
+            //List<com.uwetrottmann.trakt5.entities.Season> seasons = trakt.seasons().summary(TraktId, Extended.FULLIMAGES);
+            Show show = showResponse.body();
+
+            TvdbApi tvdbApi = new TvdbApi(GrieeXSettings.TvDbApiKey, locale);
+            //Collection<com.sburba.tvdbapi.model.Episode> episodes = tvdbApi.getEpisodes(show.ids.tvdb);
+            Collection<com.sburba.tvdbapi.model.Actor> actors = tvdbApi.getActors(show.ids.tvdb);
+
+            Series series = parseSeries(show);
+
+            if (show.ids != null && !TextUtils.isEmpty(show.ids.imdb)) {
+                Collection<com.sburba.tvdbapi.model.Series> seriesTvDbList = tvdbApi.getSeriesFromImdbId(show.ids.imdb);
+                if (seriesTvDbList != null && seriesTvDbList.size() > 0) {
+                    com.sburba.tvdbapi.model.Series seriesTvDb = seriesTvDbList.iterator().next();
+                    if (!TextUtils.isEmpty(seriesTvDb.overview))
+                        series.setOverview(seriesTvDb.overview);
+                }
             }
 
-        }.execute();
+            //series.setSeasons(parseSeasons(seasons));
+            // series.setEpisodes(parseEpisodes(episodes, show.airs.timezone, show.airs.time));
+            series.setCast(parseActors(actors));
+
+            if (mListener != null)
+                mListener.onCompleted(series);
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+            if (mListener != null)
+                mListener.onCompleted(null);
+        }
     }
 
     public void ParseRatingAsync(final String TraktId, final String locale) {
-        new AsyncTask<Void, Void, Series>() {
-            protected void onPostExecute(Series result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
-                    if (mListener != null)
-                        mListener.onCompleted(null);
-                }
+        try {
+            TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+            Response<Show> response = trakt.shows().summary(TraktId, Extended.FULL).execute();
+
+            if (response.isSuccessful()) {
+                if (mListener != null)
+                    mListener.onCompleted(parseSeries(response.body()));
             }
-
-            @Override
-            protected Series doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Response<Show> response = trakt.shows().summary(TraktId, Extended.FULL).execute();
-
-                    if (response.isSuccessful()) {
-                        return parseSeries(response.body());
-                    }
-                    return null;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+            if (mListener != null)
+                mListener.onCompleted(null);
+        }
     }
 
     public void getSeasons(final String TraktId) {
-        new AsyncTask<Void, Void, ArrayList<Season>>() {
-            protected void onPostExecute(ArrayList<Season> result) {
-                if (result != null) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                Response<List<com.uwetrottmann.trakt5.entities.Season>> response = trakt.seasons().summary(TraktId, Extended.FULL).execute();
+
+                handler.post(() -> {
                     if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
+                        mListener.onCompleted(parseSeasons(response.body()));
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected ArrayList<Season> doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Response<List<com.uwetrottmann.trakt5.entities.Season>> response = trakt.seasons().summary(TraktId, Extended.FULL).execute();
-
-                    if (response.isSuccessful()) {
-                        return parseSeasons(response.body());
-                    }
-
-                    return null;
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-
-        }.execute();
+        });
     }
 
     public void getTrending(final int page) {
-        new AsyncTask<Void, Void, ArrayList<Series>>() {
-            protected void onPostExecute(ArrayList<Series> result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                ArrayList<Series> returnList = new ArrayList<>();
+
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                Shows traktShows = trakt.shows();
+
+                Response<List<TrendingShow>> response = traktShows.trending(page, DEFAULT_PAGE_SIZE, Extended.FULL).execute();
+                if (response.isSuccessful()) {
+                    List<TrendingShow> shows = response.body();
+                    for (TrendingShow t : shows) {
+                        returnList.add(parseSeries(t.show));
+                    }
                 } else {
+                    if (response.code() == 401) {
+                        // authorization required, supply a valid OAuth access token
+                    } else {
+                        // the request failed for some other reason
+                    }
+                }
+
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(returnList);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected ArrayList<Series> doInBackground(Void... params) {
-                try {
-                    ArrayList<Series> returnList = new ArrayList<>();
-
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Shows traktShows = trakt.shows();
-
-                    Response<List<TrendingShow>> response = traktShows.trending(page, DEFAULT_PAGE_SIZE, Extended.FULL).execute();
-                    if (response.isSuccessful()) {
-                        List<TrendingShow> shows = response.body();
-                        for (TrendingShow t : shows) {
-                            returnList.add(parseSeries(t.show));
-                        }
-                    } else {
-                        if (response.code() == 401) {
-                            // authorization required, supply a valid OAuth access token
-                        } else {
-                            // the request failed for some other reason
-                        }
-                    }
-                    return returnList;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     public void getPopular(final int page) {
-        new AsyncTask<Void, Void, ArrayList<Series>>() {
-            protected void onPostExecute(ArrayList<Series> result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                ArrayList<Series> returnList = new ArrayList<>();
+
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                Shows traktShows = trakt.shows();
+
+                Response<List<Show>> response = traktShows.popular(page, DEFAULT_PAGE_SIZE, Extended.FULL).execute();
+                if (response.isSuccessful()) {
+                    List<Show> shows = response.body();
+                    for (Show t : shows) {
+                        returnList.add(parseSeries(t));
+                    }
                 } else {
+                    if (response.code() == 401) {
+                        // authorization required, supply a valid OAuth access token
+                    } else {
+                        // the request failed for some other reason
+                    }
+                }
+
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(returnList);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected ArrayList<Series> doInBackground(Void... params) {
-                try {
-                    ArrayList<Series> returnList = new ArrayList<>();
-
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Shows traktShows = trakt.shows();
-
-                    Response<List<Show>> response = traktShows.popular(page, DEFAULT_PAGE_SIZE, Extended.FULL).execute();
-                    if (response.isSuccessful()) {
-                        List<Show> shows = response.body();
-                        for (Show t : shows) {
-                            returnList.add(parseSeries(t));
-                        }
-                    } else {
-                        if (response.code() == 401) {
-                            // authorization required, supply a valid OAuth access token
-                        } else {
-                            // the request failed for some other reason
-                        }
-                    }
-                    return returnList;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     public void getCast(final int tvdbId) {
-        new AsyncTask<Void, Void, ArrayList<Cast>>() {
-            protected void onPostExecute(ArrayList<Cast> result) {
-                if (result != null) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                TvdbApi tvdbApi = new TvdbApi(GrieeXSettings.TvDbApiKey, DEFAULT_LANG);
+                Collection<com.sburba.tvdbapi.model.Actor> actors = tvdbApi.getActors(tvdbId);
+
+                handler.post(() -> {
                     if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
+                        mListener.onCompleted(parseActors(actors));
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected ArrayList<Cast> doInBackground(Void... params) {
-                try {
-                    TvdbApi tvdbApi = new TvdbApi(GrieeXSettings.TvDbApiKey, DEFAULT_LANG);
-                    Collection<com.sburba.tvdbapi.model.Actor> actors = tvdbApi.getActors(tvdbId);
-                    return parseActors(actors);
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     public void getComments(final Integer showId, final int page, final int pageSize) {
-        new AsyncTask<Void, Void, List<Comment>>() {
-            protected void onPostExecute(List<Comment> result) {
-                if (result != null) {
-                    if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                Shows traktShows = trakt.shows();
+
+                Response<List<Comment>> response = traktShows.comments(String.valueOf(showId), page, pageSize, Extended.FULL).execute();
+
+                if (response.isSuccessful()) {
+                    handler.post(() -> {
+                        if (mListener != null)
+                            mListener.onCompleted(response.body());
+                    });
+                }
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected List<Comment> doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Shows traktShows = trakt.shows();
-
-                    Response<List<Comment>> response = traktShows.comments(String.valueOf(showId), page, pageSize, Extended.FULL).execute();
-
-                    if (response.isSuccessful()) {
-                        return response.body();
-                    }
-
-                    return null;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
 
     public void getCommentReplies(final int id) {
-        new AsyncTask<Void, Void, List<Comment>>() {
-            protected void onPostExecute(List<Comment> result) {
-                if (result != null) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                List<Comment> comments = new ArrayList<>();
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                Response<Comment> comment = trakt.comments().get(id).execute();
+                comments.add(comment.body());
+
+                Response<List<Comment>> replies = trakt.comments().replies(id).execute();
+                comments.addAll(replies.body());
+
+                handler.post(() -> {
                     if (mListener != null)
-                        mListener.onCompleted(result);
-                } else {
+                        mListener.onCompleted(comments);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted(null);
-                }
+                });
             }
-
-            @Override
-            protected List<Comment> doInBackground(Void... params) {
-                try {
-                    List<Comment> comments = new ArrayList<>();
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-                    Response<Comment> comment = trakt.comments().get(id).execute();
-                    comments.add(comment.body());
-
-                    Response<List<Comment>> replies = trakt.comments().replies(id).execute();
-                    comments.addAll(replies.body());
-                    return comments;
-                } catch (Exception e) {
-                    return null;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     public void addComment(final String accessToken, final int traktId, final String comment, final boolean isSpoiler) {
-        new AsyncTask<Void, Void, Object>() {
-            protected void onPostExecute(Object result) {
-                if (mListener != null)
-                    mListener.onCompleted(result);
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Object doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
 
-                    Comment c = new Comment();
-                    c.comment = comment;
-                    c.spoiler = isSpoiler;
+                Comment c = new Comment();
+                c.comment = comment;
+                c.spoiler = isSpoiler;
 
-                    c.show = new Show();
-                    c.show.ids = ShowIds.trakt(traktId);
+                c.show = new Show();
+                c.show.ids = ShowIds.trakt(traktId);
 
-                    Response<Comment> response = trakt.comments().post(c).execute();
+                Response<Comment> response = trakt.comments().post(c).execute();
 
-                    if (response.isSuccessful()) {
-                        return response;
-                    } else {
-                        if (response.code() == 401) {
-                            return TraktResult.AUTH_ERROR;
-                        } else {
-                            return TraktResult.ERROR;
-                        }
-                    }
-                } catch (Exception e) {
-                    return TraktResult.ERROR;
+                if (response.isSuccessful()) {
+                    handler.post(() -> {
+                        if (mListener != null)
+                            mListener.onCompleted(response);
+                    });
                 }
-
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(null);
+                });
             }
-
-        }.execute();
+        });
     }
 
     public void updateComment(final String accessToken, final int commentId, final String comment, final boolean isSpoiler) {
-        new AsyncTask<Void, Void, Object>() {
-            protected void onPostExecute(Integer result) {
-                if (mListener != null)
-                    mListener.onCompleted(result);
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Object doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
 
-                    Comment c = new Comment(comment, isSpoiler, false);
+                Comment c = new Comment(comment, isSpoiler, false);
 
-                    Response<Comment> response = trakt.comments().update(commentId, c).execute();
+                Response<Comment> response = trakt.comments().update(commentId, c).execute();
 
-                    if (response.isSuccessful()) {
-                        return response;
-                    } else {
-                        if (response.code() == 401) {
-                            return TraktResult.AUTH_ERROR;
-                        } else {
-                            return TraktResult.ERROR;
-                        }
-                    }
-
-                } catch (Exception e) {
-                    return TraktResult.ERROR;
+                if (response.isSuccessful()) {
+                    handler.post(() -> {
+                        if (mListener != null)
+                            mListener.onCompleted(response);
+                    });
                 }
-
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(null);
+                });
             }
-
-        }.execute();
+        });
     }
 
     public void deleteComment(final String accessToken, final int commentId) {
-        new AsyncTask<Void, Void, Integer>() {
-            protected void onPostExecute(Integer result) {
-                if (mListener != null)
-                    mListener.onCompleted(result);
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Integer doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
+                Response response = trakt.comments().delete(commentId).execute();
 
-
-                    Response response = trakt.comments().delete(commentId).execute();
-
-                    if (response.isSuccessful()) {
-                        return TraktResult.SUCCESS;
-                    } else {
-                        if (response.code() == 401) {
-                            return TraktResult.AUTH_ERROR;
-                        } else {
-                            return TraktResult.ERROR;
-                        }
-                    }
-
-                } catch (Exception e) {
-                    return TraktResult.ERROR;
+                if (response.isSuccessful()) {
+                    handler.post(() -> {
+                        if (mListener != null)
+                            mListener.onCompleted(TraktResult.SUCCESS);
+                    });
                 }
-
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(null);
+                });
             }
-
-        }.execute();
+        });
     }
 
     public void replyComment(final String accessToken, final int commentId, final String comment, final boolean isSpoiler) {
-        new AsyncTask<Void, Void, Object>() {
-            protected void onPostExecute(Object result) {
-                if (mListener != null)
-                    mListener.onCompleted(result);
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Object doInBackground(Void... params) {
-                try {
-                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
+        executor.execute(() -> {
+            try {
+                TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey).accessToken(accessToken);
+                Comment c = new Comment(comment, isSpoiler, false);
+                Response<Comment> response = trakt.comments().postReply(commentId, c).execute();
 
-                    Comment c = new Comment(comment, isSpoiler, false);
-
-                    Response<Comment> response = trakt.comments().postReply(commentId, c).execute();
-
-                    if (response.isSuccessful()) {
-                        return response;
-                    } else {
-                        if (response.code() == 401) {
-                            return TraktResult.AUTH_ERROR;
-                        } else {
-                            return TraktResult.ERROR;
-                        }
-                    }
-
-                } catch (Exception e) {
-                    return TraktResult.ERROR;
+                if (response.isSuccessful()) {
+                    handler.post(() -> {
+                        if (mListener != null)
+                            mListener.onCompleted(response);
+                    });
                 }
-
+            } catch (Exception e) {
+                handler.post(() -> {
+                    if (mListener != null)
+                        mListener.onCompleted(null);
+                });
             }
-
-        }.execute();
+        });
     }
 
     public void likeComment(final String accessToken, final Comment comment) {
@@ -830,7 +719,7 @@ public class TraktTv {
 
     }
 
-    private String replaceHTTP(String value){
+    private String replaceHTTP(String value) {
         return value.replace("http://", "https://");
     }
 }

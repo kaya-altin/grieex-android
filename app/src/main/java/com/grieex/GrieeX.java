@@ -1,6 +1,5 @@
 package com.grieex;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 
@@ -35,6 +34,17 @@ public class GrieeX extends MultiDexApplication {
         return mInstance;
     }
 
+    private static void initImageLoader(Context context) {
+        // This configuration tuning is custom. You can tune every option, you
+        // may tune some of them,
+        // or you can create default configuration by
+        // ImageLoaderConfiguration.createDefault(this);
+        // method.
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).threadPriority(Thread.NORM_PRIORITY - 2).denyCacheImageMultipleSizesInMemory().diskCacheFileNameGenerator(new Md5FileNameGenerator()).diskCacheSize(300 * 1024 * 1024).tasksProcessingOrder(QueueProcessingType.LIFO).build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -66,17 +76,6 @@ public class GrieeX extends MultiDexApplication {
 
     public Context getContext() {
         return mContext;
-    }
-
-    private static void initImageLoader(Context context) {
-        // This configuration tuning is custom. You can tune every option, you
-        // may tune some of them,
-        // or you can create default configuration by
-        // ImageLoaderConfiguration.createDefault(this);
-        // method.
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).threadPriority(Thread.NORM_PRIORITY - 2).denyCacheImageMultipleSizesInMemory().diskCacheFileNameGenerator(new Md5FileNameGenerator()).diskCacheSize(300 * 1024 * 1024).tasksProcessingOrder(QueueProcessingType.LIFO).build();
-        // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
     }
 
     @Override
@@ -119,10 +118,10 @@ public class GrieeX extends MultiDexApplication {
             Tracker t = getGoogleAnalyticsTracker();
 
             t.send(new HitBuilders.ExceptionBuilder()
-                            .setDescription(new StandardExceptionParser(this, null)
-                                    .getDescription(Thread.currentThread().getName(), e))
-                            .setFatal(false)
-                            .build()
+                    .setDescription(new StandardExceptionParser(this, null)
+                            .getDescription(Thread.currentThread().getName(), e))
+                    .setFatal(false)
+                    .build()
             );
         }
     }

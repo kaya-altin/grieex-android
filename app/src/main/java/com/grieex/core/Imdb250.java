@@ -1,13 +1,16 @@
 package com.grieex.core;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
+import com.grieex.core.listener.OnImdb250EventListener;
 import com.grieex.helper.Constants;
 import com.grieex.helper.DatabaseHelper;
 import com.grieex.helper.NLog;
-import com.grieex.core.listener.OnImdb250EventListener;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,71 +21,60 @@ public class Imdb250 {
     private final DatabaseHelper dbHelper;
     private OnImdb250EventListener mListener;
 
-    public void setImdb250EventListener(OnImdb250EventListener eventListener) {
-        mListener = eventListener;
-    }
-
-
     public Imdb250(Context context) {
         dbHelper = DatabaseHelper.getInstance(context);
     }
 
+    public void setImdb250EventListener(OnImdb250EventListener eventListener) {
+        mListener = eventListener;
+    }
+
     public void getMovies() {
-        new AsyncTask<Void, Void, Boolean>() {
-            protected void onPostExecute(Boolean result) {
-                if (result) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                WebBrowser web = new WebBrowser();
+                String bodyHtml = web.request("https://www.imdb.com/chart/top?ref_=nv_ch_250_4");
+
+                TextParseMovie(bodyHtml);
+
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted();
-                } else {
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onNotCompleted();
-                }
+                });
             }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                try {
-                    WebBrowser web = new WebBrowser();
-                    String bodyHtml = web.request("https://www.imdb.com/chart/top?ref_=nv_ch_250_4");
-
-                    TextParseMovie(bodyHtml);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     public void getTvShows() {
-        new AsyncTask<Void, Void, Boolean>() {
-            protected void onPostExecute(Boolean result) {
-                if (result) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            try {
+                WebBrowser web = new WebBrowser();
+                String bodyHtml = web.request("https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250_4");
+
+                TextParseSeries(bodyHtml);
+
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onCompleted();
-                } else {
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
                     if (mListener != null)
                         mListener.onNotCompleted();
-                }
+                });
             }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                try {
-                    WebBrowser web = new WebBrowser();
-                    String bodyHtml = web.request("https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250_4");
-
-                    TextParseSeries(bodyHtml);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-
-            }
-
-        }.execute();
+        });
     }
 
     private void TextParseMovie(String response) {

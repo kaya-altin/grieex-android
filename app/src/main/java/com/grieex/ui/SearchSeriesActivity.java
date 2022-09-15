@@ -4,8 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -45,6 +46,8 @@ import com.grieex.model.tables.Series;
 import com.grieex.service.ServiceManager;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SearchSeriesActivity extends BaseActivity {
     private static final String TAG = SearchSeriesActivity.class.getName();
@@ -222,41 +225,36 @@ public class SearchSeriesActivity extends BaseActivity {
                         Toast.makeText(SearchSeriesActivity.this, getString(R.string.series_added), Toast.LENGTH_SHORT).show();
                     }
 
-                    new AsyncTask<Void, Void, Void>() {
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
+
+                    ServiceManager.startImportDataService(getApplicationContext());
+
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    Handler handler = new Handler(Looper.getMainLooper());
+
+                    executor.execute(() -> {
+                        Series s = mAdapter.getItem(position);
+                        s.setIsExisting(true);
+                        s.setContentProvider(Constants.ContentProviders.TraktTv.value);
+                        s.setInsertDate(DateUtils.DateTimeNowString());
+                        s.setUpdateDate(DateUtils.DateTimeNowString());
+
+                        long _id = dbHelper.addSeries(s);
+                        s.setID((int) _id);
+
+                        if (iPageID != -1) {
+                            com.grieex.model.tables.ListsSeries listSeries = new com.grieex.model.tables.ListsSeries();
+                            listSeries.setListID(String.valueOf(iPageID));
+                            listSeries.setSeriesID(String.valueOf(_id));
+                            dbHelper.addListsSeries(listSeries);
                         }
 
-                        @Override
-                        protected Void doInBackground(Void... params) {
-                            Series s = mAdapter.getItem(position);
-                            s.setIsExisting(true);
-                            s.setContentProvider(Constants.ContentProviders.TraktTv.value);
-                            s.setInsertDate(DateUtils.DateTimeNowString());
-                            s.setUpdateDate(DateUtils.DateTimeNowString());
+                        ImportQueues.AddQueue(SearchSeriesActivity.this, _id, String.valueOf(s.getTraktId()), Constants.ContentProviders.TraktTv);
 
-                            long _id = dbHelper.addSeries(s);
-                            s.setID((int) _id);
 
-                            if (iPageID != -1) {
-                                com.grieex.model.tables.ListsSeries listSeries = new com.grieex.model.tables.ListsSeries();
-                                listSeries.setListID(String.valueOf(iPageID));
-                                listSeries.setSeriesID(String.valueOf(_id));
-                                dbHelper.addListsSeries(listSeries);
-                            }
-
-                            ImportQueues.AddQueue(SearchSeriesActivity.this, _id, String.valueOf(s.getTraktId()), Constants.ContentProviders.TraktTv);
-
+                        handler.post(() -> {
                             mBroadcaster.broadcastIntentWithObject(Constants.STATE_INSERT_SERIES, s);
-
-                            return null;
-                        }
-
-                        protected void onPostExecute(Void result) {
-                            ServiceManager.startImportDataService(getApplicationContext());
-                        }
-                    }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+                        });
+                    });
                 }
             });
         } else {

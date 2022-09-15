@@ -67,11 +67,30 @@ import java.util.Objects;
 
 public class SeriesListFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = SeriesListFragment.class.getName();
-
+    private static final String ARG_Filter = "ARG_Filter";
+    private static final int iRecordShow = 100;
+    private static final int iFirstLoadRowCount = 20;
     private Activity activity;
     private boolean isProInstalled = false;
-
-    private static final String ARG_Filter = "ARG_Filter";
+    private SeriesListAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private ProgressBar progress;
+    private int iRecordCount = 0;
+    private int iRecordPage = 0;
+    private boolean bIsFirstLoaded = true;
+    private String mFilter = "";
+    private String mFilterStatic = "";
+    private boolean IsSearchViewVisible = false;
+    private String mOrder = "";
+    private TextView tvNoRecord;
+    private volatile String RunKey;
+    private DatabaseHelper dbHelper;
+    private ImportServiceBroadcastReceiver mImportServiceBroadcastReceiver;
+    private CallbackManager callbackManager;
+    private int iListViewType = 0;
+    private MenuItem menuSearchItem;
+    private MenuItem menuOkItem;
+    private MenuItem menuCancelItem;
 
     public static SeriesListFragment newInstance() {
         return new SeriesListFragment();
@@ -85,31 +104,6 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
         return fragment;
     }
 
-    private SeriesListAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private ProgressBar progress;
-    private int iRecordCount = 0;
-    private int iRecordPage = 0;
-    private static final int iRecordShow = 100;
-    private static final int iFirstLoadRowCount = 20;
-    private boolean bIsFirstLoaded = true;
-    private String mFilter = "";
-    private String mFilterStatic = "";
-    private boolean IsSearchViewVisible = false;
-    private String mOrder = "";
-
-    private TextView tvNoRecord;
-
-    private volatile String RunKey;
-
-    private DatabaseHelper dbHelper;
-    private ImportServiceBroadcastReceiver mImportServiceBroadcastReceiver;
-
-    private CallbackManager callbackManager;
-    private ShareDialog shareDialog;
-
-    private int iListViewType = 0;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +115,6 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
             iListViewType = Prefs.with(activity).getInt(Constants.ListViewType, 0);
 
             callbackManager = CallbackManager.Factory.create();
-            shareDialog = new ShareDialog(activity);
 
             if (getArguments() != null) {
                 mFilterStatic = getArguments().getString(ARG_Filter);
@@ -206,10 +199,6 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
         }
         return v;
     }
-
-    private MenuItem menuSearchItem;
-    private MenuItem menuOkItem;
-    private MenuItem menuCancelItem;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -389,6 +378,145 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
         getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
     }
 
+    private void showSeries(long SeriesID, View view) {
+        try {
+            Intent it = new Intent(getActivity(), SeriesDetailActivity.class);
+            it.putExtra(Constants.SeriesID, String.valueOf(SeriesID));
+            it.putExtra(Constants.IsExistDatabase, true);
+            startActivity(it);
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+        }
+    }
+
+    private void updateSeries(Series m) {
+        try {
+            if (mAdapter == null)
+                return;
+
+            for (int position = 0; position < mAdapter.getItemCount(); position++) {
+                Series series = mAdapter.getItem(position);
+                if (series.getID() == m.getID()) {
+                    series.LoadWithWhereColumn(activity, Series.COLUMNS._ID, String.valueOf(m.getID()));
+                    long nextAirDateMillis = DbUtils.getLastEpisodeMs(activity, m.getID());
+                    if (nextAirDateMillis != -1) {
+                        series.setDateInfo(String.format("%s | %s | %s", DateUtils.getDateFormat(nextAirDateMillis, Constants.DATE_FORMAT11), DateUtils.getDateFormat(nextAirDateMillis, Constants.DATE_FORMAT10), series.getNetwork()));
+                    } else {
+                        series.setDateInfo(String.format("%s | %s | %s", series.getAirDay(), series.getAirTime(), series.getNetwork()));
+                    }
+                    series.setEpisodeCount(DbUtils.getEpisodeCount(activity, m.getID()));
+                    series.setWatchedCount(DbUtils.getEpisodeWatchedCount(activity, m.getID()));
+                    series.setCollectedCount(DbUtils.getCollectedCount(activity, m.getID()));
+                    mAdapter.notifyItemChanged(position);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+        }
+    }
+
+    private void deleteSeries(Series s) {
+        try {
+            if (mAdapter == null)
+                return;
+
+            for (int position = 0; position < mAdapter.getItemCount(); position++) {
+                Series series = mAdapter.getItem(position);
+                if (series.getID() == s.getID()) {
+                    dbHelper.deleteSeries(series);
+                    mAdapter.remove(series);
+
+                    if (mAdapter.getItemCount() == 0) {
+                        tvNoRecord.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+        }
+    }
+
+    private void share(final Series m) {
+        final ArrayList<CustomMenuItem> items = new ArrayList<>();
+        items.add(new CustomMenuItem(1, R.drawable.facebook_icon, getString(R.string.via_imdb)));
+        items.add(new CustomMenuItem(2, R.drawable.facebook_icon, getString(R.string.via_tmdb)));
+        items.add(new CustomMenuItem(3, R.drawable.twitter_icon, getString(R.string.via_imdb)));
+        items.add(new CustomMenuItem(4, R.drawable.twitter_icon, getString(R.string.via_tmdb)));
+
+        CustomMenuAdapter a = new CustomMenuAdapter(activity, items);
+        a.setShowIcon(true);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.share);
+        builder.setCancelable(true);
+        builder.setAdapter(a, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                try {
+                    Series series = dbHelper.getSeries(m.getID());
+
+                    CustomMenuItem menuItem = items.get(item);
+
+                    switch (menuItem.getId()) {
+                        case 1:
+                            if (ShareDialog.canShow(ShareLinkContent.class)) {
+                                ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                        .setQuote(m.getSeriesName() + " / " + m.getOverview())
+                                        .setContentUrl(Uri.parse("https://www.imdb.com/title/" + series.getImdbId()))
+                                        .build();
+
+                                ShareDialog shareDialog = new ShareDialog(activity);
+                                shareDialog.show(linkContent);
+                            }
+                            break;
+                        case 2:
+                            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                    .setQuote(m.getSeriesName() + " / " + m.getOverview())
+                                    .setContentUrl(Uri.parse("https://www.themoviedb.org/movie/" + series.getTmdbId()))
+                                    .build();
+
+                            ShareDialog shareDialog = new ShareDialog(activity);
+                            shareDialog.show(linkContent);
+                            break;
+                        case 3: {
+                            TweetComposer.Builder builder = new TweetComposer.Builder(activity);
+                            builder.text("http://www.imdb.com/title/" + series.getTmdbId());
+
+                            if (!TextUtils.isEmpty(m.getPoster())) {
+                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
+                                if (myImageFile != null) {
+                                    Uri myImageUri = Uri.fromFile(myImageFile);
+                                    builder.image(myImageUri);
+                                }
+                            }
+                            builder.show();
+                            break;
+                        }
+                        case 4: {
+                            TweetComposer.Builder builder = new TweetComposer.Builder(activity);
+                            builder.text("https://www.themoviedb.org/show/" + series.getImdbId());
+
+                            if (!TextUtils.isEmpty(m.getPoster())) {
+                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
+                                if (myImageFile != null) {
+                                    Uri myImageUri = Uri.fromFile(myImageFile);
+                                    builder.image(myImageUri);
+                                }
+                            }
+                            builder.show();
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    NLog.e(TAG, e);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.setCanceledOnTouchOutside(true);
+        alert.show();
+    }
 
     class DataLoader extends AsyncTask<String, Void, ArrayList<Series>> {
         private volatile boolean running = true;
@@ -695,146 +823,6 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
         }
 
     }
-
-    private void showSeries(long SeriesID, View view) {
-        try {
-            Intent it = new Intent(getActivity(), SeriesDetailActivity.class);
-            it.putExtra(Constants.SeriesID, String.valueOf(SeriesID));
-            it.putExtra(Constants.IsExistDatabase, true);
-            startActivity(it);
-        } catch (Exception e) {
-            NLog.e(TAG, e);
-        }
-    }
-
-    private void updateSeries(Series m) {
-        try {
-            if (mAdapter == null)
-                return;
-
-            for (int position = 0; position < mAdapter.getItemCount(); position++) {
-                Series series = mAdapter.getItem(position);
-                if (series.getID() == m.getID()) {
-                    series.LoadWithWhereColumn(activity, Series.COLUMNS._ID, String.valueOf(m.getID()));
-                    long nextAirDateMillis = DbUtils.getLastEpisodeMs(activity, m.getID());
-                    if (nextAirDateMillis != -1) {
-                        series.setDateInfo(String.format("%s | %s | %s", DateUtils.getDateFormat(nextAirDateMillis, Constants.DATE_FORMAT11), DateUtils.getDateFormat(nextAirDateMillis, Constants.DATE_FORMAT10), series.getNetwork()));
-                    } else {
-                        series.setDateInfo(String.format("%s | %s | %s", series.getAirDay(), series.getAirTime(), series.getNetwork()));
-                    }
-                    series.setEpisodeCount(DbUtils.getEpisodeCount(activity, m.getID()));
-                    series.setWatchedCount(DbUtils.getEpisodeWatchedCount(activity, m.getID()));
-                    series.setCollectedCount(DbUtils.getCollectedCount(activity, m.getID()));
-                    mAdapter.notifyItemChanged(position);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            NLog.e(TAG, e);
-        }
-    }
-
-    private void deleteSeries(Series s) {
-        try {
-            if (mAdapter == null)
-                return;
-
-            for (int position = 0; position < mAdapter.getItemCount(); position++) {
-                Series series = mAdapter.getItem(position);
-                if (series.getID() == s.getID()) {
-                    dbHelper.deleteSeries(series);
-                    mAdapter.remove(series);
-
-                    if (mAdapter.getItemCount() == 0) {
-                        tvNoRecord.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            NLog.e(TAG, e);
-        }
-    }
-
-
-    private void share(final Series m) {
-        final ArrayList<CustomMenuItem> items = new ArrayList<>();
-        items.add(new CustomMenuItem(1, R.drawable.facebook_icon, getString(R.string.via_imdb)));
-        items.add(new CustomMenuItem(2, R.drawable.facebook_icon, getString(R.string.via_tmdb)));
-        items.add(new CustomMenuItem(3, R.drawable.twitter_icon, getString(R.string.via_imdb)));
-        items.add(new CustomMenuItem(4, R.drawable.twitter_icon, getString(R.string.via_tmdb)));
-
-        CustomMenuAdapter a = new CustomMenuAdapter(activity, items);
-        a.setShowIcon(true);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(R.string.share);
-        builder.setCancelable(true);
-        builder.setAdapter(a, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                try {
-                    Series series = dbHelper.getSeries(m.getID());
-
-                    CustomMenuItem menuItem = items.get(item);
-
-                    switch (menuItem.getId()) {
-                        case 1:
-                            if (ShareDialog.canShow(ShareLinkContent.class)) {
-                                ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                                        .setQuote(m.getSeriesName() + " / " + m.getOverview())
-                                        .setContentUrl(Uri.parse("https://www.imdb.com/title/" + series.getImdbId()))
-                                        .build();
-
-                                shareDialog.show(linkContent);
-                            }
-                            break;
-                        case 2:
-                            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                                    .setQuote(m.getSeriesName() + " / " + m.getOverview())
-                                    .setContentUrl(Uri.parse("https://www.themoviedb.org/movie/" + series.getTmdbId()))
-                                    .build();
-
-                            shareDialog.show(linkContent);
-                            break;
-                        case 3: {
-                            TweetComposer.Builder builder = new TweetComposer.Builder(activity);
-                            builder.text("http://www.imdb.com/title/" + series.getTmdbId());
-
-                            if (!TextUtils.isEmpty(m.getPoster())) {
-                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                if (myImageFile != null) {
-                                    Uri myImageUri = Uri.fromFile(myImageFile);
-                                    builder.image(myImageUri);
-                                }
-                            }
-                            builder.show();
-                            break;
-                        }
-                        case 4: {
-                            TweetComposer.Builder builder = new TweetComposer.Builder(activity);
-                            builder.text("https://www.themoviedb.org/show/" + series.getImdbId());
-
-                            if (!TextUtils.isEmpty(m.getPoster())) {
-                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                if (myImageFile != null) {
-                                    Uri myImageUri = Uri.fromFile(myImageFile);
-                                    builder.image(myImageUri);
-                                }
-                            }
-                            builder.show();
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    NLog.e(TAG, e);
-                }
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.setCanceledOnTouchOutside(true);
-        alert.show();
-    }
-
 
     // **************
     private class ImportServiceBroadcastReceiver extends BroadcastReceiver {

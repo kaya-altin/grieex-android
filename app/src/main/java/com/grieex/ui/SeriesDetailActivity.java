@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,31 +64,23 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SeriesDetailActivity extends BaseActivity {
     private static final String TAG = SeriesDetailActivity.class.getName();
-
+    private static String[] CONTENT;
     private Series mSeries;
     private CustomProgressDialog progressDialog;
-
     private CallbackManager callbackManager;
-    private ShareDialog shareDialog;
-
     private DisplayImageOptions options;
-
     private DatabaseHelper dbHelper;
-
     private boolean isExistDatabase = true;
     private CustomBroadcastReceiver mBroadcastReceiver;
-
     private AppBarLayout appBarLayout;
     private FragmentStatePagerAdapter mAdapter;
-
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
-    private static String[] CONTENT;
-
     private AspectRatioImageView poster;
 
     @Override
@@ -142,7 +135,6 @@ public class SeriesDetailActivity extends BaseActivity {
             }
 
             callbackManager = CallbackManager.Factory.create();
-            shareDialog = new ShareDialog(this);
 
             if (mBroadcastReceiver == null) {
                 IntentFilter statusIntentFilter = new IntentFilter(Constants.BROADCAST_ACTION);
@@ -217,41 +209,6 @@ public class SeriesDetailActivity extends BaseActivity {
 
     }
 
-
-    class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-            super(fm, behavior);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return SeriesDetailInfoFragment.newInstance(mSeries);
-                case 1:
-                    return SeriesDetailSeasonsFragment.newInstance(mSeries);
-                case 2:
-                    return SeriesDetailCastFragment.newInstance(mSeries);
-            }
-            return null;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return CONTENT[position % CONTENT.length];
-        }
-
-        @Override
-        public int getCount() {
-            return CONTENT.length;
-        }
-
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-    }
-
     private void getSeries(String id) {
         try {
             showProgress();
@@ -310,46 +267,36 @@ public class SeriesDetailActivity extends BaseActivity {
                         }
                     }
 
-                    new AsyncTask<Void, Void, Boolean>() {
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                        }
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    Handler handler = new Handler(Looper.getMainLooper());
 
-                        @Override
-                        protected Boolean doInBackground(Void... params) {
-                            if (mSeries == null)
-                                return false;
+                    executor.execute(() -> {
+                        if (mSeries == null)
+                            return;
 
-                            mSeries.setIsExisting(true);
-                            mSeries.setContentProvider(Constants.ContentProviders.TraktTv.value);
-                            mSeries.setInsertDate(DateUtils.DateTimeNowString());
-                            mSeries.setUpdateDate(DateUtils.DateTimeNowString());
+                        mSeries.setIsExisting(true);
+                        mSeries.setContentProvider(Constants.ContentProviders.TraktTv.value);
+                        mSeries.setInsertDate(DateUtils.DateTimeNowString());
+                        mSeries.setUpdateDate(DateUtils.DateTimeNowString());
 
-                            long _id = DatabaseHelper.getInstance(getApplicationContext()).addSeries(mSeries);
-                            mSeries.setID((int) _id);
+                        long _id = DatabaseHelper.getInstance(getApplicationContext()).addSeries(mSeries);
+                        mSeries.setID((int) _id);
 
-                            ImportQueues.AddQueue(SeriesDetailActivity.this, _id, String.valueOf(mSeries.getTraktId()), Constants.ContentProviders.TraktTv);
+                        ImportQueues.AddQueue(SeriesDetailActivity.this, _id, String.valueOf(mSeries.getTraktId()), Constants.ContentProviders.TraktTv);
 
-                            BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
-                            mBroadcaster.broadcastIntentWithObject(Constants.STATE_INSERT_SERIES, mSeries);
+                        BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
+                        mBroadcaster.broadcastIntentWithObject(Constants.STATE_INSERT_SERIES, mSeries);
 
 
-                            return true;
-                        }
+                        handler.post(() -> {
+                            menuAddItem.setVisible(false);
 
-                        protected void onPostExecute(Boolean result) {
-                            if (result) {
-                                menuAddItem.setVisible(false);
+                            Toast.makeText(SeriesDetailActivity.this, getResources().getString(R.string.series_added), Toast.LENGTH_SHORT).show();
 
-                                Toast.makeText(SeriesDetailActivity.this, getResources().getString(R.string.series_added), Toast.LENGTH_SHORT).show();
+                            ServiceManager.startImportDataService(getApplicationContext());
+                        });
 
-                                ServiceManager.startImportDataService(getApplicationContext());
-                            }
-                        }
-                    }.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-
-
+                    });
                     return false;
                 }
             });
@@ -425,7 +372,6 @@ public class SeriesDetailActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -445,57 +391,56 @@ public class SeriesDetailActivity extends BaseActivity {
     }
 
     private void updateSeries(final Series ss) {
-        new AsyncTask<Void, Void, Series>() {
-            protected void onPostExecute(Series result) {
-                hideProgress();
-                BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
-                mBroadcaster.broadcastIntentWithObject(Constants.STATE_UPDATE_SERIES, mSeries);
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Series doInBackground(Void... params) {
-                try {
-                    mSeries.setSeriesName(ss.getSeriesName());
-                    mSeries.setOverview(ss.getOverview());
-                    mSeries.setFirstAired(ss.getFirstAired());
-                    mSeries.setNetwork(ss.getNetwork());
-                    mSeries.setImdbId(ss.getImdbId());
-                    mSeries.setTmdbId(ss.getTmdbId());
-                    mSeries.setTraktId(ss.getTraktId());
-                    mSeries.setTvdbId(ss.getTvdbId());
-                    mSeries.setLanguage(ss.getLanguage());
-                    mSeries.setCountry(ss.getCountry());
-                    mSeries.setGenres(ss.getGenres());
-                    mSeries.setRuntime(ss.getRuntime());
-                    mSeries.setCertification(ss.getCertification());
-                    mSeries.setAirDay(ss.getAirDay());
-                    mSeries.setAirTime(ss.getAirTime());
-                    mSeries.setTimezone(ss.getTimezone());
-                    mSeries.setAirYear(ss.getAirYear());
-                    mSeries.setStatus(ss.getStatus());
-                    mSeries.setRating(ss.getRating());
-                    mSeries.setVotes(ss.getVotes());
-                    mSeries.setSeriesLastUpdate(ss.getSeriesLastUpdate());
-                    mSeries.setPoster(ss.getPoster());
-                    mSeries.setFanart(ss.getFanart());
-                    mSeries.setHomepage(ss.getHomepage());
+        executor.execute(() -> {
+            try {
+                mSeries.setSeriesName(ss.getSeriesName());
+                mSeries.setOverview(ss.getOverview());
+                mSeries.setFirstAired(ss.getFirstAired());
+                mSeries.setNetwork(ss.getNetwork());
+                mSeries.setImdbId(ss.getImdbId());
+                mSeries.setTmdbId(ss.getTmdbId());
+                mSeries.setTraktId(ss.getTraktId());
+                mSeries.setTvdbId(ss.getTvdbId());
+                mSeries.setLanguage(ss.getLanguage());
+                mSeries.setCountry(ss.getCountry());
+                mSeries.setGenres(ss.getGenres());
+                mSeries.setRuntime(ss.getRuntime());
+                mSeries.setCertification(ss.getCertification());
+                mSeries.setAirDay(ss.getAirDay());
+                mSeries.setAirTime(ss.getAirTime());
+                mSeries.setTimezone(ss.getTimezone());
+                mSeries.setAirYear(ss.getAirYear());
+                mSeries.setStatus(ss.getStatus());
+                mSeries.setRating(ss.getRating());
+                mSeries.setVotes(ss.getVotes());
+                mSeries.setSeriesLastUpdate(ss.getSeriesLastUpdate());
+                mSeries.setPoster(ss.getPoster());
+                mSeries.setFanart(ss.getFanart());
+                mSeries.setHomepage(ss.getHomepage());
 
-                    mSeries.setContentProvider(Constants.ContentProviders.TraktTv.value);
-                    mSeries.setUpdateDate(DateUtils.DateTimeNowString());
+                mSeries.setContentProvider(Constants.ContentProviders.TraktTv.value);
+                mSeries.setUpdateDate(DateUtils.DateTimeNowString());
 
-                    dbHelper.updateSeries(mSeries);
+                dbHelper.updateSeries(mSeries);
 
-                    dbHelper.fillSeasons(ss.getSeasons(), mSeries.getID());
-                    dbHelper.fillEpisodes(ss.getEpisodes(), mSeries.getID());
-                    dbHelper.fillCast(ss.getCast(), mSeries.getID(), Constants.CollectionType.Series);
+                dbHelper.fillSeasons(ss.getSeasons(), mSeries.getID());
+                dbHelper.fillEpisodes(ss.getEpisodes(), mSeries.getID());
+                dbHelper.fillCast(ss.getCast(), mSeries.getID(), Constants.CollectionType.Series);
 
-                    return mSeries;
-                } catch (Exception e) {
+                handler.post(() -> {
                     hideProgress();
-                    return null;
-                }
+                    BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
+                    mBroadcaster.broadcastIntentWithObject(Constants.STATE_UPDATE_SERIES, mSeries);
+                });
+            } catch (Exception e) {
+                handler.post(() -> {
+                    hideProgress();
+                });
             }
-        }.execute();
+        });
     }
 
     private void share(final Series m) {
@@ -526,6 +471,7 @@ public class SeriesDetailActivity extends BaseActivity {
                                         .setContentUrl(Uri.parse("http://www.imdb.com/title/" + series.getImdbId()))
                                         .build();
 
+                                ShareDialog shareDialog = new ShareDialog(SeriesDetailActivity.this);
                                 shareDialog.show(linkContent);
                             }
                             break;
@@ -535,7 +481,7 @@ public class SeriesDetailActivity extends BaseActivity {
                                     .setContentUrl(Uri.parse("https://www.themoviedb.org/movie/" + series.getTmdbId()))
                                     .build();
 
-
+                            ShareDialog shareDialog = new ShareDialog(SeriesDetailActivity.this);
                             shareDialog.show(linkContent);
                             break;
                         case 3: {
@@ -575,6 +521,40 @@ public class SeriesDetailActivity extends BaseActivity {
         AlertDialog alert = builder.create();
         alert.setCanceledOnTouchOutside(true);
         alert.show();
+    }
+
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return SeriesDetailInfoFragment.newInstance(mSeries);
+                case 1:
+                    return SeriesDetailSeasonsFragment.newInstance(mSeries);
+                case 2:
+                    return SeriesDetailCastFragment.newInstance(mSeries);
+            }
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return CONTENT[position % CONTENT.length];
+        }
+
+        @Override
+        public int getCount() {
+            return CONTENT.length;
+        }
+
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
     }
 
     // **************
