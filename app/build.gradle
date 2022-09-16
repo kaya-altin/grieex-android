@@ -27,7 +27,7 @@ android {
     buildToolsVersion '32.0.0'
     defaultConfig {
         applicationId "com.grieex.pro"
-        minSdk 30
+        minSdk 29
         targetSdk 32
         versionCode 64
         versionName '1.4.5'

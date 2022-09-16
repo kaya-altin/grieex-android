@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-           tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- This is an ad unit ID for a test ad. Replace with your own banner ad unit id. -->
     <string name="banner_ad_unit_id">ca-app-pub-9637466047541795/2234777117</string>
     <string name="facebook_app_id">1656758407875630</string>
     <string name="dropbox_app_key">v949u8qg4zk87kq</string>
+    <string name="facebook_client_token">96b3eaf85a5e463df5675797caeba878</string>
 
     <string name="app_name">GrieeX</string>
     <string name="about">About</string>
@@ -230,7 +230,6 @@
     <string name="login_error_5xx">Trakt has encountered a server error, please try again</string>
 
 
-
     <string name="day_sunday">Sunday</string>
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
@@ -331,7 +330,7 @@
 
 
     <string name="about_open_source_licenses">Open Source Licenses</string>
-       <string name="about_uil">Copyright 2011-2014 Sergey Tarasevich\n
+    <string name="about_uil">Copyright 2011-2014 Sergey Tarasevich\n
 https://github.com/nostra13/Android-Universal-Image-Loader
 \n\nLicensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -359,7 +358,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</string>
 
-            <string name="about_parallax_scroll">Copyright 2014 Nir Hartmann\n
+    <string name="about_parallax_scroll">Copyright 2014 Nir Hartmann\n
 https://github.com/nirhart/ParallaxScroll
 \n\n
 The MIT License (MIT)
@@ -382,7 +381,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</string>
 
-            <string name="about_trakt_java">
+    <string name="about_trakt_java">
 Copyright 2013-2015 Uwe Trottmann\n
 https://github.com/UweTrottmann/trakt-java
 \n\n
@@ -399,7 +398,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
             </string>
 
-                <string name="about_tvdb_api_android">
+    <string name="about_tvdb_api_android">
 https://github.com/sburba/Tvdb-Api-Android
 \n\n
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -415,7 +414,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
             </string>
 
-                    <string name="about_themoviedbapi">
+    <string name="about_themoviedbapi">
 Copyright 2014, Holger Brandl\n
 https://github.com/holgerbrandl/themoviedbapi
 \n\n
@@ -446,7 +445,7 @@ of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
             </string>
 
-     <string name="about_view_pager_indicator">
+    <string name="about_view_pager_indicator">
 Copyright 2012 Jake Wharton\n
 Copyright 2011 Patrik Åkerfeldt\n
 Copyright 2011 Francisco Figueiredo Jr.\n
