@@ -13,151 +13,148 @@ import com.grieex.interfaces.IDataModelObject;
 import java.io.Serializable;
 
 public class Trailer implements IDataModelObject, Serializable {
-	private static final String TAG = Trailer.class.getName();
-	public static final String TABLE_NAME = "Trailers";
+    public static final String TABLE_NAME = "Trailers";
+    private static final String TAG = Trailer.class.getName();
+    private int mID;
+    private Integer mObjectID;
+    private String mUrl;
+    private String mType;
+    private Integer mCollectionType;
+    public Trailer() {
 
-	public class COLUMNS {
-		static final String _ID = "_id";
-		public static final String ObjectID = "ObjectID";
-		public static final String Url = "Url";
-		public static final String Type = "Type";
-		public static final String CollectionType = "CollectionType";
-	}
+    }
+    public Trailer(int ObjectID, String Url, String Type, Constants.CollectionType collectionType) {
+        this.mObjectID = ObjectID;
+        this.mUrl = Url;
+        this.mType = Type;
+        this.mCollectionType = collectionType.value;
+    }
 
-	public Trailer() {
+    public int getID() {
+        return mID;
+    }
 
-	}
+    private void setID(int ID) {
+        this.mID = ID;
+    }
 
-	public Trailer(int ObjectID, String Url, String Type, Constants.CollectionType collectionType) {
-		this.mObjectID = ObjectID;
-		this.mUrl = Url;
-		this.mType = Type;
-		this.mCollectionType = collectionType.value;
-	}
+    public Integer getObjectID() {
+        return mObjectID;
+    }
 
-	private int mID;
-	private Integer mObjectID;
-	private String mUrl;
-	private String mType;
-	private Integer mCollectionType;
+    private void setObjectID(Integer ObjectID) {
+        this.mObjectID = ObjectID;
+    }
 
-	private void setID(int ID) {
-		this.mID = ID;
-	}
+    public String getUrl() {
+        return mUrl;
+    }
 
-	public int getID() {
-		return mID;
-	}
+    private void setUrl(String Url) {
+        this.mUrl = Url;
+    }
 
-	private void setObjectID(Integer ObjectID) {
-		this.mObjectID = ObjectID;
-	}
+    public String getType() {
+        return mType;
+    }
 
-	public Integer getObjectID() {
-		return mObjectID;
-	}
+    private void setType(String Type) {
+        this.mType = Type;
+    }
 
-	private void setUrl(String Url) {
-		this.mUrl = Url;
-	}
+    public Integer getCollectionType() {
+        return mCollectionType;
+    }
 
-	public String getUrl() {
-		return mUrl;
-	}
+    private void setCollectionType(Integer collectionType) {
+        this.mCollectionType = collectionType;
+    }
 
-	private void setType(String Type) {
-		this.mType = Type;
-	}
+    @Override
+    public String GetTableName() {
+        return TABLE_NAME;
+    }
 
-	public String getType() {
-		return mType;
-	}
+    @Override
+    public ContentValues GetContentValuesForDB() {
+        ContentValues values = new ContentValues();
+        values.put(COLUMNS._ID, mID);
+        values.put(COLUMNS.ObjectID, mObjectID);
+        values.put(COLUMNS.Url, mUrl);
+        values.put(COLUMNS.Type, mType);
+        values.put(COLUMNS.CollectionType, mCollectionType);
 
-	public Integer getCollectionType() {
-		return mCollectionType;
-	}
+        return values;
+    }
 
-	private void setCollectionType(Integer collectionType) {
-		this.mCollectionType = collectionType;
-	}
+    @Override
+    public String[] GetColumnMapping() {
+        return new String[]{COLUMNS._ID, COLUMNS.ObjectID, COLUMNS.Url, COLUMNS.Type, COLUMNS.CollectionType};
+    }
 
-	@Override
-	public String GetTableName() {
-		return TABLE_NAME;
-	}
+    @Override
+    public void LoadWithCursorRow(Cursor cursor) {
+        try {
+            if (cursor != null) {
+                setID(cursor.getInt(cursor.getColumnIndex(COLUMNS._ID)));
+                setObjectID(cursor.getInt(cursor.getColumnIndex(COLUMNS.ObjectID)));
+                setUrl(cursor.getString(cursor.getColumnIndex(COLUMNS.Url)));
+                setType(cursor.getString(cursor.getColumnIndex(COLUMNS.Type)));
+                setCollectionType(cursor.getInt(cursor.getColumnIndex(COLUMNS.CollectionType)));
+            }
+        } catch (Exception e) {
+            Log.e("Trailers", e.getMessage());
+        }
+    }
 
-	@Override
-	public ContentValues GetContentValuesForDB() {
-		ContentValues values = new ContentValues();
-		values.put(COLUMNS._ID, mID);
-		values.put(COLUMNS.ObjectID, mObjectID);
-		values.put(COLUMNS.Url, mUrl);
-		values.put(COLUMNS.Type, mType);
-		values.put(COLUMNS.CollectionType, mCollectionType);
+    @Override
+    public void LoadWithWhereColumn(Context ctx, String WhereColumn, String id) {
+        Cursor cursor = null;
+        try {
+            DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
+            cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + WhereColumn + "=" + id);
 
-		return values;
-	}
+            if (cursor.moveToFirst()) {
+                LoadWithCursorRow(cursor);
+            }
 
-	@Override
-	public String[] GetColumnMapping() {
-		return new String[] { COLUMNS._ID, COLUMNS.ObjectID, COLUMNS.Url, COLUMNS.Type, COLUMNS.CollectionType };
-	}
+        } catch (Exception e) {
+            NLog.e(TAG, e);
 
-	@Override
-	public void LoadWithCursorRow(Cursor cursor) {
-		try {
-			if (cursor != null) {
-				setID(cursor.getInt(cursor.getColumnIndex(COLUMNS._ID)));
-				setObjectID(cursor.getInt(cursor.getColumnIndex(COLUMNS.ObjectID)));
-				setUrl(cursor.getString(cursor.getColumnIndex(COLUMNS.Url)));
-				setType(cursor.getString(cursor.getColumnIndex(COLUMNS.Type)));
-				setCollectionType(cursor.getInt(cursor.getColumnIndex(COLUMNS.CollectionType)));
-			}
-		} catch (Exception e) {
-			Log.e("Trailers", e.getMessage());
-		}
-	}
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 
-	@Override
-	public void LoadWithWhereColumn(Context ctx, String WhereColumn, String id) {
-		Cursor cursor = null;
-		try {
-			DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
-			cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + WhereColumn + "=" + id);
+    @Override
+    public void LoadWithWhere(Context ctx, String Where) {
+        Cursor cursor = null;
+        try {
+            DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
+            cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + Where);
 
-			if (cursor.moveToFirst()) {
-				LoadWithCursorRow(cursor);
-			}
+            if (cursor.moveToFirst()) {
+                LoadWithCursorRow(cursor);
+            }
 
-		} catch (Exception e) {
-			NLog.e(TAG, e);
+        } catch (Exception e) {
+            NLog.e(TAG, e);
 
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-		}
-	}
+        } finally {
+            if (cursor != null) {
 
-	@Override
-	public void LoadWithWhere(Context ctx, String Where) {
-		Cursor cursor = null;
-		try {
-			DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
-			cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + Where);
+                cursor.close();
+            }
+        }
+    }
 
-			if (cursor.moveToFirst()) {
-				LoadWithCursorRow(cursor);
-			}
-
-		} catch (Exception e) {
-			NLog.e(TAG, e);
-
-		} finally {
-			if (cursor != null) {
-
-				cursor.close();
-			}
-		}
-	}
+    public static class COLUMNS {
+        public static final String ObjectID = "ObjectID";
+        public static final String Url = "Url";
+        public static final String Type = "Type";
+        public static final String CollectionType = "CollectionType";
+        static final String _ID = "_id";
+    }
 }

@@ -21,8 +21,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="-10dp"
                 android:layout_marginStart="-10dp"
+                android:layout_marginLeft="-10dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -56,13 +56,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:layout_marginTop="25dip"-->
-<!--                android:text="Durmuş Altın"-->
-<!--                android:textColor="@color/theme_dark_text_color" />-->
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center_horizontal"-->
+            <!--                android:layout_marginTop="25dip"-->
+            <!--                android:text="Kaya Altın"-->
+            <!--                android:textColor="@color/theme_dark_text_color" />-->
 
             <TextView
                 android:layout_width="wrap_content"

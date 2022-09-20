@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.grieex.R;
 import com.grieex.helper.DbUtils;
 import com.grieex.helper.NLog;
 import com.grieex.helper.Utils;
 import com.grieex.model.tables.Episode;
 import com.grieex.widget.AspectRatioImageView;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class EpisodeDetailFragment extends DialogFragment {
     private static final String TAG = EpisodeDetailFragment.class.getName();
@@ -28,27 +28,16 @@ public class EpisodeDetailFragment extends DialogFragment {
     private static final String ARG_IS_EXIST_DATABASE = "isExistDatabase";
     private int EpisodeID;
     private Episode mEpisode;
-    private ImageLoader imageLoader;
-    //private DisplayImageOptions options;
 
     private CheckBox chkWatched;
     private CheckBox chkCollected;
     private CheckBox chkFavorite;
 
-   // private boolean isExistDatabase = false;
+    // private boolean isExistDatabase = false;
 
     private boolean IsChanged = false;
 
     private OnCustomEventListener mListener;
-
-    public interface OnCustomEventListener {
-        void onDismiss(Episode episode);
-    }
-
-    public void setCustomEventListener(OnCustomEventListener eventListener) {
-        mListener = eventListener;
-    }
-
 
     public static EpisodeDetailFragment newInstance(Episode episode) {
         EpisodeDetailFragment fragment = new EpisodeDetailFragment();
@@ -59,19 +48,21 @@ public class EpisodeDetailFragment extends DialogFragment {
         return fragment;
     }
 
+    public void setCustomEventListener(OnCustomEventListener eventListener) {
+        mListener = eventListener;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             if (getArguments() != null) {
-                mEpisode = (Episode)getArguments().getSerializable(ARG_EPISODE);
+                mEpisode = (Episode) getArguments().getSerializable(ARG_EPISODE);
                 //isExistDatabase = getArguments().getBoolean(ARG_IS_EXIST_DATABASE,false);
 //                mEpisode = new Episode();
 //                mEpisode.LoadWithWhereColumn(getActivity(), Episode.COLUMNS._ID, String.valueOf(EpisodeID));
             }
 
-            imageLoader = ImageLoader.getInstance();
-            //options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(false).considerExifParams(true).build();
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -88,7 +79,7 @@ public class EpisodeDetailFragment extends DialogFragment {
             chkCollected = v.findViewById(R.id.chkCollected);
             chkFavorite = v.findViewById(R.id.chkFavorite);
 
-            if (mEpisode.getID() >0) {
+            if (mEpisode.getID() > 0) {
                 chkWatched.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -149,14 +140,16 @@ public class EpisodeDetailFragment extends DialogFragment {
                 chkWatched.setChecked(Utils.parseBoolean(mEpisode.getWatched()));
                 chkCollected.setChecked(Utils.parseBoolean(mEpisode.getCollected()));
                 chkFavorite.setChecked(Utils.parseBoolean(mEpisode.getFavorite()));
-            }else{
+            } else {
                 chkWatched.setVisibility(View.GONE);
                 chkCollected.setVisibility(View.GONE);
                 chkFavorite.setVisibility(View.GONE);
             }
 
 
-            imageLoader.displayImage(mEpisode.getEpisodeImage(), ivPoster);
+            Glide.with(EpisodeDetailFragment.this)
+                    .load(mEpisode.getEpisodeImage())
+                    .into(ivPoster);
 
             if (!TextUtils.isEmpty(mEpisode.getOverview()))
                 tvOverview.setText(mEpisode.getOverview());
@@ -184,6 +177,10 @@ public class EpisodeDetailFragment extends DialogFragment {
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+    }
+
+    public interface OnCustomEventListener {
+        void onDismiss(Episode episode);
     }
 
 }

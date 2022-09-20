@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,16 +13,17 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="10dp"
-            android:src="@drawable/globe" android:tint="?android:attr/colorAccent"
+            android:src="@drawable/globe"
+            app:tint="?android:attr/colorAccent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -43,16 +45,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="10dp"
-            android:src="@drawable/theme" android:tint="?android:attr/colorAccent"
+            android:src="@drawable/theme"
+            app:tint="?android:attr/colorAccent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -75,17 +78,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:tint="?android:attr/colorAccent"
             android:layout_marginStart="10dp"
             android:src="@drawable/trash"
+            app:tint="?android:attr/colorAccent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -108,17 +111,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:tint="?android:attr/colorAccent"
             android:layout_marginStart="10dp"
             android:src="@drawable/download"
+            app:tint="?android:attr/colorAccent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -141,17 +144,18 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="10dp"
             android:src="@drawable/alarm_clock"
-            tools:ignore="ContentDescription" android:tint="?android:attr/colorAccent"/>
+            app:tint="?android:attr/colorAccent"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -188,16 +192,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_marginStart="10dp" android:tint="?android:attr/colorAccent"
+            android:layout_marginStart="10dp"
             android:src="@drawable/backup"
+            app:tint="?android:attr/colorAccent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -220,17 +225,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:tint="?android:attr/colorAccent"
             android:layout_marginStart="10dp"
             android:src="@drawable/dropbox"
+            app:tint="?android:attr/colorAccent"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -245,16 +250,15 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            >
+            android:layout_marginEnd="10dp">
 
             <ImageView
                 android:id="@+id/ivDropboxOk"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:tint="?android:attr/colorAccent"
                 android:src="@drawable/ok_gray"
                 android:visibility="gone"
+                app:tint="?android:attr/colorAccent"
                 tools:ignore="ContentDescription" />
 
             <ImageView
@@ -278,10 +282,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/selector_list"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:focusable="true">
+        android:paddingBottom="10dp">
 
         <ImageView
             android:layout_width="28dp"

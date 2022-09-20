@@ -11,40 +11,8 @@ import com.grieex.interfaces.IDataModelObject;
 import java.io.Serializable;
 
 public class File implements IDataModelObject, Serializable {
-    private static final String TAG = File.class.getName();
     public static final String TABLE_NAME = "Files";
-
-    public class COLUMNS {
-        static final String _ID = "_id";
-        public static final String MovieID = "MovieID";
-        public static final String FileName = "FileName";
-        public static final String Resolution = "Resolution";
-        public static final String VideoCodec = "VideoCodec";
-        public static final String VideoBitrate = "VideoBitrate";
-        public static final String Fps = "Fps";
-        public static final String AudioCodec1 = "AudioCodec1";
-        public static final String AudioChannels1 = "AudioChannels1";
-        public static final String AudioBitrate1 = "AudioBitrate1";
-        public static final String AudioSampleRate1 = "AudioSampleRate1";
-        public static final String AudioSize1 = "AudioSize1";
-        public static final String AudioCodec2 = "AudioCodec2";
-        public static final String AudioChannels2 = "AudioChannels2";
-        public static final String AudioBitrate2 = "AudioBitrate2";
-        public static final String AudioSampleRate2 = "AudioSampleRate2";
-        public static final String AudioSize2 = "AudioSize2";
-        public static final String TotalFrames = "TotalFrames";
-        public static final String Lenght = "Lenght";
-        public static final String VideoSize = "VideoSize";
-        public static final String FileSize = "FileSize";
-        public static final String Chapter = "Chapter";
-        public static final String VideoAspectRatio = "VideoAspectRatio";
-    }
-
-    public File() {
-
-    }
-
-
+    private static final String TAG = File.class.getName();
     private int _id;
     private String mMovieID;
     private String mFileName;
@@ -68,7 +36,9 @@ public class File implements IDataModelObject, Serializable {
     private String mFileSize;
     private String mChapter;
     private String mVideoAspectRatio;
+    public File() {
 
+    }
 
     public int getID() {
         return _id;
@@ -89,83 +59,95 @@ public class File implements IDataModelObject, Serializable {
     public String getFileName() {
         return mFileName;
     }
+
     private void setFileName(String FileName) {
-        this.mFileName= FileName;
+        this.mFileName = FileName;
     }
 
     public String getResolution() {
         return mResolution;
     }
+
     private void setResolution(String Resolution) {
-        this.mResolution= Resolution;
+        this.mResolution = Resolution;
     }
 
     public String getVideoCodec() {
         return mVideoCodec;
     }
+
     private void setVideoCodec(String VideoCodec) {
-        this.mVideoCodec= VideoCodec;
+        this.mVideoCodec = VideoCodec;
     }
 
     public String getVideoBitrate() {
         return mVideoBitrate;
     }
+
     private void setVideoBitrate(String VideoBitrate) {
-        this.mVideoBitrate= VideoBitrate;
+        this.mVideoBitrate = VideoBitrate;
     }
 
     public String getFps() {
         return mFps;
     }
+
     private void setFps(String Fps) {
-        this.mFps= Fps;
+        this.mFps = Fps;
     }
 
     public String getAudioCodec1() {
         return mAudioCodec1;
     }
+
     private void setAudioCodec1(String AudioCodec1) {
-        this.mAudioCodec1= AudioCodec1;
+        this.mAudioCodec1 = AudioCodec1;
     }
 
     public String getAudioChannels1() {
         return mAudioChannels1;
     }
+
     private void setAudioChannels1(String AudioChannels1) {
-        this.mAudioChannels1= AudioChannels1;
+        this.mAudioChannels1 = AudioChannels1;
     }
 
     public String getAudioBitrate1() {
         return mAudioBitrate1;
     }
+
     private void setAudioBitrate1(String AudioBitrate1) {
-        this.mAudioBitrate1= AudioBitrate1;
+        this.mAudioBitrate1 = AudioBitrate1;
     }
 
     public String getAudioSampleRate1() {
         return mAudioSampleRate1;
     }
+
     private void setAudioSampleRate1(String AudioSampleRate1) {
-        this.mAudioSampleRate1= AudioSampleRate1;
+        this.mAudioSampleRate1 = AudioSampleRate1;
     }
 
     public String getAudioSize1() {
         return mAudioSize1;
     }
+
     private void setAudioSize1(String AudioSize1) {
-        this.mAudioSize1= AudioSize1;
+        this.mAudioSize1 = AudioSize1;
     }
 
     public String getAudioCodec2() {
         return mAudioCodec2;
     }
+
     private void setAudioCodec2(String AudioCodec2) {
-        this.mAudioCodec2= AudioCodec2;
+        this.mAudioCodec2 = AudioCodec2;
     }
 
     public String getAudioChannels2() {
         return mAudioChannels2;
     }
+
     private void setAudioChannels2(String AudioChannels2) {
         this.mAudioChannels2 = AudioChannels2;
     }
@@ -173,6 +155,7 @@ public class File implements IDataModelObject, Serializable {
     public String getAudioBitrate2() {
         return mAudioBitrate2;
     }
+
     private void setAudioBitrate2(String AudioBitrate2) {
         this.mAudioBitrate2 = AudioBitrate2;
     }
@@ -180,6 +163,7 @@ public class File implements IDataModelObject, Serializable {
     public String getAudioSampleRate2() {
         return mAudioSampleRate2;
     }
+
     private void setAudioSampleRate2(String AudioSampleRate2) {
         this.mAudioSampleRate2 = AudioSampleRate2;
     }
@@ -187,6 +171,7 @@ public class File implements IDataModelObject, Serializable {
     public String getAudioSize2() {
         return mAudioSize2;
     }
+
     private void setAudioSize2(String AudioSize2) {
         this.mAudioSize2 = AudioSize2;
     }
@@ -194,6 +179,7 @@ public class File implements IDataModelObject, Serializable {
     public String getTotalFrames() {
         return mTotalFrames;
     }
+
     private void setTotalFrames(String TotalFrames) {
         this.mTotalFrames = TotalFrames;
     }
@@ -201,6 +187,7 @@ public class File implements IDataModelObject, Serializable {
     public String getLenght() {
         return mLenght;
     }
+
     private void setLenght(String Lenght) {
         this.mLenght = Lenght;
     }
@@ -208,6 +195,7 @@ public class File implements IDataModelObject, Serializable {
     public String getVideoSize() {
         return mVideoSize;
     }
+
     private void setVideoSize(String VideoSize) {
         this.mVideoSize = VideoSize;
     }
@@ -215,6 +203,7 @@ public class File implements IDataModelObject, Serializable {
     public String getFileSize() {
         return mFileSize;
     }
+
     private void setFileSize(String FileSize) {
         this.mFileSize = FileSize;
     }
@@ -222,6 +211,7 @@ public class File implements IDataModelObject, Serializable {
     public String getChapter() {
         return mChapter;
     }
+
     private void setChapter(String Chapter) {
         this.mChapter = Chapter;
     }
@@ -229,6 +219,7 @@ public class File implements IDataModelObject, Serializable {
     public String getVideoAspectRatio() {
         return mVideoAspectRatio;
     }
+
     private void setVideoAspectRatio(String VideoAspectRatio) {
         this.mVideoAspectRatio = VideoAspectRatio;
     }
@@ -346,5 +337,31 @@ public class File implements IDataModelObject, Serializable {
                 cursor.close();
             }
         }
+    }
+
+    public static class COLUMNS {
+        public static final String MovieID = "MovieID";
+        public static final String FileName = "FileName";
+        public static final String Resolution = "Resolution";
+        public static final String VideoCodec = "VideoCodec";
+        public static final String VideoBitrate = "VideoBitrate";
+        public static final String Fps = "Fps";
+        public static final String AudioCodec1 = "AudioCodec1";
+        public static final String AudioChannels1 = "AudioChannels1";
+        public static final String AudioBitrate1 = "AudioBitrate1";
+        public static final String AudioSampleRate1 = "AudioSampleRate1";
+        public static final String AudioSize1 = "AudioSize1";
+        public static final String AudioCodec2 = "AudioCodec2";
+        public static final String AudioChannels2 = "AudioChannels2";
+        public static final String AudioBitrate2 = "AudioBitrate2";
+        public static final String AudioSampleRate2 = "AudioSampleRate2";
+        public static final String AudioSize2 = "AudioSize2";
+        public static final String TotalFrames = "TotalFrames";
+        public static final String Lenght = "Lenght";
+        public static final String VideoSize = "VideoSize";
+        public static final String FileSize = "FileSize";
+        public static final String Chapter = "Chapter";
+        public static final String VideoAspectRatio = "VideoAspectRatio";
+        static final String _ID = "_id";
     }
 }

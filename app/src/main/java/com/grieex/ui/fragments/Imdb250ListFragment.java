@@ -47,24 +47,16 @@ import java.util.ArrayList;
 
 public class Imdb250ListFragment extends Fragment {
     private static final String TAG = Imdb250ListFragment.class.getName();
-
+    private static final String ARG_Imdb250Type = "Imdb250Type";
     private Activity activity;
     private Imdb250Adapter mAdapter;
     private ProgressBar progressBarMovieList;
     private RecyclerView mRecyclerView;
-
     private boolean firstRun = true;
-
     private TextView tvNoRecord;
-
     private volatile String RunKey;
-
     private DatabaseHelper dbHelper;
-
     private Constants.Imdb250Type iImdb250Type;
-
-    private static final String ARG_Imdb250Type = "Imdb250Type";
-
     private ImportServiceBroadcastReceiver mImportServiceBroadcastReceiver;
 
     public static Imdb250ListFragment newInstance(Constants.Imdb250Type imdb250Type) {
@@ -287,7 +279,7 @@ public class Imdb250ListFragment extends Fragment {
             }
             try {
                 if (mAdapter == null) {
-                    mAdapter = new Imdb250Adapter(res);
+                    mAdapter = new Imdb250Adapter(res, activity);
                     mRecyclerView.setAdapter(mAdapter);
 
                     mAdapter.setOnItemClickListener(new Imdb250Adapter.OnItemClickListener() {

@@ -17,18 +17,6 @@ public class MovieFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     protected static String TAG = MovieFilesAdapter.class.getName();
     private final ArrayList<FileItem> mData;
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        public int position;
-        final TextView lblListItem;
-
-
-        ViewHolder(View v) {
-            super(v);
-            lblListItem = v.findViewById(R.id.lblListItem);
-        }
-    }
-
-
     public MovieFilesAdapter(ArrayList<FileItem> data) {
         mData = data;
     }
@@ -51,7 +39,6 @@ public class MovieFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mData.remove(position);
         notifyItemRemoved(position);
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,6 +72,17 @@ public class MovieFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public long getItemId(int position) {
         return -1;
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView lblListItem;
+        public int position;
+
+
+        ViewHolder(View v) {
+            super(v);
+            lblListItem = v.findViewById(R.id.lblListItem);
+        }
     }
 
 

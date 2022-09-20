@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,8 +23,8 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="?android:attr/textColorSecondary"
-            tools:text="12"
-            tools:ignore="RtlHardcoded" />
+            tools:ignore="RtlHardcoded"
+            tools:text="12" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -40,7 +41,7 @@
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?android:attr/textColorSecondary"
-                tools:text="Title"/>
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/tvFirstAired"
@@ -50,7 +51,7 @@
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"
-                tools:text="FirstAired"/>
+                tools:text="FirstAired" />
 
         </LinearLayout>
 
@@ -58,7 +59,7 @@
             android:id="@+id/cbWatched"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp" />
 
     </LinearLayout>
 
@@ -75,18 +76,18 @@
             android:layout_height="15dp"
             android:layout_marginEnd="3dp"
             android:layout_marginRight="3dp"
-            android:tint="@color/gray4"
             android:src="@drawable/star_black"
             android:visibility="gone"
+            app:tint="@color/gray4"
             tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/ivCollected"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:tint="@color/gray4"
             android:src="@drawable/collected"
             android:visibility="gone"
+            app:tint="@color/gray4"
             tools:ignore="ContentDescription" />
     </LinearLayout>
 

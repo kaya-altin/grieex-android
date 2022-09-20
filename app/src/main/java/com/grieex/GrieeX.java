@@ -11,10 +11,6 @@ import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
 import com.grieex.helper.AnalyticsTrackers;
 import com.grieex.helper.NLog;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
@@ -34,17 +30,6 @@ public class GrieeX extends MultiDexApplication {
         return mInstance;
     }
 
-    private static void initImageLoader(Context context) {
-        // This configuration tuning is custom. You can tune every option, you
-        // may tune some of them,
-        // or you can create default configuration by
-        // ImageLoaderConfiguration.createDefault(this);
-        // method.
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).threadPriority(Thread.NORM_PRIORITY - 2).denyCacheImageMultipleSizesInMemory().diskCacheFileNameGenerator(new Md5FileNameGenerator()).diskCacheSize(300 * 1024 * 1024).tasksProcessingOrder(QueueProcessingType.LIFO).build();
-        // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -62,9 +47,6 @@ public class GrieeX extends MultiDexApplication {
             mInstance = this;
             mContext = getApplicationContext();
 
-//            FacebookSdk.sdkInitialize(getApplicationContext());
-
-            initImageLoader(mContext);
 //            Utils.setDefaultLocale(mContext, GrieeXSettings.getLocale(mContext));
 
             AnalyticsTrackers.initialize(this);

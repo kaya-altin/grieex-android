@@ -37,16 +37,16 @@ public class SeriesDetailCastFragment extends Fragment {
     private Activity activity;
 
 
+    public SeriesDetailCastFragment() {
+        // Required empty public constructor
+    }
+
     public static SeriesDetailCastFragment newInstance(Series series) {
         SeriesDetailCastFragment fragment = new SeriesDetailCastFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_Series, series);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public SeriesDetailCastFragment() {
-        // Required empty public constructor
     }
 
     public void setSeries(Series series) {
@@ -123,7 +123,7 @@ public class SeriesDetailCastFragment extends Fragment {
     }
 
     private void setCastAdapter() {
-        mAdapter = new SeriesCastAdapter(activity, mSeries.getCast());
+        mAdapter = new SeriesCastAdapter(mSeries.getCast(), activity);
         mAdapter.setOnItemClickListener(new SeriesCastAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

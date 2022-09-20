@@ -2,7 +2,6 @@ package com.grieex.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.grieex.R;
 import com.grieex.adapter.SeasonsAdapter;
 import com.grieex.helper.BroadcastNotifier;
@@ -31,10 +32,7 @@ import com.grieex.model.tables.Series;
 import com.grieex.ui.FullScreenImageActivity;
 import com.grieex.ui.SeriesEpisodesActivity;
 import com.grieex.widget.SimpleDividerItemDecoration;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+
 
 public class SeriesDetailSeasonsFragment extends Fragment {
     private static final String TAG = SeriesDetailSeasonsFragment.class.getName();
@@ -54,7 +52,10 @@ public class SeriesDetailSeasonsFragment extends Fragment {
     private TextView tvEpisodeName;
     private TextView tvDateInfo;
 
-    private DisplayImageOptions options;
+
+    public SeriesDetailSeasonsFragment() {
+
+    }
 
     public static SeriesDetailSeasonsFragment newInstance(Series series) {
         SeriesDetailSeasonsFragment fragment = new SeriesDetailSeasonsFragment();
@@ -62,10 +63,6 @@ public class SeriesDetailSeasonsFragment extends Fragment {
         args.putSerializable(ARG_Series, series);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public SeriesDetailSeasonsFragment() {
-
     }
 
     public void setSeries(Series series) {
@@ -80,7 +77,6 @@ public class SeriesDetailSeasonsFragment extends Fragment {
                 mSeries = (Series) getArguments().getSerializable(ARG_Series);
             }
             activity = getActivity();
-            options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(false).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).displayer(new FadeInBitmapDisplayer(500)).build();
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -194,13 +190,16 @@ public class SeriesDetailSeasonsFragment extends Fragment {
     private void LoadNextEpisode() {
         try {
             nextEpisode = DbUtils.getNextEpisode(activity, mSeries.getID());
-            if (nextEpisode == null)
-            {
+            if (nextEpisode == null) {
                 llNextEpisode.setVisibility(View.GONE);
                 return;
             }
 
-            ImageLoader.getInstance().displayImage(nextEpisode.getEpisodeImage(), ivEpisodeImage, options);
+            Glide.with(activity)
+                    .load(nextEpisode.getEpisodeImage())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(ivEpisodeImage);
 
             String seasonNumber = String.format("%02d", nextEpisode.getSeasonNumber());
             String episodeNumber = String.format("%02d", nextEpisode.getEpisodeNumber());

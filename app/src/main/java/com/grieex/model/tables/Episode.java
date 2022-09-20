@@ -12,38 +12,8 @@ import com.grieex.model.TransactionObject;
 import java.io.Serializable;
 
 public class Episode extends TransactionObject implements IDataModelObject, Serializable {
-    private static final String TAG = Episode.class.getName();
     public static final String TABLE_NAME = "Episodes";
-
-    public class COLUMNS {
-        public static final String _ID = "_id";
-        public static final String SeriesId = "SeriesId";
-        static final String SeasonId = "SeasonId";
-        public static final String EpisodeName = "EpisodeName";
-        public static final String EpisodeNumber = "EpisodeNumber";
-        public static final String FirstAiredMs = "FirstAiredMs";
-        public static final String GuestStars = "GuestStars";
-        public static final String Overview = "Overview";
-        public static final String Rating = "Rating";
-        public static final String RatingCount = "RatingCount";
-        public static final String SeasonNumber = "SeasonNumber";
-        public static final String AirsAfterSeason = "AirsAfterSeason";
-        public static final String AirsBeforeSeason = "AirsBeforeSeason";
-        public static final String AirsBeforeEpisode = "AirsBeforeEpisode";
-        public static final String EpisodeImage = "EpisodeImage";
-        public static final String LastUpdated = "LastUpdated";
-        public static final String TvdbSeriesId = "TvdbSeriesId";
-        public static final String TvdbSeasonId = "TvdbSeasonId";
-        public static final String TvdbEpisodeId = "TvdbEpisodeId";
-        public static final String Collected = "Collected";
-        public static final String Watched = "Watched";
-        public static final String Favorite = "Favorite";
-    }
-
-    public Episode() {
-
-    }
-
+    private static final String TAG = Episode.class.getName();
     private int _id;
     private Integer mSeriesId;
     private Integer mSeasonId;
@@ -66,7 +36,11 @@ public class Episode extends TransactionObject implements IDataModelObject, Seri
     private Integer mCollected = 0;
     private Integer mWatched = 0;
     private Integer mFavorite = 0;
+    //Custom Columns
+    private String mFirstAired;
+    public Episode() {
 
+    }
 
     public int getID() {
         return _id;
@@ -84,12 +58,12 @@ public class Episode extends TransactionObject implements IDataModelObject, Seri
         this.mSeriesId = SeriesId;
     }
 
-    private void setSeasonId(Integer SeasonId) {
-        this.mSeasonId = SeasonId;
-    }
-
     public Integer getSeasonId() {
         return mSeasonId;
+    }
+
+    private void setSeasonId(Integer SeasonId) {
+        this.mSeasonId = SeasonId;
     }
 
     public String getEpisodeName() {
@@ -354,15 +328,36 @@ public class Episode extends TransactionObject implements IDataModelObject, Seri
         }
     }
 
-
-    //Custom Columns
-    private String mFirstAired;
-
     public String getFirstAired() {
         return mFirstAired;
     }
 
     public void setFirstAired(String firstAired) {
         this.mFirstAired = firstAired;
+    }
+
+    public static class COLUMNS {
+        public static final String _ID = "_id";
+        public static final String SeriesId = "SeriesId";
+        public static final String EpisodeName = "EpisodeName";
+        public static final String EpisodeNumber = "EpisodeNumber";
+        public static final String FirstAiredMs = "FirstAiredMs";
+        public static final String GuestStars = "GuestStars";
+        public static final String Overview = "Overview";
+        public static final String Rating = "Rating";
+        public static final String RatingCount = "RatingCount";
+        public static final String SeasonNumber = "SeasonNumber";
+        public static final String AirsAfterSeason = "AirsAfterSeason";
+        public static final String AirsBeforeSeason = "AirsBeforeSeason";
+        public static final String AirsBeforeEpisode = "AirsBeforeEpisode";
+        public static final String EpisodeImage = "EpisodeImage";
+        public static final String LastUpdated = "LastUpdated";
+        public static final String TvdbSeriesId = "TvdbSeriesId";
+        public static final String TvdbSeasonId = "TvdbSeasonId";
+        public static final String TvdbEpisodeId = "TvdbEpisodeId";
+        public static final String Collected = "Collected";
+        public static final String Watched = "Watched";
+        public static final String Favorite = "Favorite";
+        static final String SeasonId = "SeasonId";
     }
 }

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -43,6 +45,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -70,7 +75,6 @@ import com.grieex.ui.SearchMovieActivity;
 import com.grieex.ui.dialogs.AddToListDialog;
 import com.grieex.ui.dialogs.FilterDialog;
 import com.grieex.widget.SimpleDividerItemDecoration;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
@@ -80,13 +84,14 @@ import java.util.Locale;
 public class MovieListFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = MovieListFragment.class.getName();
     private static final String ARG_Filter = "ARG_Filter";
-    private static float sideIndexX;
-    private static float sideIndexY;
     private static final int iRecordShow = 100;
     private static final int iFirstLoadRowCount = 20;
     private static final int iAlphabetLimit = 50;
-    private ArrayList<Alphabet> FirstCharacters;
+    private static float sideIndexX;
+    private static float sideIndexY;
     private final ArrayList<Alphabet> FirstCharactersTemp = new ArrayList<>();
+    private final Locale locale = new Locale("tr_TR");
+    private ArrayList<Alphabet> FirstCharacters;
     private int sideIndexHeight;
     private Activity activity;
     private boolean isProInstalled = false;
@@ -98,7 +103,6 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
     private String mFilterStatic = "";
     private boolean IsSearchViewVisible = false;
     private String mOrder = "";
-    private final Locale locale = new Locale("tr_TR");
     private TextView tvNoRecord;
     private TextView tvSelectedIndex;
     private DatabaseHelper dbHelper;
@@ -721,13 +725,26 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
                                     builder.text("http://www.imdb.com/title/" + movie.getImdbNumber());
 
                                     if (!TextUtils.isEmpty(m.getPoster())) {
-                                        File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                        if (myImageFile != null) {
-                                            Uri myImageUri = Uri.fromFile(myImageFile);
-                                            builder.image(myImageUri);
-                                        }
+                                        Glide.with(MovieListFragment.this)
+                                                .asFile()
+                                                .load(m.getPoster())
+                                                .into(new CustomTarget<File>() {
+                                                    @Override
+                                                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                        Uri myImageUri = Uri.fromFile(resource);
+                                                        builder.image(myImageUri);
+                                                        builder.show();
+                                                    }
+
+                                                    @Override
+                                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                    }
+                                                });
+
+                                    } else {
+                                        builder.show();
                                     }
-                                    builder.show();
                                     break;
                                 }
                                 case 4: {
@@ -735,13 +752,26 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
                                     builder.text("https://www.themoviedb.org/movie/" + movie.getTmdbNumber());
 
                                     if (!TextUtils.isEmpty(m.getPoster())) {
-                                        File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                        if (myImageFile != null) {
-                                            Uri myImageUri = Uri.fromFile(myImageFile);
-                                            builder.image(myImageUri);
-                                        }
+                                        Glide.with(MovieListFragment.this)
+                                                .asFile()
+                                                .load(m.getPoster())
+                                                .into(new CustomTarget<File>() {
+                                                    @Override
+                                                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                        Uri myImageUri = Uri.fromFile(resource);
+                                                        builder.image(myImageUri);
+                                                        builder.show();
+                                                    }
+
+                                                    @Override
+                                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                    }
+                                                });
+
+                                    } else {
+                                        builder.show();
                                     }
-                                    builder.show();
                                     break;
                                 }
                             }
@@ -906,7 +936,7 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
                 }
 
                 if (mAdapter == null) {
-                    mAdapter = new MovieListAdapter(res);
+                    mAdapter = new MovieListAdapter(res, activity);
                     mAdapter.setViewType(iListViewType);
                     mRecyclerView.setAdapter(mAdapter);
 

@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.grieex.R;
 import com.grieex.adapter.CastListAdapter;
 import com.grieex.core.Tmdb;
+import com.grieex.core.listener.OnTmdbEventListener;
 import com.grieex.helper.Connectivity;
 import com.grieex.helper.Constants;
 import com.grieex.helper.DatabaseHelper;
 import com.grieex.helper.NLog;
 import com.grieex.helper.SampleRecycler;
-import com.grieex.core.listener.OnTmdbEventListener;
 import com.grieex.model.tables.Cast;
 import com.grieex.model.tables.Movie;
 import com.grieex.ui.FullScreenImageActivity;
@@ -36,16 +36,16 @@ public class MovieDetailCastFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
 
+    public MovieDetailCastFragment() {
+        // Required empty public constructor
+    }
+
     public static MovieDetailCastFragment newInstance(Movie movie) {
         MovieDetailCastFragment fragment = new MovieDetailCastFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_Movie, movie);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public MovieDetailCastFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MovieDetailCastFragment extends Fragment {
 
             if (mMovie.getCast() != null && mMovie.getCast().size() > 0) {
                 ArrayList<Cast> casts = mMovie.getCast();
-                mAdapter = new CastListAdapter(casts);
+                mAdapter = new CastListAdapter(casts, this);
                 mRecyclerView.setAdapter(mAdapter);
 
                 mAdapter.setOnItemClickListener(new CastListAdapter.OnItemClickListener() {

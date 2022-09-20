@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llRow"
     android:layout_width="match_parent"
@@ -10,8 +11,8 @@
         android:id="@+id/llContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:minHeight="@dimen/slide_menu_min_height"
         android:orientation="horizontal">
 
@@ -21,15 +22,15 @@
             android:layout_height="@dimen/slide_menu_image_width_height"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:tint="?attr/colorDrawerText"
+            app:tint="?attr/colorDrawerText"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/row_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textColor="?attr/colorDrawerText"
@@ -57,10 +58,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/slide_menu_separator_margin_top"
         android:orientation="vertical"
-        android:paddingBottom="5dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="5dp"
         android:visibility="gone">
 
         <LinearLayout
@@ -72,7 +73,7 @@
                 android:id="@+id/separator_icon"
                 android:layout_width="@dimen/slide_menu_image_width_height"
                 android:layout_height="@dimen/slide_menu_image_width_height"
-                android:tint="?attr/colorDrawerText"
+                app:tint="?attr/colorDrawerText"
                 tools:ignore="ContentDescription" />
 
             <TextView

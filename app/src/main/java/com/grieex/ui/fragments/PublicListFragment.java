@@ -22,6 +22,7 @@ import com.grieex.adapter.PublicListAdapter;
 import com.grieex.core.ImportQueues;
 import com.grieex.core.SearchResult;
 import com.grieex.core.Tmdb;
+import com.grieex.core.listener.OnTmdbEventListener;
 import com.grieex.helper.BroadcastNotifier;
 import com.grieex.helper.Connectivity;
 import com.grieex.helper.Constants;
@@ -34,7 +35,6 @@ import com.grieex.helper.NLog;
 import com.grieex.helper.Prefs;
 import com.grieex.helper.SampleRecycler;
 import com.grieex.helper.Utils;
-import com.grieex.core.listener.OnTmdbEventListener;
 import com.grieex.model.CustomMenuItem;
 import com.grieex.model.Page;
 import com.grieex.model.tables.Movie;
@@ -49,10 +49,16 @@ import java.util.ArrayList;
 
 public class PublicListFragment extends Fragment {
     private static final String TAG = PublicListFragment.class.getName();
-
-    private Activity activity;
-
     private static final String ARG_PageTypes = "ARG_PageTypes";
+    private Activity activity;
+    private PublicListAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ProgressBar progressBarMovieList;
+    private Page.PageTypes mPageType;
+    private Tmdb tmdb;
+    private int iListViewType = 0;
+    private String locale = "en";
 
     public static PublicListFragment newInstance() {
         return new PublicListFragment();
@@ -65,17 +71,6 @@ public class PublicListFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private PublicListAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    private ProgressBar progressBarMovieList;
-    private Page.PageTypes mPageType;
-    private Tmdb tmdb;
-
-    private int iListViewType = 0;
-    private String locale = "en";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,7 +98,7 @@ public class PublicListFragment extends Fragment {
                 mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(activity, R.drawable.divider2));
                 mLayoutManager = new LinearLayoutManager(activity);
             } else {
-               mLayoutManager = new GridLayoutManager(activity, getResources().getInteger(R.integer.recylerviewColumnCount));
+                mLayoutManager = new GridLayoutManager(activity, getResources().getInteger(R.integer.recylerviewColumnCount));
             }
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(new SampleRecycler());
@@ -139,7 +134,7 @@ public class PublicListFragment extends Fragment {
                 public void onCompleted(Object m) {
 
                     if (mAdapter == null) {
-                        mAdapter = new PublicListAdapter((ArrayList<Movie>) m);
+                        mAdapter = new PublicListAdapter((ArrayList<Movie>) m, activity);
                         mAdapter.setViewType(iListViewType);
                         mRecyclerView.setAdapter(mAdapter);
 
@@ -282,8 +277,6 @@ public class PublicListFragment extends Fragment {
         }
         return v;
     }
-
-
 
 
     private void showMovie(Movie m) {

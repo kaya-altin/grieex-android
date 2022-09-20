@@ -208,13 +208,29 @@ public class TraktTv {
 
     public void ParseRatingAsync(final String TraktId, final String locale) {
         try {
-            TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
-            Response<Show> response = trakt.shows().summary(TraktId, Extended.FULL).execute();
 
-            if (response.isSuccessful()) {
-                if (mListener != null)
-                    mListener.onCompleted(parseSeries(response.body()));
-            }
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            executor.execute(() -> {
+                try {
+                    TraktV2 trakt = new TraktV2(GrieeXSettings.TraktApiKey);
+                    Response<Show> response = trakt.shows().summary(TraktId, Extended.FULL).execute();
+
+                    Series series = parseSeries(response.body());
+                    handler.post(() -> {
+                        if (response.isSuccessful()) {
+                            if (mListener != null)
+                                mListener.onCompleted(series);
+                        }
+                    });
+                } catch (Exception e) {
+                    handler.post(() -> {
+                        if (mListener != null)
+                            mListener.onCompleted(null);
+                    });
+                }
+            });
         } catch (Exception e) {
             NLog.e(TAG, e);
             if (mListener != null)
@@ -613,11 +629,11 @@ public class TraktTv {
 
     private Season getSeason(com.uwetrottmann.trakt5.entities.Season season) {
         Season s = new Season();
-        // Durmuş SeriesId set edilecek.
+        //Kaya SeriesId set edilecek.
         //s.setSeriesId();
         s.setOverview(season.overview);
         s.setNumber(season.number);
-        //mihmih
+
 //        if (season.images != null && season.images.poster != null)
 //            s.setPoster(season.images.poster.medium);
         s.setAiredEpisodes(season.aired_episodes);
@@ -674,7 +690,7 @@ public class TraktTv {
                 e.setEpisodeNumber(episode.number);
                 e.setFirstAired(DateUtils.ConvertDateToString(episode.firstAired));
                 e.setFirstAiredMs(DateUtils.getMillisecondsLocale(episode.firstAired, timeZone, time));
-                //Durmuş
+                //Kaya
                 //e.setGuestStars(episode.guestStars);
                 e.setOverview(episode.overview);
                 e.setRating(Utils.parseString(episode.rating));

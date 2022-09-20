@@ -11,133 +11,131 @@ import com.grieex.interfaces.IDataModelObject;
 import java.io.Serializable;
 
 public class Lists implements IDataModelObject, Serializable {
-	private static final String TAG = Lists.class.getName();
-	public static final String TABLE_NAME = "Lists";
+    public static final String TABLE_NAME = "Lists";
+    private static final String TAG = Lists.class.getName();
+    private int _id;
+    private String mListName;
+    private String mUpdateDate;
+    private int mListType;
+    public Lists() {
 
-	public class COLUMNS {
-		public static final String _ID = "_id";
-		static final String ListName = "ListName";
-		static final String UpdateDate = "UpdateDate";
-		static final String ListType = "ListType";
-	}
+    }
 
-	public Lists() {
+    public int getID() {
+        return _id;
+    }
 
-	}
+    public void setID(int _id) {
+        this._id = _id;
+    }
 
-	private int _id;
-	private String mListName;
-	private String mUpdateDate;
-	private int mListType;
+    public String getListName() {
+        return mListName;
+    }
 
-	public int getID() {
-		return _id;
-	}
+    public void setListName(String ListName) {
+        this.mListName = ListName;
+    }
 
-	public void setID(int _id) {
-		this._id = _id;
-	}
+    public String getUpdateDate() {
+        return mUpdateDate;
+    }
 
-	public void setListName(String ListName) {
-		this.mListName = ListName;
-	}
+    public void setUpdateDate(String UpdateDate) {
+        this.mUpdateDate = UpdateDate;
+    }
 
-	public String getListName() {
-		return mListName;
-	}
+    public int getListType() {
+        return mListType;
+    }
 
-	public void setUpdateDate(String UpdateDate) {
-		this.mUpdateDate = UpdateDate;
-	}
+    public void setListType(int ListType) {
+        this.mListType = ListType;
+    }
 
-	public String getUpdateDate() {
-		return mUpdateDate;
-	}
+    public ContentValues GetContentValuesForDB() {
+        ContentValues values = new ContentValues();
+        values.put(COLUMNS.ListName, mListName);
+        values.put(COLUMNS.UpdateDate, mUpdateDate);
+        values.put(COLUMNS.ListType, mListType);
 
-	public void setListType(int ListType) {
-		this.mListType = ListType;
-	}
+        return values;
+    }
 
-	public int getListType() {
-		return mListType;
-	}
+    public String GetTableName() {
+        // TODO Auto-generated method stub
+        return TABLE_NAME;
+    }
 
-	public ContentValues GetContentValuesForDB() {
-		ContentValues values = new ContentValues();
-		values.put(COLUMNS.ListName, mListName);
-		values.put(COLUMNS.UpdateDate, mUpdateDate);
-		values.put(COLUMNS.ListType, mListType);
+    public String[] GetColumnMapping() {
+        return new String[]{COLUMNS._ID, COLUMNS.ListName, COLUMNS.UpdateDate, COLUMNS.ListType};
+    }
 
-		return values;
-	}
+    @Override
+    public void LoadWithCursorRow(Cursor cursor) {
+        try {
+            if (cursor != null) {
+                setID(cursor.getInt(cursor.getColumnIndex(COLUMNS._ID)));
+                setListName(cursor.getString(cursor.getColumnIndex(COLUMNS.ListName)));
+                setUpdateDate(cursor.getString(cursor.getColumnIndex(COLUMNS.UpdateDate)));
+                setListType(cursor.getInt(cursor.getColumnIndex(COLUMNS.ListType)));
+            }
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+        }
+    }
 
-	public String GetTableName() {
-		// TODO Auto-generated method stub
-		return TABLE_NAME;
-	}
+    @Override
+    public void LoadWithWhereColumn(Context ctx, String WhereColumn, String id) {
+        Cursor cursor = null;
+        try {
+            DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
+            cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + WhereColumn + "=" + id);
 
-	public String[] GetColumnMapping() {
-		return new String[] { COLUMNS._ID, COLUMNS.ListName, COLUMNS.UpdateDate, COLUMNS.ListType };
-	}
+            if (cursor.moveToFirst()) {
+                LoadWithCursorRow(cursor);
+            }
 
-	@Override
-	public void LoadWithCursorRow(Cursor cursor) {
-		try {
-			if (cursor != null) {
-				setID(cursor.getInt(cursor.getColumnIndex(COLUMNS._ID)));
-				setListName(cursor.getString(cursor.getColumnIndex(COLUMNS.ListName)));
-				setUpdateDate(cursor.getString(cursor.getColumnIndex(COLUMNS.UpdateDate)));
-				setListType(cursor.getInt(cursor.getColumnIndex(COLUMNS.ListType)));
-			}
-		} catch (Exception e) {
-			NLog.e(TAG, e);
-		}
-	}
+        } catch (Exception e) {
+            NLog.e(TAG, e);
 
-	@Override
-	public void LoadWithWhereColumn(Context ctx, String WhereColumn, String id) {
-		Cursor cursor = null;
-		try {
-			DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
-			cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + WhereColumn + "=" + id);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 
-			if (cursor.moveToFirst()) {
-				LoadWithCursorRow(cursor);
-			}
+    @Override
+    public void LoadWithWhere(Context ctx, String Where) {
+        Cursor cursor = null;
+        try {
+            DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
+            cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + Where);
 
-		} catch (Exception e) {
-			NLog.e(TAG, e);
+            if (cursor.moveToFirst()) {
+                LoadWithCursorRow(cursor);
+            }
 
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-		}
-	}
+        } catch (Exception e) {
+            NLog.e(TAG, e);
 
-	@Override
-	public void LoadWithWhere(Context ctx, String Where) {
-		Cursor cursor = null;
-		try {
-			DatabaseHelper dbHandler = DatabaseHelper.getInstance(ctx.getApplicationContext());
-			cursor = dbHandler.GetCursor("Select * From " + TABLE_NAME + " Where " + Where);
+        } finally {
+            if (cursor != null) {
 
-			if (cursor.moveToFirst()) {
-				LoadWithCursorRow(cursor);
-			}
+                cursor.close();
+            }
+        }
+    }
 
-		} catch (Exception e) {
-			NLog.e(TAG, e);
+    public String toString() {
+        return mListName;
+    }
 
-		} finally {
-			if (cursor != null) {
-
-				cursor.close();
-			}
-		}
-	}
-
-	public String toString() {
-		return mListName;
-	}
+    public static class COLUMNS {
+        public static final String _ID = "_id";
+        static final String ListName = "ListName";
+        static final String UpdateDate = "UpdateDate";
+        static final String ListType = "ListType";
+    }
 }

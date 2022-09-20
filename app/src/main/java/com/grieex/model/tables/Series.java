@@ -13,47 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Series implements IDataModelObject, Serializable {
-    private static final String TAG = Series.class.getName();
     public static final String TABLE_NAME = "Series";
-
-    public class COLUMNS {
-        public static final String _ID = "_id";
-        public static final String SeriesName = "SeriesName";
-        static final String Overview = "Overview";
-        static final String FirstAired = "FirstAired";
-        public static final String Network = "Network";
-        public static final String ImdbId = "ImdbId";
-        static final String TmdbId = "TmdbId";
-        static final String TvdbId = "TvdbId";
-        public static final String TraktId = "TraktId";
-        static final String ImdbUserRating = "ImdbUserRating";
-        static final String ImdbVotes = "ImdbVotes";
-        static final String TmdbUserRating = "TmdbUserRating";
-        static final String TmdbVotes = "TmdbVotes";
-        static final String Language = "Language";
-        static final String Country = "Country";
-        static final String Genres = "Genres";
-        static final String Runtime = "Runtime";
-        static final String Certification = "Certification";
-        public static final String AirDay = "AirDay";
-        public static final String AirTime = "AirTime";
-        static final String AirYear = "AirYear";
-        static final String Timezone = "Timezone";
-        public static final String Status = "Status";
-        static final String Rating = "Rating";
-        static final String Votes = "Votes";
-        static final String SeriesLastUpdate = "SeriesLastUpdate";
-        public static final String Poster = "Poster";
-        static final String Fanart = "Fanart";
-        static final String Homepage = "Homepage";
-        static final String ContentProvider = "ContentProvider";
-        static final String InsertDate = "InsertDate";
-        static final String UpdateDate = "UpdateDate";
-    }
-
-    public Series() {
-    }
-
+    private static final String TAG = Series.class.getName();
     private int _id;
     private String mSeriesName;
     private String mOverview;
@@ -86,7 +47,23 @@ public class Series implements IDataModelObject, Serializable {
     private int mContentProvider;
     private String mInsertDate;
     private String mUpdateDate;
+    // **************** Custom Fields **************** //
+    private boolean mIsExisting = false;
+    private String mFirstCharacter;
+    private ArrayList<Backdrop> mBackdrops;
+    private ArrayList<Cast> mCast;
+    private ArrayList<Season> mSeasons;
+    private ArrayList<Episode> mEpisodes;
+    private String mDateInfo;
+    private int mEpisodeCount;
+    private int mWatchedCount;
+    private String mEpisodeName;
+    private int mCollectedCount;
+    private ArrayList<Comment> mComments;
+    private boolean mIsSelected = false;
 
+    public Series() {
+    }
 
     public int getID() {
         return _id;
@@ -304,12 +281,12 @@ public class Series implements IDataModelObject, Serializable {
         this.mPoster = mPoster;
     }
 
-    public void setFanart(String mFanart) {
-        this.mFanart = mFanart;
-    }
-
     public String getFanart() {
         return mFanart;
+    }
+
+    public void setFanart(String mFanart) {
+        this.mFanart = mFanart;
     }
 
     public String getHomepage() {
@@ -343,7 +320,6 @@ public class Series implements IDataModelObject, Serializable {
     public void setUpdateDate(String mUpdateDate) {
         this.mUpdateDate = mUpdateDate;
     }
-
 
     public ContentValues GetContentValuesForDB() {
         ContentValues values = new ContentValues();
@@ -477,19 +453,13 @@ public class Series implements IDataModelObject, Serializable {
         }
     }
 
-
-    // **************** Custom Fields **************** //
-    private boolean mIsExisting = false;
-
-    public void setIsExisting(boolean isExisting) {
-        mIsExisting = isExisting;
-    }
-
     public boolean getIsExisting() {
         return mIsExisting;
     }
 
-    private String mFirstCharacter;
+    public void setIsExisting(boolean isExisting) {
+        mIsExisting = isExisting;
+    }
 
     public String getFirstCharacter() {
         return mFirstCharacter;
@@ -499,9 +469,6 @@ public class Series implements IDataModelObject, Serializable {
         this.mFirstCharacter = FirstCharacter;
     }
 
-
-    private ArrayList<Backdrop> mBackdrops;
-
     public ArrayList<Backdrop> getBackdrops() {
         return mBackdrops;
     }
@@ -509,9 +476,6 @@ public class Series implements IDataModelObject, Serializable {
     public void setBackdrops(ArrayList<Backdrop> Backdrops) {
         this.mBackdrops = Backdrops;
     }
-
-
-    private ArrayList<Cast> mCast;
 
     public ArrayList<Cast> getCast() {
         return mCast;
@@ -521,9 +485,6 @@ public class Series implements IDataModelObject, Serializable {
         this.mCast = Cast;
     }
 
-
-    private ArrayList<Season> mSeasons;
-
     public ArrayList<Season> getSeasons() {
         return mSeasons;
     }
@@ -531,9 +492,6 @@ public class Series implements IDataModelObject, Serializable {
     public void setSeasons(ArrayList<Season> _Seasons) {
         this.mSeasons = _Seasons;
     }
-
-
-    private ArrayList<Episode> mEpisodes;
 
     public ArrayList<Episode> getEpisodes() {
         return mEpisodes;
@@ -543,8 +501,6 @@ public class Series implements IDataModelObject, Serializable {
         this.mEpisodes = _Episodes;
     }
 
-    private String mDateInfo;
-
     public String getDateInfo() {
         return mDateInfo;
     }
@@ -552,8 +508,6 @@ public class Series implements IDataModelObject, Serializable {
     public void setDateInfo(String dateInfo) {
         this.mDateInfo = dateInfo;
     }
-
-    private int mEpisodeCount;
 
     public int getEpisodeCount() {
         return mEpisodeCount;
@@ -563,8 +517,6 @@ public class Series implements IDataModelObject, Serializable {
         this.mEpisodeCount = episodeCount;
     }
 
-    private int mWatchedCount;
-
     public int getWatchedCount() {
         return mWatchedCount;
     }
@@ -572,8 +524,6 @@ public class Series implements IDataModelObject, Serializable {
     public void setWatchedCount(int watchedCount) {
         this.mWatchedCount = watchedCount;
     }
-
-    private String mEpisodeName;
 
     public String getEpisodeName() {
         return mEpisodeName;
@@ -583,8 +533,6 @@ public class Series implements IDataModelObject, Serializable {
         this.mEpisodeName = episodeName;
     }
 
-    private int mCollectedCount;
-
     public int getCollectedCount() {
         return mCollectedCount;
     }
@@ -592,10 +540,6 @@ public class Series implements IDataModelObject, Serializable {
     public void setCollectedCount(int collectedCount) {
         this.mCollectedCount = collectedCount;
     }
-
-
-
-    private ArrayList<Comment> mComments;
 
     public ArrayList<Comment> getComments() {
         return mComments;
@@ -612,14 +556,46 @@ public class Series implements IDataModelObject, Serializable {
             this.mComments.addAll(Comments);
     }
 
-
-    private boolean mIsSelected = false;
+    public boolean getIsSelected() {
+        return mIsSelected;
+    }
 
     public void setIsSelected(boolean isSelected) {
         mIsSelected = isSelected;
     }
 
-    public boolean getIsSelected() {
-        return mIsSelected;
+    public static class COLUMNS {
+        public static final String _ID = "_id";
+        public static final String SeriesName = "SeriesName";
+        public static final String Network = "Network";
+        public static final String ImdbId = "ImdbId";
+        public static final String TraktId = "TraktId";
+        public static final String AirDay = "AirDay";
+        public static final String AirTime = "AirTime";
+        public static final String Status = "Status";
+        public static final String Poster = "Poster";
+        static final String Overview = "Overview";
+        static final String FirstAired = "FirstAired";
+        static final String TmdbId = "TmdbId";
+        static final String TvdbId = "TvdbId";
+        static final String ImdbUserRating = "ImdbUserRating";
+        static final String ImdbVotes = "ImdbVotes";
+        static final String TmdbUserRating = "TmdbUserRating";
+        static final String TmdbVotes = "TmdbVotes";
+        static final String Language = "Language";
+        static final String Country = "Country";
+        static final String Genres = "Genres";
+        static final String Runtime = "Runtime";
+        static final String Certification = "Certification";
+        static final String AirYear = "AirYear";
+        static final String Timezone = "Timezone";
+        static final String Rating = "Rating";
+        static final String Votes = "Votes";
+        static final String SeriesLastUpdate = "SeriesLastUpdate";
+        static final String Fanart = "Fanart";
+        static final String Homepage = "Homepage";
+        static final String ContentProvider = "ContentProvider";
+        static final String InsertDate = "InsertDate";
+        static final String UpdateDate = "UpdateDate";
     }
 }

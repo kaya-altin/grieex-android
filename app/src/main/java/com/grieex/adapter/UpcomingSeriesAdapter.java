@@ -1,71 +1,166 @@
 package com.grieex.adapter;
 
-import android.graphics.Bitmap;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.grieex.R;
 import com.grieex.model.tables.Series;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 
 public class UpcomingSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final ArrayList<Series> mData;
-
+    private final Activity activity;
     private int mViewType = 0;
+    private OnItemClickListener itemClickListener;
+    private OnItemLongClickListener itemLongClickListener;
+    private OnImageViewClickListener itemImageViewClickListener;
+
+    public UpcomingSeriesAdapter(ArrayList<Series> myDataset, Activity _activity) {
+        activity = _activity;
+        mData = myDataset;
+    }
 
     public void setViewType(int viewType) {
         mViewType = viewType;
-    }
-
-
-    private final DisplayImageOptions options;
-
-    private OnItemClickListener itemClickListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View itemView, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.itemClickListener = listener;
     }
 
-    private OnItemLongClickListener itemLongClickListener;
-
-    interface OnItemLongClickListener {
-        void onItemLongClick(View itemView, int position);
-    }
-
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.itemLongClickListener = listener;
-    }
-
-    private OnImageViewClickListener itemImageViewClickListener;
-
-    public interface OnImageViewClickListener {
-        void onImageViewClick(View itemView, int position);
     }
 
     public void setOnImageViewClickListener(OnImageViewClickListener listener) {
         this.itemImageViewClickListener = listener;
     }
 
-    public UpcomingSeriesAdapter(ArrayList<Series> myDataset) {
-        mData = myDataset;
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).build();
+    public void addAll(ArrayList<Series> items, int positionFrom, int positionTo) {
+        mData.addAll(items);
+
+        for (int i = positionFrom; i <= positionTo; i++) {
+            notifyItemInserted(i);
+        }
+    }
+
+    public void addAllEnd(ArrayList<Series> items) {
+        int positionFrom = mData.size();
+        int positionTo = mData.size() + items.size();
+
+        mData.addAll(items);
+
+        for (int i = positionFrom; i <= positionTo; i++) {
+            notifyItemInserted(i);
+        }
+    }
+
+    public void add(int position, Series item) {
+        mData.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void remove(Series item) {
+        int position = mData.indexOf(item);
+        mData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void add(Series item) {
+        mData.add(item);
+        sort();
+        int index = mData.indexOf(item);
+        notifyItemInserted(index);
+    }
+
+    private void sort() {
+        mData.sort(new SeriesComparator());
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if (mViewType == 0) {
+            View v1 = inflater.inflate(R.layout.series_upcoming_item, parent, false);
+            return new ViewHolder1(v1);
+        } else {
+            View v2 = inflater.inflate(R.layout.movielist_gallery_item, parent, false);
+            return new ViewHolder2(v2);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Series s = mData.get(position);
+
+        if (mViewType == 0) {
+            ViewHolder1 h = (ViewHolder1) holder;
+            h.tvSeriesName.setText(s.getSeriesName());
+            h.tvEpisodeName.setText(s.getEpisodeName());
+            h.tvDateInfo.setText(s.getDateInfo());
+
+            Glide.with(activity)
+                    .load(s.getPoster())
+                    .placeholder(R.drawable.transparent_back)
+                    .into(h.imageView);
+
+        } else {
+            ViewHolder2 h = (ViewHolder2) holder;
+            h.tvOriginalName.setText(s.getSeriesName());
+
+            Glide.with(activity)
+                    .load(s.getPoster())
+                    .placeholder(R.drawable.transparent_back)
+                    .into(h.imageView);
+
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
+
+    public Series getItem(int position) {
+        return mData.get(position);
+    }
+
+    public long getItemId(int position) {
+        return mData.get(position).getID();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    interface OnItemLongClickListener {
+        void onItemLongClick(View itemView, int position);
+    }
+
+    public interface OnImageViewClickListener {
+        void onImageViewClick(View itemView, int position);
+    }
+
+    private static class SeriesComparator implements Comparator<Series> {
+        public int compare(Series o1, Series o2) {
+
+            Collator trCollator = Collator.getInstance(new Locale("tr", "TR"));
+
+            return trCollator.compare(o1.getSeriesName(), o2.getSeriesName());
+        }
     }
 
     class ViewHolder1 extends RecyclerView.ViewHolder {
@@ -135,101 +230,5 @@ public class UpcomingSeriesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
             });
         }
-    }
-
-    public void addAll(ArrayList<Series> items, int positionFrom, int positionTo) {
-        mData.addAll(items);
-
-        for (int i = positionFrom; i <= positionTo; i++) {
-            notifyItemInserted(i);
-        }
-    }
-
-    public void addAllEnd(ArrayList<Series> items) {
-        int positionFrom = mData.size();
-        int positionTo = mData.size()+items.size();
-
-        mData.addAll(items);
-
-        for (int i = positionFrom; i <= positionTo; i++) {
-            notifyItemInserted(i);
-        }
-    }
-
-    public void add(int position, Series item) {
-        mData.add(position, item);
-        notifyItemInserted(position);
-    }
-
-    public void remove(Series item) {
-        int position = mData.indexOf(item);
-        mData.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void add(Series item) {
-        mData.add(item);
-        sort();
-        int index = mData.indexOf(item);
-        notifyItemInserted(index);
-    }
-
-    private void sort() {
-        Collections.sort(mData, new SeriesComparator());
-    }
-
-    private class SeriesComparator implements Comparator<Series> {
-        public int compare(Series o1, Series o2) {
-
-            Collator trCollator = Collator.getInstance(new Locale("tr", "TR"));
-
-            return trCollator.compare(o1.getSeriesName(), o2.getSeriesName());
-        }
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (mViewType == 0) {
-            View v1 = inflater.inflate(R.layout.series_upcoming_item, parent, false);
-            return new ViewHolder1(v1);
-        } else {
-            View v2 = inflater.inflate(R.layout.movielist_gallery_item, parent, false);
-            return new ViewHolder2(v2);
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Series s = mData.get(position);
-
-        if (mViewType == 0) {
-            ViewHolder1 h = (ViewHolder1) holder;
-            h.tvSeriesName.setText(s.getSeriesName());
-            h.tvEpisodeName.setText(s.getEpisodeName());
-            h.tvDateInfo.setText(s.getDateInfo());
-
-            ImageLoader.getInstance().displayImage(s.getPoster(), h.imageView, options);
-        } else {
-            ViewHolder2 h = (ViewHolder2) holder;
-            h.tvOriginalName.setText(s.getSeriesName());
-
-            ImageLoader.getInstance().displayImage(s.getPoster(), h.imageView, options);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mData.size();
-    }
-
-
-    public Series getItem(int position) {
-        return mData.get(position);
-    }
-
-    public long getItemId(int position) {
-        return mData.get(position).getID();
     }
 }

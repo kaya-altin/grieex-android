@@ -184,7 +184,7 @@ public class SearchSeriesActivity extends BaseActivity {
         }
 
         if (mAdapter == null) {
-            mAdapter = new SearchSeriesAdapter(myDataset);
+            mAdapter = new SearchSeriesAdapter(myDataset, SearchSeriesActivity.this);
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.setOnItemClickListener(new SearchSeriesAdapter.OnItemClickListener() {
                 @Override

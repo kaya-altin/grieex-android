@@ -1,7 +1,7 @@
 package com.grieex.ui;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,19 +10,20 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.grieex.R;
 import com.grieex.helper.Constants;
 import com.grieex.helper.NLog;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 
 public class FullScreenImageActivity extends Activity {
     private static final String TAG = FullScreenImageActivity.class.getName();
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,83 +33,70 @@ public class FullScreenImageActivity extends Activity {
 
         setContentView(R.layout.actvity_full_screen_image);
         try {
-            imageLoader = ImageLoader.getInstance();
-            options = new DisplayImageOptions.Builder().cacheInMemory(false).cacheOnDisk(false).considerExifParams(true).build();
-
-            final String ImageLink = this.getIntent().getStringExtra(Constants.ImageLink);
+            final String imageLink = this.getIntent().getStringExtra(Constants.ImageLink);
 
             final ProgressBar progressBar1 = findViewById(R.id.progressBar1);
 
-            if (TextUtils.isEmpty(ImageLink)) {
+            if (TextUtils.isEmpty(imageLink)) {
                 progressBar1.setVisibility(View.GONE);
                 return;
             }
+
             final ImageView ivFullImage = findViewById(R.id.ivFullImage);
 
-
-            imageLoader.displayImage(ImageLink, ivFullImage, options, new ImageLoadingListener() {
-                @Override
-                public void onLoadingStarted(String imageUri, View view) {
-                    progressBar1.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-                }
-
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    progressBar1.setVisibility(View.GONE);
-
-                    String ImageLinkBig = ImageLink;
-                    if (ImageLink.contains("._")) {
-                        int nEndPos = ImageLink.indexOf(".jpg", 0);
-                        ImageLinkBig = ImageLink.substring(0, nEndPos + 4);
-                        ImageLinkBig = ImageLinkBig.substring(0, ImageLink.lastIndexOf("._")) + ".jpg";
-                    }
-
-                    if (ImageLinkBig.contains("w185")) {
-                        ImageLinkBig = ImageLink.replace("w185", "w780");
-                    } else if (ImageLinkBig.contains("w342")) {
-                        ImageLinkBig = ImageLink.replace("w342", "w780");
-                    } else if (ImageLinkBig.contains("w500")) {
-                        ImageLinkBig = ImageLink.replace("w500", "w780");
-                    }
-//					if (ImageLinkBig.contains("w780")){
-//						ImageLinkBig = ImageLink.replace("w780","w500");
-//					}
+            progressBar1.setVisibility(View.VISIBLE);
+//            Glide.with(this)
+//                    .load(imageLink)
+//                    .listener(new RequestListener<Drawable>() {
+//                        @Override
+//                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            progressBar1.setVisibility(View.GONE);
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+////                            progressBar1.setVisibility(View.GONE);
+//                            return false;
+//                        }
+//                    })
+//                    .into(ivFullImage);
 
 
-                    imageLoader.displayImage(ImageLinkBig, ivFullImage, options, new ImageLoadingListener() {
+            String imageLinkBig = imageLink;
+            if (imageLink.contains("._")) {
+                int nEndPos = imageLink.indexOf(".jpg", 0);
+                imageLinkBig = imageLink.substring(0, nEndPos + 4);
+                imageLinkBig = imageLinkBig.substring(0, imageLink.lastIndexOf("._")) + ".jpg";
+            }
+
+            if (imageLinkBig.contains("w185")) {
+                imageLinkBig = imageLink.replace("w185", "w780");
+            } else if (imageLinkBig.contains("w342")) {
+                imageLinkBig = imageLink.replace("w342", "w780");
+            } else if (imageLinkBig.contains("w500")) {
+                imageLinkBig = imageLink.replace("w500", "w780");
+            }
+
+            Glide.with(this)
+                    .load(imageLinkBig)
+                    .thumbnail(
+                            Glide.with(this)
+                                    .load(imageLink))
+                    .listener(new RequestListener<Drawable>() {
                         @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                            progressBar1.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             progressBar1.setVisibility(View.GONE);
+                            return false;
                         }
 
                         @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             progressBar1.setVisibility(View.GONE);
+                            return false;
                         }
-
-                        @Override
-                        public void onLoadingCancelled(String imageUri, View view) {
-                            progressBar1.setVisibility(View.GONE);
-                        }
-                    });
-                }
-
-                @Override
-                public void onLoadingCancelled(String imageUri, View view) {
-
-                }
-            });
-
+                    })
+                    .into(ivFullImage);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }

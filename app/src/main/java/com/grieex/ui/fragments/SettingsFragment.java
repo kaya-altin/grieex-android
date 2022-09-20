@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.dropbox.core.android.Auth;
 import com.grieex.GrieeX;
 import com.grieex.R;
@@ -31,7 +34,9 @@ import com.grieex.ui.dialogs.BackupRestoreDialog;
 import com.grieex.ui.dialogs.BatchProcessingDialog;
 import com.grieex.ui.dialogs.DropboxDialog;
 import com.grieex.ui.dialogs.ThemeDialog;
-import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SettingsFragment extends Fragment {
     private static final String TAG = SettingsFragment.class.getName();
@@ -48,21 +53,21 @@ public class SettingsFragment extends Fragment {
     private int iSelectedNotificationTime = 0;
     private boolean ShowDropboxDialog = false;
 
-    public static SettingsFragment newInstance() {
-        return new SettingsFragment();
-    }
-
     public SettingsFragment() {
         // Required empty public constructor
+    }
+
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
     }
 
     @Override
     public void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-         if (GrieeXSettings.RELEASE_MODE) {
-             GrieeX.getInstance().trackScreenView(this.getClass().getName());
-         }
+        if (GrieeXSettings.RELEASE_MODE) {
+            GrieeX.getInstance().trackScreenView(this.getClass().getName());
+        }
     }
 
     @Override
@@ -102,7 +107,6 @@ public class SettingsFragment extends Fragment {
                 d.showDialog();
             }
         }
-
 
 
 //        if (Utils.isProInstalled(mContext)) {
@@ -219,8 +223,7 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
-            UilCachePath = ImageLoader.getInstance().getDiskCache().getDirectory().getAbsolutePath();
-
+            UilCachePath = Glide.getPhotoCacheDir(mContext).getAbsolutePath();
             tvClearCache = v.findViewById(R.id.tvClearCache);
             tvClearCache.setText(String.format(getActivity().getString(R.string.clear_cache), Utils.getFolderSize(UilCachePath)));
 
@@ -233,8 +236,23 @@ public class SettingsFragment extends Fragment {
                     builder.setMessage(R.string.clear_cache_alert);
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            ImageLoader.getInstance().clearDiskCache();
-                            tvClearCache.setText(String.format(getActivity().getString(R.string.clear_cache), Utils.getFolderSize(UilCachePath)));
+                            Glide.get(GrieeX.getInstance().getContext()).clearMemory();
+
+                            ExecutorService executor = Executors.newSingleThreadExecutor();
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            executor.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.get(GrieeX.getInstance().getContext()).clearDiskCache();
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            tvClearCache.setText(String.format(getActivity().getString(R.string.clear_cache), Utils.getFolderSize(UilCachePath)));
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
 
@@ -388,21 +406,8 @@ public class SettingsFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void DropboxInit() {
-        String accessToken =  Prefs.with(mContext).getString(Constants.Pref_Dropbox_Access_Token, "");
+        String accessToken = Prefs.with(mContext).getString(Constants.Pref_Dropbox_Access_Token, "");
         if (accessToken.isEmpty()) {
             accessToken = Auth.getOAuth2Token();
             if (accessToken != null) {
@@ -419,7 +424,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private boolean hasToken() {
-        String accessToken =  Prefs.with(mContext).getString(Constants.Pref_Dropbox_Access_Token, "");
+        String accessToken = Prefs.with(mContext).getString(Constants.Pref_Dropbox_Access_Token, "");
         return !accessToken.isEmpty();
     }
 

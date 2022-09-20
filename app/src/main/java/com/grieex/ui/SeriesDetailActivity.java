@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.facebook.CallbackManager;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -55,11 +59,6 @@ import com.grieex.ui.fragments.SeriesDetailCastFragment;
 import com.grieex.ui.fragments.SeriesDetailInfoFragment;
 import com.grieex.ui.fragments.SeriesDetailSeasonsFragment;
 import com.grieex.widget.AspectRatioImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
@@ -73,7 +72,6 @@ public class SeriesDetailActivity extends BaseActivity {
     private Series mSeries;
     private CustomProgressDialog progressDialog;
     private CallbackManager callbackManager;
-    private DisplayImageOptions options;
     private DatabaseHelper dbHelper;
     private boolean isExistDatabase = true;
     private CustomBroadcastReceiver mBroadcastReceiver;
@@ -108,7 +106,6 @@ public class SeriesDetailActivity extends BaseActivity {
             mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             dbHelper = DatabaseHelper.getInstance(this);
             poster = findViewById(R.id.poster);
-            options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).build();
 
             Bundle bundle = getIntent().getExtras();
             String SeriesID = bundle.getString(Constants.SeriesID);
@@ -155,31 +152,25 @@ public class SeriesDetailActivity extends BaseActivity {
             collapsingToolbar.setTitle(mSeries.getSeriesName());
 
             if (!TextUtils.isEmpty(mSeries.getFanart())) {
-                File file = ImageLoader.getInstance().getDiskCache().get(mSeries.getFanart());
-                if (file != null && file.exists())
-                    appBarLayout.setExpanded(true, true);
+                Glide.with(SeriesDetailActivity.this)
+                        .load(mSeries.getFanart())
+                        .into(poster);
 
-                ImageLoader.getInstance().displayImage(mSeries.getFanart(), poster, options, new ImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
+                Glide.with(SeriesDetailActivity.this)
+                        .asFile()
+                        .load(mSeries.getFanart())
+                        .into(new CustomTarget<File>() {
+                            @Override
+                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                appBarLayout.setExpanded(true, true);
+                            }
 
-                    }
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            }
+                        });
 
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        appBarLayout.setExpanded(true, true);
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-
-                    }
-                });
             }
 
             if (viewPager != null)
@@ -489,13 +480,26 @@ public class SeriesDetailActivity extends BaseActivity {
                             builder.text("http://www.imdb.com/title/" + series.getTmdbId());
 
                             if (!TextUtils.isEmpty(m.getPoster())) {
-                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                if (myImageFile != null) {
-                                    Uri myImageUri = Uri.fromFile(myImageFile);
-                                    builder.image(myImageUri);
-                                }
+                                Glide.with(SeriesDetailActivity.this)
+                                        .asFile()
+                                        .load(m.getPoster())
+                                        .into(new CustomTarget<File>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                Uri myImageUri = Uri.fromFile(resource);
+                                                builder.image(myImageUri);
+                                                builder.show();
+                                            }
+
+                                            @Override
+                                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                            }
+                                        });
+
+                            } else {
+                                builder.show();
                             }
-                            builder.show();
                             break;
                         }
                         case 4: {
@@ -503,13 +507,27 @@ public class SeriesDetailActivity extends BaseActivity {
                             builder.text("https://www.themoviedb.org/show/" + series.getImdbId());
 
                             if (!TextUtils.isEmpty(m.getPoster())) {
-                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                if (myImageFile != null) {
-                                    Uri myImageUri = Uri.fromFile(myImageFile);
-                                    builder.image(myImageUri);
-                                }
+                                Glide.with(SeriesDetailActivity.this)
+                                        .asFile()
+                                        .load(m.getPoster())
+                                        .into(new CustomTarget<File>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                Uri myImageUri = Uri.fromFile(resource);
+                                                builder.image(myImageUri);
+                                                builder.show();
+                                            }
+
+                                            @Override
+                                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                            }
+                                        });
+
+                            } else {
+                                builder.show();
                             }
-                            builder.show();
+
                             break;
                         }
                     }

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.grieex.R;
 import com.grieex.core.Imdb;
 import com.grieex.core.Tmdb;
@@ -42,19 +43,13 @@ import com.grieex.model.tables.Movie;
 import com.grieex.model.tables.Trailer;
 import com.grieex.ui.FullScreenImageActivity;
 import com.grieex.widget.ScaleImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MovieDetailGeneralFragment extends Fragment {
-    private final ImageLoader imageLoader;
-    private final DisplayImageOptions options;
     private static final String TAG = MovieDetailGeneralFragment.class.getName();
-
     private static final String ARG_Movie = "Movie";
-
     private Movie mMovie;
 
     private ImageView ivPoster;
@@ -66,6 +61,12 @@ public class MovieDetailGeneralFragment extends Fragment {
 
     private Activity activity;
     private DatabaseHelper dbHelper;
+    private boolean ImdbRatingIsVisible = false;
+    private boolean TmdbRatingIsVisible = false;
+
+    public MovieDetailGeneralFragment() {
+
+    }
 
     public static MovieDetailGeneralFragment newInstance(Movie movie) {
         MovieDetailGeneralFragment fragment = new MovieDetailGeneralFragment();
@@ -73,11 +74,6 @@ public class MovieDetailGeneralFragment extends Fragment {
         args.putSerializable(ARG_Movie, movie);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public MovieDetailGeneralFragment() {
-        imageLoader = ImageLoader.getInstance();
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
     }
 
     @Override
@@ -93,6 +89,15 @@ public class MovieDetailGeneralFragment extends Fragment {
             NLog.e(TAG, e);
         }
     }
+
+    // public OnClickListener OnListener_Image = new OnClickListener() {
+    // public void onClick(View v) {
+    //
+    // Intent it = new Intent(getActivity(), FullScreenImageActivity.class);
+    // it.putExtra("MovieID", String.valueOf(mMovieID));
+    // startActivity(it);
+    // }
+    // };
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -267,7 +272,6 @@ public class MovieDetailGeneralFragment extends Fragment {
         return v;
     }
 
-
     private void Load() {
         try {
             //DatabaseHelper db = DatabaseHelper.getInstance(activity);
@@ -388,7 +392,10 @@ public class MovieDetailGeneralFragment extends Fragment {
 
             // String ImageLink = "file:///" + GrieeXSettings.getImagePath() +
             // "Posters" + File.separator + mMovie.getID() + ".jpg";
-            imageLoader.displayImage(mMovie.getPoster(), ivPoster, options);
+            Glide.with(activity)
+                    .load(mMovie.getPoster())
+                    .placeholder(R.drawable.transparent_back)
+                    .into(ivPoster);
 
             getImdbRating();
             getTmdbRating();
@@ -402,17 +409,6 @@ public class MovieDetailGeneralFragment extends Fragment {
             NLog.e(TAG, e);
         }
     }
-
-    // public OnClickListener OnListener_Image = new OnClickListener() {
-    // public void onClick(View v) {
-    //
-    // Intent it = new Intent(getActivity(), FullScreenImageActivity.class);
-    // it.putExtra("MovieID", String.valueOf(mMovieID));
-    // startActivity(it);
-    // }
-    // };
-
-    private boolean ImdbRatingIsVisible = false;
 
     private void setImdRating(boolean withAnimation) {
         if (!TextUtils.isEmpty(mMovie.getImdbUserRating()) & !TextUtils.isEmpty(mMovie.getImdbVotes())) {
@@ -429,7 +425,7 @@ public class MovieDetailGeneralFragment extends Fragment {
                     llImdbRating.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.fade_in));
                     llImdbRating.setVisibility(View.VISIBLE);
                 }
-            }else{
+            } else {
                 ImdbRatingIsVisible = true;
                 llImdbRating.setVisibility(View.VISIBLE);
             }
@@ -437,8 +433,6 @@ public class MovieDetailGeneralFragment extends Fragment {
             llImdbRating.setVisibility(View.GONE);
         }
     }
-
-    private boolean TmdbRatingIsVisible = false;
 
     private void setTmdbRating(boolean withAnimation) {
         if (!TextUtils.isEmpty(mMovie.getTmdbUserRating()) & !TextUtils.isEmpty(mMovie.getTmdbVotes())) {
@@ -455,7 +449,7 @@ public class MovieDetailGeneralFragment extends Fragment {
                     llTmdbRating.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.fade_in));
                     llTmdbRating.setVisibility(View.VISIBLE);
                 }
-            }else{
+            } else {
                 TmdbRatingIsVisible = true;
                 llTmdbRating.setVisibility(View.VISIBLE);
             }

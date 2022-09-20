@@ -12,27 +12,8 @@ import com.grieex.model.TransactionObject;
 import java.io.Serializable;
 
 public class Season extends TransactionObject implements IDataModelObject, Serializable {
-    private static final String TAG = Season.class.getName();
     public static final String TABLE_NAME = "Seasons";
-
-    public class COLUMNS {
-        static final String _ID = "_id";
-        public static final String SeriesId = "SeriesId";
-        public static final String AiredEpisodes = "AiredEpisodes";
-        public static final String EpisodeCount = "EpisodeCount";
-        public static final String Number = "Number";
-        public static final String Overview = "Overview";
-        public static final String TmdbId = "TmdbId";
-        public static final String TvdbId = "TvdbId";
-        public static final String TraktId = "TraktId";
-        public static final String Rating = "Rating";
-        public static final String Votes = "Votes";
-        public static final String Poster = "Poster";
-    }
-
-    public Season() {
-    }
-
+    private static final String TAG = Season.class.getName();
     private int _id;
     private Integer SeriesId;
     private Integer AiredEpisodes;
@@ -45,7 +26,12 @@ public class Season extends TransactionObject implements IDataModelObject, Seria
     private String Rating;
     private String Votes;
     private String Poster;
+    private Integer WatchedCount = 0;
+    private Integer EpisodeCountCustom = 0;
 
+
+    public Season() {
+    }
 
     public int getID() {
         return _id;
@@ -143,7 +129,6 @@ public class Season extends TransactionObject implements IDataModelObject, Seria
         Votes = votes;
     }
 
-
     public ContentValues GetContentValuesForDB() {
         ContentValues values = new ContentValues();
         values.put(COLUMNS.SeriesId, SeriesId);
@@ -223,6 +208,8 @@ public class Season extends TransactionObject implements IDataModelObject, Seria
         }
     }
 
+    // Custom Columns
+
     @Override
     public void LoadWithWhere(Context ctx, String Where) {
         Cursor cursor = null;
@@ -245,10 +232,6 @@ public class Season extends TransactionObject implements IDataModelObject, Seria
         }
     }
 
-    // Custom Columns
-
-    private Integer WatchedCount = 0;
-
     public int getWatchedCount() {
         return WatchedCount;
     }
@@ -257,14 +240,26 @@ public class Season extends TransactionObject implements IDataModelObject, Seria
         WatchedCount = watchedCount;
     }
 
-
-    private Integer EpisodeCountCustom = 0;
-
     public int getEpisodeCountCustom() {
         return EpisodeCountCustom;
     }
 
     private void setEpisodeCountCustom(int episodeCount) {
         EpisodeCountCustom = episodeCount;
+    }
+
+    public static class COLUMNS {
+        public static final String SeriesId = "SeriesId";
+        public static final String AiredEpisodes = "AiredEpisodes";
+        public static final String EpisodeCount = "EpisodeCount";
+        public static final String Number = "Number";
+        public static final String Overview = "Overview";
+        public static final String TmdbId = "TmdbId";
+        public static final String TvdbId = "TvdbId";
+        public static final String TraktId = "TraktId";
+        public static final String Rating = "Rating";
+        public static final String Votes = "Votes";
+        public static final String Poster = "Poster";
+        static final String _ID = "_id";
     }
 }

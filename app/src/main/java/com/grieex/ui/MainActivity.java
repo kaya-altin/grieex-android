@@ -37,6 +37,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.grieex.R;
 import com.grieex.adapter.SlideMenuAdapter;
 import com.grieex.helper.Connectivity;
@@ -62,10 +65,6 @@ import com.grieex.update.UpdateManager;
 
 import java.util.ArrayList;
 
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getName();
 
@@ -81,7 +80,7 @@ public class MainActivity extends BaseActivity {
     private ProgressBar progress_top;
 
     private CustomBroadcastReceiver mCustomBroadcastReceiver;
-
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -327,14 +326,12 @@ public class MainActivity extends BaseActivity {
                 AccountUtils.createAccount(this);
             }
 
-            //Durmuş
+            //Kaya
             //AccountUtils.startSync(this);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
     }
-
-    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void onBackPressed() {

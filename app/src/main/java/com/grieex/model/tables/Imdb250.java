@@ -13,22 +13,19 @@ import java.io.Serializable;
 public class Imdb250 implements IDataModelObject, Serializable {
     private static final String TAG = Imdb250.class.getName();
     private static final String TABLE_NAME = "Imdb250";
-
-    class COLUMNS {
-        static final String _ID = "_id";
-        static final String RANK = "Rank";
-        static final String TITLE = "Title";
-        static final String RATING = "Rating";
-        static final String VOTES = "Votes";
-        static final String ImageLink = "ImageLink";
-        static final String IMDB_NUMBER = "ImdbNumber";
-        static final String TYPE = "Type";
-    }
-
+    private int _id;
+    private Integer mRank;
+    private String mTitle;
+    private String mRating;
+    private Integer mVotes;
+    private String mImageLink;
+    private String mImdbNumber;
+    private Integer mType;
+    // Custom Fields
+    private boolean mIsExisting = false;
     public Imdb250() {
 
     }
-
     public Imdb250(int Rank, String Title, String Rating, int Votes, String ImageLink, String ImdbNumber, int Type) {
         this.mRank = Rank;
         this.mTitle = Title;
@@ -38,15 +35,6 @@ public class Imdb250 implements IDataModelObject, Serializable {
         this.mImdbNumber = ImdbNumber;
         this.mType = Type;
     }
-
-    private int _id;
-    private Integer mRank;
-    private String mTitle;
-    private String mRating;
-    private Integer mVotes;
-    private String mImageLink;
-    private String mImdbNumber;
-    private Integer mType;
 
     public int getID() {
         return _id;
@@ -195,14 +183,22 @@ public class Imdb250 implements IDataModelObject, Serializable {
         }
     }
 
-    // Custom Fields
-    private boolean mIsExisting = false;
+    public boolean getIsExisting() {
+        return mIsExisting;
+    }
 
     public void setIsExisting(boolean isExisting) {
         mIsExisting = isExisting;
     }
 
-    public boolean getIsExisting() {
-        return mIsExisting;
+    static class COLUMNS {
+        static final String _ID = "_id";
+        static final String RANK = "Rank";
+        static final String TITLE = "Title";
+        static final String RATING = "Rating";
+        static final String VOTES = "Votes";
+        static final String ImageLink = "ImageLink";
+        static final String IMDB_NUMBER = "ImdbNumber";
+        static final String TYPE = "Type";
     }
 }

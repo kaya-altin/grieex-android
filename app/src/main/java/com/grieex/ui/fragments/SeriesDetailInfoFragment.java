@@ -38,7 +38,18 @@ public class SeriesDetailInfoFragment extends Fragment {
     private static final String TAG = SeriesDetailInfoFragment.class.getName();
 
     private static final String ARG_Series = "Series";
-
+    private final View.OnClickListener linkClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try {
+                Button btn = (Button) v;
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(btn.getText().toString()));
+                startActivity(browserIntent);
+            } catch (Exception e) {
+                NLog.e(TAG, e);
+            }
+        }
+    };
     private Series mSeries;
     private TextView tvOverview;
     private TextView tvGenres;
@@ -56,9 +67,12 @@ public class SeriesDetailInfoFragment extends Fragment {
     private Button btnTrakt;
     private Button btnTvdb;
     private Button btnImdb;
-
     private Activity activity;
     private DatabaseHelper dbHelper;
+
+    public SeriesDetailInfoFragment() {
+
+    }
 
     public static SeriesDetailInfoFragment newInstance(Series series) {
         SeriesDetailInfoFragment fragment = new SeriesDetailInfoFragment();
@@ -68,11 +82,7 @@ public class SeriesDetailInfoFragment extends Fragment {
         return fragment;
     }
 
-    public SeriesDetailInfoFragment() {
-
-    }
-
-    public void setSeries(Series series){
+    public void setSeries(Series series) {
         mSeries = series;
     }
 
@@ -206,20 +216,6 @@ public class SeriesDetailInfoFragment extends Fragment {
         }
     }
 
-    private final View.OnClickListener linkClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            try {
-                Button btn = (Button) v;
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(btn.getText().toString()));
-                startActivity(browserIntent);
-            } catch (Exception e) {
-                NLog.e(TAG, e);
-            }
-        }
-    };
-
-
     private void setImdRating() {
         if (!TextUtils.isEmpty(mSeries.getImdbUserRating()) & !TextUtils.isEmpty(mSeries.getImdbVotes())) {
             if (mSeries.getImdbVotes() != null && mSeries.getImdbVotes().equals("0")) {
@@ -284,7 +280,6 @@ public class SeriesDetailInfoFragment extends Fragment {
 
                         setTraktRating();
                     } else {
-                        //durmuş
                         //hideProgress();
                     }
                 } catch (Exception e) {

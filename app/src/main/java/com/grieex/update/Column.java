@@ -10,116 +10,114 @@ import com.grieex.interfaces.IDataModelObject;
 import java.io.Serializable;
 
 public class Column implements IDataModelObject, Serializable {
-	class COLUMNS {
-		static final String TYPE = "type";
-		static final String NAME = "name";
-		static final String NOT_NULL = "notnull";
-		static final String DEFAULT_VALUE = "dflt_value";
-	}
+    private String mName;
+    private String mType;
+    private int mNotNull = 0;
+    private String mDefaultValue;
+    public Column() {
 
-	public Column() {
+    }
+    public Column(String Name, String Type, int NotNull, String DefaultValue) {
+        this.mName = Name;
+        this.mType = Type;
+        this.mNotNull = NotNull;
+        this.mDefaultValue = DefaultValue;
+    }
 
-	}
+    public String getType() {
+        return mType;
+    }
 
-	public Column(String Name, String Type, int NotNull, String DefaultValue) {
-		this.mName = Name;
-		this.mType = Type;
-		this.mNotNull = NotNull;
-		this.mDefaultValue = DefaultValue;
-	}
+    private void setType(String Type) {
+        this.mType = Type;
+    }
 
-	private String mName;
-	private String mType;
-	private int mNotNull = 0;
-	private String mDefaultValue;
+    public String getName() {
+        return mName;
+    }
 
-	public String getType() {
-		return mType;
-	}
+    private void setName(String Name) {
+        this.mName = Name;
+    }
 
-	private void setType(String Type) {
-		this.mType = Type;
-	}
+    public int getNotNull() {
+        return mNotNull;
+    }
 
-	public String getName() {
-		return mName;
-	}
+    private void setNotNull(int NotNull) {
+        this.mNotNull = NotNull;
+    }
 
-	private void setName(String Name) {
-		this.mName = Name;
-	}
+    public String getDefaultValue() {
+        return mDefaultValue;
+    }
 
-	public int getNotNull() {
-		return mNotNull;
-	}
+    private void setDefaultValue(String DefaultValue) {
+        this.mDefaultValue = DefaultValue;
+    }
 
-	private void setNotNull(int NotNull) {
-		this.mNotNull = NotNull;
-	}
+    public ContentValues GetContentValuesForDB() {
+        ContentValues values = new ContentValues();
+        values.put(COLUMNS.NAME, mName);
+        values.put(COLUMNS.TYPE, mType);
+        values.put(COLUMNS.NOT_NULL, mNotNull);
+        values.put(COLUMNS.DEFAULT_VALUE, mDefaultValue);
 
-	public String getDefaultValue() {
-		return mDefaultValue;
-	}
+        return values;
+    }
 
-	private void setDefaultValue(String DefaultValue) {
-		this.mDefaultValue = DefaultValue;
-	}
+    public String getSql(String tableName) {
+        // ALTER TABLE Companies ADD COLUMN DefaultPageID INTEGER
+        String returnValue = "ALTER TABLE " + tableName + " ADD COLUMN " + mName + " " + mType;
 
-	public ContentValues GetContentValuesForDB() {
-		ContentValues values = new ContentValues();
-		values.put(COLUMNS.NAME, mName);
-		values.put(COLUMNS.TYPE, mType);
-		values.put(COLUMNS.NOT_NULL, mNotNull);
-		values.put(COLUMNS.DEFAULT_VALUE, mDefaultValue);
+        if (mNotNull == 1)
+            returnValue = returnValue + " NOT NULL ";
 
-		return values;
-	}
+        if (mDefaultValue != null)
+            returnValue = returnValue + " default " + mDefaultValue;
+        return returnValue;
+    }
 
-	public String getSql(String tableName) {
-		// ALTER TABLE Companies ADD COLUMN DefaultPageID INTEGER
-		String returnValue = "ALTER TABLE " + tableName + " ADD COLUMN " + mName + " " + mType;
+    public String GetTableName() {
+        // TODO Auto-generated method stub
+        return "tables";
+    }
 
-		if (mNotNull == 1)
-			returnValue = returnValue + " NOT NULL ";
+    public String[] GetColumnMapping() {
+        return new String[]{COLUMNS.NAME, COLUMNS.TYPE, COLUMNS.NOT_NULL, COLUMNS.DEFAULT_VALUE};
+    }
 
-		if (mDefaultValue != null)
-			returnValue = returnValue + " default " + mDefaultValue;
-		return returnValue;
-	}
+    @Override
+    public void LoadWithCursorRow(Cursor cursor) {
+        try {
+            if (cursor != null) {
+                setName(cursor.getString(cursor.getColumnIndex(COLUMNS.NAME)));
+                setType(cursor.getString(cursor.getColumnIndex(COLUMNS.TYPE)));
+                setNotNull(cursor.getInt(cursor.getColumnIndex(COLUMNS.NOT_NULL)));
+                setDefaultValue(cursor.getString(cursor.getColumnIndex(COLUMNS.DEFAULT_VALUE)));
+            }
+        } catch (Exception e) {
+            NLog.e("Table", e);
+        }
+    }
 
-	public String GetTableName() {
-		// TODO Auto-generated method stub
-		return "tables";
-	}
+    @Override
+    public void LoadWithWhereColumn(Context ctx, String WhereColumn, String id) {
+        // TODO Auto-generated method stub
 
-	public String[] GetColumnMapping() {
-		return new String[] { COLUMNS.NAME, COLUMNS.TYPE, COLUMNS.NOT_NULL, COLUMNS.DEFAULT_VALUE };
-	}
+    }
 
-	@Override
-	public void LoadWithCursorRow(Cursor cursor) {
-		try {
-			if (cursor != null) {
-				setName(cursor.getString(cursor.getColumnIndex(COLUMNS.NAME)));
-				setType(cursor.getString(cursor.getColumnIndex(COLUMNS.TYPE)));
-				setNotNull(cursor.getInt(cursor.getColumnIndex(COLUMNS.NOT_NULL)));
-				setDefaultValue(cursor.getString(cursor.getColumnIndex(COLUMNS.DEFAULT_VALUE)));
-			}
-		} catch (Exception e) {
-			NLog.e("Table", e);
-		}
-	}
+    @Override
+    public void LoadWithWhere(Context ctx, String Where) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void LoadWithWhereColumn(Context ctx, String WhereColumn, String id) {
-		// TODO Auto-generated method stub
+    }
 
-	}
-
-	@Override
-	public void LoadWithWhere(Context ctx, String Where) {
-		// TODO Auto-generated method stub
-
-	}
+    static class COLUMNS {
+        static final String TYPE = "type";
+        static final String NAME = "name";
+        static final String NOT_NULL = "notnull";
+        static final String DEFAULT_VALUE = "dflt_value";
+    }
 
 }

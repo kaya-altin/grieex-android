@@ -8,12 +8,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
+import com.bumptech.glide.Glide;
 import com.grieex.R;
 import com.grieex.core.Imdb;
 import com.grieex.core.Tmdb;
@@ -32,8 +32,6 @@ import com.grieex.helper.WakefulIntentService;
 import com.grieex.model.tables.Backdrop;
 import com.grieex.model.tables.Movie;
 import com.grieex.ui.MainActivity;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -47,8 +45,6 @@ public class BatchProcessingService extends WakefulIntentService {
     private static final String TAG = BatchProcessingService.class.getName();
     private BroadcastNotifier mBroadcaster;
     private DatabaseHelper dbHelper;
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
 
     private String locale = "en";
 
@@ -71,23 +67,19 @@ public class BatchProcessingService extends WakefulIntentService {
 
         dbHelper = DatabaseHelper.getInstance(getApplicationContext());
         mBroadcaster = new BroadcastNotifier(this);
-        imageLoader = ImageLoader.getInstance();
-        options = new DisplayImageOptions.Builder().cacheInMemory(false).cacheOnDisk(true).considerExifParams(true).build();
 
         locale = GrieeXSettings.getLocale(this);
 
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(Constants.CHANNEL_ID, "GrieeX", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel notificationChannel = new NotificationChannel(Constants.CHANNEL_ID, "GrieeX", NotificationManager.IMPORTANCE_DEFAULT);
 
-            // Configure the notification channel.
-            notificationChannel.setDescription("GrieeX");
-            notificationChannel.enableLights(false);
-            notificationChannel.setVibrationPattern(null);
-            notificationChannel.enableVibration(false);
-            mNotifyManager.createNotificationChannel(notificationChannel);
-        }
+        // Configure the notification channel.
+        notificationChannel.setDescription("GrieeX");
+        notificationChannel.enableLights(false);
+        notificationChannel.setVibrationPattern(null);
+        notificationChannel.enableVibration(false);
+        mNotifyManager.createNotificationChannel(notificationChannel);
 
 
         mBuilder = new NotificationCompat.Builder(this, Constants.CHANNEL_ID);
@@ -101,7 +93,7 @@ public class BatchProcessingService extends WakefulIntentService {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE);
         mBuilder.setContentIntent(resultPendingIntent);
 
         WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -236,7 +228,11 @@ public class BatchProcessingService extends WakefulIntentService {
                             for (Artwork artwork : images.getBackdrops()) {
                                 Backdrop backdrop = new Backdrop("https://image.tmdb.org/t/p/" + GrieeXSettings.TmdbBackdropPosterSize + artwork.getFilePath(), imdbnumber, movie.getID(), Constants.CollectionType.Movie);
                                 mBackdrops.add(backdrop);
-                                imageLoader.loadImageSync(backdrop.getUrl(), options);
+
+                                Glide.with(this)
+                                        .load(backdrop.getUrl())
+                                        .skipMemoryCache(true)
+                                        .submit().get();
                             }
 
                             dbHelper.fillBackdrops(mBackdrops, movie.getID(), Constants.CollectionType.Movie);
@@ -255,8 +251,11 @@ public class BatchProcessingService extends WakefulIntentService {
                                 for (Artwork artwork : images.getBackdrops()) {
                                     Backdrop backdrop = new Backdrop("https://image.tmdb.org/t/p/" + GrieeXSettings.TmdbBackdropPosterSize + artwork.getFilePath(), imdbnumber, movie.getID(), Constants.CollectionType.Movie);
                                     mBackdrops.add(backdrop);
-                                    // imageLoader.loadImageSync(backdrop.getUrl());
-                                    imageLoader.loadImageSync(backdrop.getUrl(), options);
+
+                                    Glide.with(this)
+                                            .load(backdrop.getUrl())
+                                            .skipMemoryCache(true)
+                                            .submit().get();
                                 }
 
                                 dbHelper.fillBackdrops(mBackdrops, movie.getID(), Constants.CollectionType.Movie);
@@ -268,7 +267,10 @@ public class BatchProcessingService extends WakefulIntentService {
 
                     if (movie_poster) {
                         if (!TextUtils.isEmpty(movie.getPoster())) {
-                            imageLoader.loadImageSync(movie.getPoster(), options);
+                            Glide.with(this)
+                                    .load(movie.getPoster())
+                                    .skipMemoryCache(true)
+                                    .submit().get();
                         }
                     }
 

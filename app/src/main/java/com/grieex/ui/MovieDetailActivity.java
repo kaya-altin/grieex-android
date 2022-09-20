@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -27,6 +29,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.material.appbar.AppBarLayout;
@@ -59,7 +64,6 @@ import com.grieex.ui.fragments.MovieDetailFilesFragment;
 import com.grieex.ui.fragments.MovieDetailGeneralFragment;
 import com.grieex.ui.fragments.MovieDetailOtherFragment;
 import com.grieex.widget.WrapContentHeightViewPager;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
@@ -67,15 +71,13 @@ import java.util.ArrayList;
 
 public class MovieDetailActivity extends BaseActivity {
     private static final String TAG = MovieDetailActivity.class.getName();
-
+    private static final long ANIM_VIEWPAGER_DELAY = 5000;
+    private static final long ANIM_VIEWPAGER_DELAY_USER_VIEW = 10000;
+    private static String[] CONTENT;
     private Movie mMovie;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private static String[] CONTENT;
     private CustomProgressDialog progressDialog;
-
-    private static final long ANIM_VIEWPAGER_DELAY = 5000;
-    private static final long ANIM_VIEWPAGER_DELAY_USER_VIEW = 10000;
     private ViewPager viewPagerBackdrops;
     private boolean stopSliding = false;
     private Runnable animateViewPager;
@@ -87,6 +89,7 @@ public class MovieDetailActivity extends BaseActivity {
     private CollapsingToolbarLayout collapsingToolbar;
 
     private CustomBroadcastReceiver mBroadcastReceiver;
+    private MenuItem menuAddItem;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -172,9 +175,20 @@ public class MovieDetailActivity extends BaseActivity {
             if (mBackdrops == null | (mBackdrops != null && mBackdrops.size() == 0)) {
                 getBackDrops();
             } else {
-                File file = ImageLoader.getInstance().getDiskCache().get(mBackdrops.get(0).getUrl());
-                if (file != null && file.exists())
-                    appBarLayout.setExpanded(true, true);
+                Glide.with(MovieDetailActivity.this)
+                        .asFile()
+                        .load(mBackdrops.get(0).getUrl())
+                        .into(new CustomTarget<File>() {
+                            @Override
+                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                appBarLayout.setExpanded(true, true);
+                            }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                            }
+                        });
 
                 viewPagerBackdrops.setAdapter(new ImageSlideAdapter(this, mBackdrops, new ImageSlideAdapter.OnImageLoadingListener() {
                     @Override
@@ -624,8 +638,6 @@ public class MovieDetailActivity extends BaseActivity {
             progressDialog.dismiss();
     }
 
-    private MenuItem menuAddItem;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -638,43 +650,6 @@ public class MovieDetailActivity extends BaseActivity {
         }
         return super.onCreateOptionsMenu(menu);
     }
-
-    class MovieDetailAdapter extends FragmentStatePagerAdapter {
-        public MovieDetailAdapter(@NonNull FragmentManager fm, int behavior) {
-            super(fm, behavior);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return MovieDetailGeneralFragment.newInstance(mMovie);
-                case 1:
-                    return MovieDetailCastFragment.newInstance(mMovie);
-                case 2:
-                    return MovieDetailOtherFragment.newInstance(mMovie);
-                case 3:
-                    return MovieDetailFilesFragment.newInstance(mMovie);
-            }
-            return null;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return CONTENT[position % CONTENT.length];
-        }
-
-        @Override
-        public int getCount() {
-            return CONTENT.length;
-        }
-
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-    }
-
-    //private static final int FACEBOOK_SHARE_REQUEST_CODE = 9752;
 
     private void share(final Movie m) {
         final ArrayList<CustomMenuItem> items = new ArrayList<>();
@@ -728,13 +703,26 @@ public class MovieDetailActivity extends BaseActivity {
                                     builder.text("http://www.imdb.com/title/" + movie.getImdbNumber());
 
                                     if (!TextUtils.isEmpty(m.getPoster())) {
-                                        File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                        if (myImageFile != null) {
-                                            Uri myImageUri = Uri.fromFile(myImageFile);
-                                            builder.image(myImageUri);
-                                        }
+                                        Glide.with(MovieDetailActivity.this)
+                                                .asFile()
+                                                .load(m.getPoster())
+                                                .into(new CustomTarget<File>() {
+                                                    @Override
+                                                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                        Uri myImageUri = Uri.fromFile(resource);
+                                                        builder.image(myImageUri);
+                                                        builder.show();
+                                                    }
+
+                                                    @Override
+                                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                    }
+                                                });
+
+                                    } else {
+                                        builder.show();
                                     }
-                                    builder.show();
                                     break;
                                 }
                                 case 4: {
@@ -742,13 +730,26 @@ public class MovieDetailActivity extends BaseActivity {
                                     builder.text("https://www.themoviedb.org/movie/" + movie.getTmdbNumber());
 
                                     if (!TextUtils.isEmpty(m.getPoster())) {
-                                        File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                        if (myImageFile != null) {
-                                            Uri myImageUri = Uri.fromFile(myImageFile);
-                                            builder.image(myImageUri);
-                                        }
+                                        Glide.with(MovieDetailActivity.this)
+                                                .asFile()
+                                                .load(m.getPoster())
+                                                .into(new CustomTarget<File>() {
+                                                    @Override
+                                                    public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                        Uri myImageUri = Uri.fromFile(resource);
+                                                        builder.image(myImageUri);
+                                                        builder.show();
+                                                    }
+
+                                                    @Override
+                                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                                    }
+                                                });
+
+                                    } else {
+                                        builder.show();
                                     }
-                                    builder.show();
                                     break;
                                 }
                             }
@@ -764,6 +765,42 @@ public class MovieDetailActivity extends BaseActivity {
         alert.show();
     }
 
+    //private static final int FACEBOOK_SHARE_REQUEST_CODE = 9752;
+
+    class MovieDetailAdapter extends FragmentStatePagerAdapter {
+        public MovieDetailAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return MovieDetailGeneralFragment.newInstance(mMovie);
+                case 1:
+                    return MovieDetailCastFragment.newInstance(mMovie);
+                case 2:
+                    return MovieDetailOtherFragment.newInstance(mMovie);
+                case 3:
+                    return MovieDetailFilesFragment.newInstance(mMovie);
+            }
+            return null;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return CONTENT[position % CONTENT.length];
+        }
+
+        @Override
+        public int getCount() {
+            return CONTENT.length;
+        }
+
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
 
     // **************
     private class CustomBroadcastReceiver extends BroadcastReceiver {

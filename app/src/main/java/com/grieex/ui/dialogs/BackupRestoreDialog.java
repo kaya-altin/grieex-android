@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.grieex.R;
 import com.grieex.helper.BroadcastNotifier;
@@ -51,12 +50,25 @@ import java.util.zip.ZipOutputStream;
 
 public class BackupRestoreDialog extends DialogFragment {
 
+    private static final int FILE_SELECT_CODE = 0;
     private final String TAG = BackupRestoreDialog.class.getName();
     private Context mContext;
+    private final PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+//            Toast.makeText(mContext, "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(List<String> deniedPermissions) {
+            Toast.makeText(mContext, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    };
     private boolean IsAnimationStarted = false;
     private ImageView ivDropboxSync;
     private RelativeLayout rlPleaseWait;
-
     private ImageButton btnBackup;
     private ImageButton btnRestore;
 
@@ -115,22 +127,6 @@ public class BackupRestoreDialog extends DialogFragment {
 
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
-
-    private final PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-//            Toast.makeText(mContext, "Permission Granted", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPermissionDenied(List<String> deniedPermissions) {
-            Toast.makeText(mContext, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-
-    };
-
-    private static final int FILE_SELECT_CODE = 0;
 
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

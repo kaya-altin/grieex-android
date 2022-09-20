@@ -12,56 +12,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Movie implements IDataModelObject, Serializable {
-    private static final String TAG = Movie.class.getName();
     public static final String TABLE_NAME = "Movies";
-
-    public class COLUMNS {
-        // Movies Table Columns names
-
-        public static final String _ID = "_id";
-        public static final String OriginalName = "OrginalName";
-        public static final String OtherName = "OtherName";
-        public static final String Director = "Director";
-        public static final String Writer = "Writer";
-        public static final String Genre = "Genre";
-        public static final String Year = "Year";
-        public static final String UserRating = "UserRating";
-        public static final String Votes = "Votes";
-        public static final String ImdbUserRating = "ImdbUserRating";
-        public static final String ImdbVotes = "ImdbVotes";
-        public static final String TmdbUserRating = "TmdbUserRating";
-        public static final String TmdbVotes = "TmdbVotes";
-        public static final String RunningTime = "RunningTime";
-        public static final String Country = "Country";
-        public static final String Language = "Language";
-        public static final String EnglishPlot = "EnglishPlot";
-        public static final String OtherPlot = "OtherPlot";
-        public static final String Budget = "Budget";
-        public static final String ProductionCompany = "ProductionCompany";
-        public static final String ImdbNumber = "ImdbNumber";
-        public static final String TmdbNumber = "TmdbNumber";
-        static final String ReleaseDate = "ReleaseDate";
-        public static final String ArchivesNumber = "ArchivesNumber";
-        public static final String Subtitle = "Subtitle";
-        public static final String Dubbing = "Dubbing";
-        public static final String PersonalRating = "PersonalRating";
-        public static final String UserColumn1 = "UserColumn1";
-        public static final String UserColumn2 = "UserColumn2";
-        public static final String UserColumn3 = "UserColumn3";
-        public static final String UserColumn4 = "UserColumn4";
-        public static final String UserColumn5 = "UserColumn5";
-        public static final String UserColumn6 = "UserColumn6";
-        public static final String RlsType = "RlsType";
-        public static final String RlsGroup = "RlsGroup";
-        public static final String Poster = "Poster";
-        public static final String Note = "Note";
-        public static final String Seen = "Seen";
-        public static final String IsSyncWaiting = "IsSyncWaiting";
-        public static final String ContentProvider = "ContentProvider";
-        public static final String InsertDate = "InsertDate";
-        public static final String UpdateDate = "UpdateDate";
-    }
-
+    private static final String TAG = Movie.class.getName();
     private int _id;
     private String mOriginalName;
     private String mOtherName;
@@ -104,7 +56,14 @@ public class Movie implements IDataModelObject, Serializable {
     private int mContentProvider;
     private String mInsertDate;
     private String mUpdateDate;
-
+    // **************** Custom Fields **************** //
+    private String mFirstCharacter;
+    private ArrayList<Cast> mCast;
+    private ArrayList<File> mFiles;
+    private ArrayList<Backdrop> mBackdrops;
+    private ArrayList<Trailer> mTrailers;
+    private boolean mIsExisting = false;
+    private boolean mIsSelected = false;
 
     public Movie() {
 
@@ -639,9 +598,6 @@ public class Movie implements IDataModelObject, Serializable {
         }
     }
 
-    // **************** Custom Fields **************** //
-    private String mFirstCharacter;
-
     public String getFirstCharacter() {
         return mFirstCharacter;
     }
@@ -649,8 +605,6 @@ public class Movie implements IDataModelObject, Serializable {
     public void setFirstCharacter(String FirstCharacter) {
         this.mFirstCharacter = FirstCharacter;
     }
-
-    private ArrayList<Cast> mCast;
 
     public ArrayList<Cast> getCast() {
         return mCast;
@@ -660,9 +614,6 @@ public class Movie implements IDataModelObject, Serializable {
         this.mCast = Cast;
     }
 
-
-    private ArrayList<File> mFiles;
-
     public ArrayList<File> getFiles() {
         return mFiles;
     }
@@ -670,9 +621,6 @@ public class Movie implements IDataModelObject, Serializable {
     public void setFiles(ArrayList<File> Files) {
         this.mFiles = Files;
     }
-
-
-    private ArrayList<Backdrop> mBackdrops;
 
     public ArrayList<Backdrop> getBackdrops() {
         return mBackdrops;
@@ -682,9 +630,6 @@ public class Movie implements IDataModelObject, Serializable {
         this.mBackdrops = Backdrops;
     }
 
-
-    private ArrayList<Trailer> mTrailers;
-
     public ArrayList<Trailer> getTrailers() {
         return mTrailers;
     }
@@ -693,24 +638,66 @@ public class Movie implements IDataModelObject, Serializable {
         this.mTrailers = Trailers;
     }
 
-    private boolean mIsExisting = false;
+    public boolean getIsExisting() {
+        return mIsExisting;
+    }
 
     public void setIsExisting(boolean isExisting) {
         mIsExisting = isExisting;
     }
 
-    public boolean getIsExisting() {
-        return mIsExisting;
+    public boolean getIsSelected() {
+        return mIsSelected;
     }
-
-
-    private boolean mIsSelected = false;
 
     public void setIsSelected(boolean isSelected) {
         mIsSelected = isSelected;
     }
 
-    public boolean getIsSelected() {
-        return mIsSelected;
+    public static class COLUMNS {
+        // Movies Table Columns names
+
+        public static final String _ID = "_id";
+        public static final String OriginalName = "OrginalName";
+        public static final String OtherName = "OtherName";
+        public static final String Director = "Director";
+        public static final String Writer = "Writer";
+        public static final String Genre = "Genre";
+        public static final String Year = "Year";
+        public static final String UserRating = "UserRating";
+        public static final String Votes = "Votes";
+        public static final String ImdbUserRating = "ImdbUserRating";
+        public static final String ImdbVotes = "ImdbVotes";
+        public static final String TmdbUserRating = "TmdbUserRating";
+        public static final String TmdbVotes = "TmdbVotes";
+        public static final String RunningTime = "RunningTime";
+        public static final String Country = "Country";
+        public static final String Language = "Language";
+        public static final String EnglishPlot = "EnglishPlot";
+        public static final String OtherPlot = "OtherPlot";
+        public static final String Budget = "Budget";
+        public static final String ProductionCompany = "ProductionCompany";
+        public static final String ImdbNumber = "ImdbNumber";
+        public static final String TmdbNumber = "TmdbNumber";
+        public static final String ArchivesNumber = "ArchivesNumber";
+        public static final String Subtitle = "Subtitle";
+        public static final String Dubbing = "Dubbing";
+        public static final String PersonalRating = "PersonalRating";
+        public static final String UserColumn1 = "UserColumn1";
+        public static final String UserColumn2 = "UserColumn2";
+        public static final String UserColumn3 = "UserColumn3";
+        public static final String UserColumn4 = "UserColumn4";
+        public static final String UserColumn5 = "UserColumn5";
+        public static final String UserColumn6 = "UserColumn6";
+        public static final String RlsType = "RlsType";
+        public static final String RlsGroup = "RlsGroup";
+        public static final String Poster = "Poster";
+        public static final String Note = "Note";
+        public static final String Seen = "Seen";
+        public static final String IsSyncWaiting = "IsSyncWaiting";
+        public static final String ContentProvider = "ContentProvider";
+        public static final String InsertDate = "InsertDate";
+        public static final String UpdateDate = "UpdateDate";
+        static final String ReleaseDate = "ReleaseDate";
     }
 }

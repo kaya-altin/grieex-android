@@ -64,13 +64,83 @@ public class SearchMovieActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private SearchMovieAdapter mAdapter;
+    private final SearchMovieAdapter.OnItemClickListener itemClicked = new SearchMovieAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View itemView, int position) {
+            try {
+                if (!Connectivity.isConnected(SearchMovieActivity.this)) {
+                    Toast.makeText(SearchMovieActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                SearchResult sr = mAdapter.getItem(position);
+
+                if (resultType == ContentProviders.Imdb | resultType == ContentProviders.TMDb) {
+                    Movie m = new Movie();
+                    //m.setID(Utils.parseInt(sr.getKey()));
+                    m.setTmdbNumber(sr.getKey());
+                    showMovie(m);
+                } else if (resultType == ContentProviders.Beyazperde) {
+                    ImportQueues.AddQueue(SearchMovieActivity.this, mMovie.getID(), sr, ContentProviders.Beyazperde);
+                    ServiceManager.startImportDataService(getApplicationContext());
+                    finish();
+                } else if (resultType == ContentProviders.Sinemalar) {
+                    ImportQueues.AddQueue(SearchMovieActivity.this, mMovie.getID(), sr, ContentProviders.Sinemalar);
+                    ServiceManager.startImportDataService(getApplicationContext());
+                    finish();
+                }
+            } catch (Exception e) {
+                NLog.e(TAG, e);
+            }
+        }
+    };
     private RecyclerView.LayoutManager mLayoutManager;
-
     private boolean AddedMessageDisplayed = false;
+    private final SearchMovieAdapter.OnAddClickListener addClicked = new SearchMovieAdapter.OnAddClickListener() {
+        @Override
+        public void onAddClick(final View itemView, final int position) {
+            try {
+                if (!Connectivity.isConnected(SearchMovieActivity.this)) {
+                    Toast.makeText(SearchMovieActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                if (!isProInstalled) {
+                    if (DbUtils.getMoviesCount(SearchMovieActivity.this) >= GrieeXSettings.FreeRecordLimitMovie) {
+                        Toast.makeText(SearchMovieActivity.this, getResources().getString(R.string.alert7), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
+                if (DbUtils.isMovieExistWithTmdbNumber(SearchMovieActivity.this, mAdapter.getItem(position).getKey())) {
+                    new AlertDialog.Builder(SearchMovieActivity.this)
+                            .setTitle(R.string.app_name)
+                            .setMessage(getResources().getString(R.string.exist_movie_message))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    AddMovie(position, itemView);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+
+                    return;
+                }
+
+                AddMovie(position, itemView);
+
+            } catch (Exception e) {
+                NLog.e(TAG, e);
+            }
+        }
+
+    };
     private String locale = "en";
     private Tmdb tmdb;
-
 
     @Override
     protected void onStart() {
@@ -102,7 +172,7 @@ public class SearchMovieActivity extends BaseActivity {
                     ArrayList<SearchResult> results = (ArrayList<SearchResult>) m;
                     if (results != null) {
                         if (mAdapter == null) {
-                            mAdapter = new SearchMovieAdapter(results);
+                            mAdapter = new SearchMovieAdapter(results, SearchMovieActivity.this);
                             mAdapter.setResultType(resultType);
                             mAdapter.setOnAddClickListener(addClicked);
                             mAdapter.setOnItemClickListener(itemClicked);
@@ -344,7 +414,7 @@ public class SearchMovieActivity extends BaseActivity {
 
     private void setAdaper(ArrayList<SearchResult> results) {
         if (results != null) {
-            mAdapter = new SearchMovieAdapter(results);
+            mAdapter = new SearchMovieAdapter(results, SearchMovieActivity.this);
             mAdapter.setResultType(resultType);
             mAdapter.setOnAddClickListener(addClicked);
             mAdapter.setOnItemClickListener(itemClicked);
@@ -352,82 +422,6 @@ public class SearchMovieActivity extends BaseActivity {
         }
         progressBarSearch.setVisibility(View.GONE);
     }
-
-    private final SearchMovieAdapter.OnItemClickListener itemClicked = new SearchMovieAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View itemView, int position) {
-            try {
-                if (!Connectivity.isConnected(SearchMovieActivity.this)) {
-                    Toast.makeText(SearchMovieActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                SearchResult sr = mAdapter.getItem(position);
-
-                if (resultType == ContentProviders.Imdb | resultType == ContentProviders.TMDb) {
-                    Movie m = new Movie();
-                    //m.setID(Utils.parseInt(sr.getKey()));
-                    m.setTmdbNumber(sr.getKey());
-                    showMovie(m);
-                } else if (resultType == ContentProviders.Beyazperde) {
-                    ImportQueues.AddQueue(SearchMovieActivity.this, mMovie.getID(), sr, ContentProviders.Beyazperde);
-                    ServiceManager.startImportDataService(getApplicationContext());
-                    finish();
-                } else if (resultType == ContentProviders.Sinemalar) {
-                    ImportQueues.AddQueue(SearchMovieActivity.this, mMovie.getID(), sr, ContentProviders.Sinemalar);
-                    ServiceManager.startImportDataService(getApplicationContext());
-                    finish();
-                }
-            } catch (Exception e) {
-                NLog.e(TAG, e);
-            }
-        }
-    };
-
-
-    private final SearchMovieAdapter.OnAddClickListener addClicked = new SearchMovieAdapter.OnAddClickListener() {
-        @Override
-        public void onAddClick(final View itemView, final int position) {
-            try {
-                if (!Connectivity.isConnected(SearchMovieActivity.this)) {
-                    Toast.makeText(SearchMovieActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (!isProInstalled) {
-                    if (DbUtils.getMoviesCount(SearchMovieActivity.this) >= GrieeXSettings.FreeRecordLimitMovie) {
-                        Toast.makeText(SearchMovieActivity.this, getResources().getString(R.string.alert7), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                }
-
-                if (DbUtils.isMovieExistWithTmdbNumber(SearchMovieActivity.this, mAdapter.getItem(position).getKey())) {
-                    new AlertDialog.Builder(SearchMovieActivity.this)
-                            .setTitle(R.string.app_name)
-                            .setMessage(getResources().getString(R.string.exist_movie_message))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    AddMovie(position, itemView);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-
-                    return;
-                }
-
-                AddMovie(position, itemView);
-
-            } catch (Exception e) {
-                NLog.e(TAG, e);
-            }
-        }
-
-    };
 
     private void AddMovie(int position, View itemView) {
         SearchResult sr = mAdapter.getItem(position);

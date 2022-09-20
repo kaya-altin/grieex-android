@@ -20,8 +20,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginEnd="5dp"
                 android:orientation="horizontal"
                 tools:ignore="UselessParent">
@@ -34,8 +34,8 @@
                     android:focusable="true"
                     android:orientation="vertical"
                     android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingTop="3dp">
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp">
 
                     <com.grieex.widget.ScaleImageView
                         android:id="@+id/ivTraktRating"
@@ -63,8 +63,8 @@
                     android:focusable="true"
                     android:orientation="vertical"
                     android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingTop="3dp">
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp">
 
                     <com.grieex.widget.ScaleImageView
                         android:id="@+id/ivImdbRating"
@@ -91,8 +91,8 @@
                     android:focusable="true"
                     android:orientation="vertical"
                     android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingTop="3dp">
+                    android:paddingTop="3dp"
+                    android:paddingRight="3dp">
 
                     <com.grieex.widget.ScaleImageView
                         android:id="@+id/ivTmdbRating"
@@ -119,10 +119,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@drawable/title_back"
-            android:paddingBottom="5dp"
-            android:paddingEnd="10dp"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
             android:text="@string/detail"
             android:textSize="@dimen/movie_detail_textSize" />
 
@@ -136,7 +136,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/clock5"
-                android:tint="@color/gray4"
+                app:tint="@color/gray4"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -156,7 +156,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/time"
-                android:tint="@color/gray4"
+                app:tint="@color/gray4"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -177,7 +177,7 @@
                 android:layout_height="20dp"
                 android:layout_marginBottom="2dp"
                 android:src="@drawable/tv_gray"
-                android:tint="@color/gray4"
+                app:tint="@color/gray4"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -192,16 +192,17 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/title_back"
-                android:paddingBottom="5dp"
-                android:paddingEnd="10dp"
                 android:paddingStart="15dp"
                 android:paddingTop="15dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
                 android:text="@string/overview"
                 android:textSize="@dimen/movie_detail_textSize" />
 
@@ -211,8 +212,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:textSize="@dimen/movie_detail_textSize" />
         </LinearLayout>
 
@@ -225,10 +226,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/title_back"
-                android:paddingBottom="5dp"
-                android:paddingEnd="10dp"
                 android:paddingStart="15dp"
                 android:paddingTop="15dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
                 android:text="@string/genre"
                 android:textSize="@dimen/movie_detail_textSize" />
 
@@ -238,8 +239,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:textSize="@dimen/movie_detail_textSize" />
         </LinearLayout>
 
@@ -255,10 +256,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/title_back"
-                android:paddingBottom="5dp"
-                android:paddingEnd="10dp"
                 android:paddingStart="15dp"
                 android:paddingTop="15dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
                 android:text="@string/links"
                 android:textSize="@dimen/movie_detail_textSize" />
 
@@ -266,11 +267,11 @@
                 android:id="@+id/btnTrakt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/selector_button4"
                 android:stateListAnimator="@null"
                 android:text="trakt.tv"
@@ -282,11 +283,11 @@
                 android:id="@+id/btnTvdb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/selector_button4"
                 android:stateListAnimator="@null"
                 android:text="tvdb.com"
@@ -298,11 +299,11 @@
                 android:id="@+id/btnImdb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/selector_button4"
                 android:stateListAnimator="@null"
                 android:text="imdb.com"

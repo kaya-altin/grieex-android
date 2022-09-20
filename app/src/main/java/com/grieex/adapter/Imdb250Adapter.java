@@ -1,5 +1,6 @@
 package com.grieex.adapter;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.grieex.R;
 import com.grieex.helper.NLog;
 import com.grieex.model.tables.Imdb250;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,62 +23,24 @@ import java.util.ArrayList;
  * Created by Griee on 24.9.2015.
  */
 public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHolder> {
+    private final Activity activity;
     private final ArrayList<Imdb250> mData;
-    private final DisplayImageOptions options;
 
 
     private OnItemClickListener listener;
+    private OnImageViewClickListener itemImageViewClickListener;
 
-    public interface OnItemClickListener {
-        void onItemClick(View itemView, int position);
+    public Imdb250Adapter(ArrayList<Imdb250> myDataset, Activity _activity) {
+        activity = _activity;
+        mData = myDataset;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    private OnImageViewClickListener itemImageViewClickListener;
-
-    public interface OnImageViewClickListener {
-        void onImageViewClick(View itemView, int position);
-    }
-
     public void setOnImageViewClickListener(OnImageViewClickListener listener) {
         this.itemImageViewClickListener = listener;
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        final ImageView imageView;
-        final TextView tvTitle;
-        final TextView tvRating;
-        final ImageView ivOk;
-
-
-
-        ViewHolder(View v) {
-            super(v);
-            imageView = v.findViewById(R.id.ivPoster);
-            tvTitle = v.findViewById(R.id.tvTitle);
-            tvRating = v.findViewById(R.id.tvRating);
-            ivOk = v.findViewById(R.id.ivOk);
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemImageViewClickListener != null)
-                        itemImageViewClickListener.onImageViewClick(itemView, getLayoutPosition());
-                }
-            });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null)
-                        listener.onItemClick(itemView, getLayoutPosition());
-                }
-            });
-        }
     }
 
     public void addAll(ArrayList<Imdb250> items, int positionFrom, int positionTo) {
@@ -91,7 +53,7 @@ public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHold
 
     public void addAllEnd(ArrayList<Imdb250> items) {
         int positionFrom = mData.size();
-        int positionTo = mData.size()+items.size();
+        int positionTo = mData.size() + items.size();
 
         mData.addAll(items);
 
@@ -113,11 +75,6 @@ public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHold
 
     public void clear() {
         mData.clear();
-    }
-
-    public Imdb250Adapter(ArrayList<Imdb250> myDataset) {
-        mData = myDataset;
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
     }
 
     @Override
@@ -154,9 +111,10 @@ public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHold
                 holder.ivOk.setVisibility(View.VISIBLE);
             }
 
-
-
-            ImageLoader.getInstance().displayImage(m.getImageLink(), holder.imageView, options);
+            Glide.with(activity)
+                    .load(m.getImageLink())
+                    .placeholder(R.drawable.transparent_back)
+                    .into(holder.imageView);
 
         } catch (Exception e) {
             NLog.e(e);
@@ -167,7 +125,6 @@ public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHold
     public int getItemCount() {
         return mData.size();
     }
-
 
     public Imdb250 getItem(int position) {
         return mData.get(position);
@@ -182,5 +139,46 @@ public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHold
                 return i;
         }
         return -1;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+
+    public interface OnImageViewClickListener {
+        void onImageViewClick(View itemView, int position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        final ImageView imageView;
+        final TextView tvTitle;
+        final TextView tvRating;
+        final ImageView ivOk;
+
+
+        ViewHolder(View v) {
+            super(v);
+            imageView = v.findViewById(R.id.ivPoster);
+            tvTitle = v.findViewById(R.id.tvTitle);
+            tvRating = v.findViewById(R.id.tvRating);
+            ivOk = v.findViewById(R.id.ivOk);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemImageViewClickListener != null)
+                        itemImageViewClickListener.onImageViewClick(itemView, getLayoutPosition());
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null)
+                        listener.onItemClick(itemView, getLayoutPosition());
+                }
+            });
+        }
     }
 }

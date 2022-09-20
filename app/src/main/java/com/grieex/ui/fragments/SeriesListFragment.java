@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -32,6 +35,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.facebook.CallbackManager;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
@@ -58,7 +64,6 @@ import com.grieex.ui.SearchSeriesActivity;
 import com.grieex.ui.SeriesDetailActivity;
 import com.grieex.ui.dialogs.AddToListDialog;
 import com.grieex.widget.SimpleDividerItemDecoration;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import java.io.File;
@@ -484,13 +489,26 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
                             builder.text("http://www.imdb.com/title/" + series.getTmdbId());
 
                             if (!TextUtils.isEmpty(m.getPoster())) {
-                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                if (myImageFile != null) {
-                                    Uri myImageUri = Uri.fromFile(myImageFile);
-                                    builder.image(myImageUri);
-                                }
+                                Glide.with(SeriesListFragment.this)
+                                        .asFile()
+                                        .load(m.getPoster())
+                                        .into(new CustomTarget<File>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                Uri myImageUri = Uri.fromFile(resource);
+                                                builder.image(myImageUri);
+                                                builder.show();
+                                            }
+
+                                            @Override
+                                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                            }
+                                        });
+
+                            } else {
+                                builder.show();
                             }
-                            builder.show();
                             break;
                         }
                         case 4: {
@@ -498,13 +516,26 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
                             builder.text("https://www.themoviedb.org/show/" + series.getImdbId());
 
                             if (!TextUtils.isEmpty(m.getPoster())) {
-                                File myImageFile = ImageLoader.getInstance().getDiskCache().get(m.getPoster());
-                                if (myImageFile != null) {
-                                    Uri myImageUri = Uri.fromFile(myImageFile);
-                                    builder.image(myImageUri);
-                                }
+                                Glide.with(SeriesListFragment.this)
+                                        .asFile()
+                                        .load(m.getPoster())
+                                        .into(new CustomTarget<File>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                                Uri myImageUri = Uri.fromFile(resource);
+                                                builder.image(myImageUri);
+                                                builder.show();
+                                            }
+
+                                            @Override
+                                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                            }
+                                        });
+
+                            } else {
+                                builder.show();
                             }
-                            builder.show();
                             break;
                         }
                     }

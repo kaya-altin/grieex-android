@@ -35,10 +35,20 @@ import java.util.ArrayList;
 
 public class UpcomingSeriesFragment extends Fragment {
     private static final String TAG = UpcomingSeriesFragment.class.getName();
-
-    private Activity activity;
-
     private static final String ARG_PageTypes = "ARG_PageTypes";
+    private static final int iRecordShow = 100;
+    private static final int iFirstLoadRowCount = 20;
+    private final int iListViewType = 0;
+    private Activity activity;
+    private UpcomingSeriesAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private ProgressBar progress;
+    private int iRecordCount = 0;
+    private int iRecordPage = 0;
+    private boolean bIsFirstLoaded = true;
+    private TextView tvNoRecord;
+    private volatile String RunKey;
+    private DatabaseHelper dbHelper;
 
     public static UpcomingSeriesFragment newInstance() {
         return new UpcomingSeriesFragment();
@@ -51,23 +61,6 @@ public class UpcomingSeriesFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    private UpcomingSeriesAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private ProgressBar progress;
-    private int iRecordCount = 0;
-    private int iRecordPage = 0;
-    private static final int iRecordShow = 100;
-    private static final int iFirstLoadRowCount = 20;
-    private boolean bIsFirstLoaded = true;
-
-    private TextView tvNoRecord;
-
-    private volatile String RunKey;
-
-    private DatabaseHelper dbHelper;
-
-    private final int iListViewType = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,16 +95,31 @@ public class UpcomingSeriesFragment extends Fragment {
             tvNoRecord = v.findViewById(R.id.tvNoRecord);
 
             RunKey = Utils.getRandomString();
-            new DataLoader().execute(RunKey);
+            new DataLoader(activity).execute(RunKey);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
         return v;
     }
 
+    private void showSeries(long SeriesID, View view) {
+        try {
+            Intent it = new Intent(getActivity(), SeriesDetailActivity.class);
+            it.putExtra(Constants.SeriesID, String.valueOf(SeriesID));
+            startActivity(it);
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+        }
+    }
+
     class DataLoader extends AsyncTask<String, Void, ArrayList<Series>> {
+        private Activity activity;
         private volatile boolean running = true;
         private volatile String _RunKey;
+
+        public DataLoader(Activity _activity) {
+            activity = _activity;
+        }
 
         @Override
         protected void onCancelled() {
@@ -210,7 +218,7 @@ public class UpcomingSeriesFragment extends Fragment {
                 }
 
                 if (mAdapter == null) {
-                    mAdapter = new UpcomingSeriesAdapter(res);
+                    mAdapter = new UpcomingSeriesAdapter(res, activity);
                     mAdapter.setViewType(iListViewType);
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.setOnItemClickListener(new UpcomingSeriesAdapter.OnItemClickListener() {
@@ -240,7 +248,7 @@ public class UpcomingSeriesFragment extends Fragment {
                         tvNoRecord.setVisibility(View.GONE);
 
                         if (mAdapter.getItemCount() == iFirstLoadRowCount) {
-                            new DataLoader().execute(_RunKey);
+                            new DataLoader(activity).execute(_RunKey);
                         }
 
                     } else {
@@ -256,7 +264,7 @@ public class UpcomingSeriesFragment extends Fragment {
                             if (iRecordCount >= iRecordShow)
                                 iRecordPage++;
 
-                            new DataLoader().execute(_RunKey);
+                            new DataLoader(activity).execute(_RunKey);
                         }
                     }
                 }
@@ -272,16 +280,6 @@ public class UpcomingSeriesFragment extends Fragment {
             }
         }
 
-    }
-
-    private void showSeries(long SeriesID, View view) {
-        try {
-            Intent it = new Intent(getActivity(), SeriesDetailActivity.class);
-            it.putExtra(Constants.SeriesID, String.valueOf(SeriesID));
-            startActivity(it);
-        } catch (Exception e) {
-            NLog.e(TAG, e);
-        }
     }
 
 

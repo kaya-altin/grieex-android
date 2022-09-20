@@ -1,6 +1,6 @@
 package com.grieex.adapter;
 
-import android.graphics.Bitmap;
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +11,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.grieex.R;
 import com.grieex.model.tables.Movie;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -26,10 +24,20 @@ import java.util.Locale;
 public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static String TAG = MovieListAdapter.class.getName();
     private final ArrayList<Movie> mData;
-
     private int mViewType = 0;
     private boolean mShowCheckBox = false;
     private String mOrderTextColumn = "";
+    private OnItemClickListener itemClickListener;
+    private OnItemLongClickListener itemLongClickListener;
+    private OnImageViewClickListener itemImageViewClickListener;
+    private OnItemSelectedListener itemSelectedListener;
+    private Activity activity;
+
+    public MovieListAdapter(ArrayList<Movie> data, Activity _Activity) {
+        activity = _Activity;
+        mData = data;
+//        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).build();
+    }
 
     public void setViewType(int viewType) {
         mViewType = viewType;
@@ -50,48 +58,208 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mOrderTextColumn = column;
     }
 
-    private OnItemClickListener itemClickListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View itemView, int position);
-    }
-
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.itemClickListener = listener;
-    }
-
-    private OnItemLongClickListener itemLongClickListener;
-
-    public interface OnItemLongClickListener {
-        void onItemLongClick(View itemView, int position);
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.itemLongClickListener = listener;
     }
 
-    private OnImageViewClickListener itemImageViewClickListener;
-
-    public interface OnImageViewClickListener {
-        void onImageViewClick(View itemView, int position);
-    }
-
     public void setOnImageViewClickListener(OnImageViewClickListener listener) {
         this.itemImageViewClickListener = listener;
-    }
-
-
-    private OnItemSelectedListener itemSelectedListener;
-
-    public interface OnItemSelectedListener {
-        void onSelectedChanged(View itemView, int position);
     }
 
     public void setOnItemSelectedListener(OnItemSelectedListener listener) {
         this.itemSelectedListener = listener;
     }
 
-    private final DisplayImageOptions options;
+    public void add(Movie item) {
+        mData.add(item);
+        sort();
+        int index = mData.indexOf(item);
+        notifyItemInserted(index);
+    }
+
+    public void addAll(ArrayList<Movie> items, int positionFrom, int positionTo) {
+        mData.addAll(items);
+
+        for (int i = positionFrom; i <= positionTo; i++) {
+            notifyItemInserted(i);
+        }
+    }
+
+    public void addAllEnd(ArrayList<Movie> items) {
+        int positionFrom = mData.size();
+        int positionTo = mData.size() + items.size();
+
+        mData.addAll(items);
+
+        for (int i = positionFrom; i <= positionTo; i++) {
+            notifyItemInserted(i);
+        }
+    }
+
+    public void add(int position, Movie item) {
+        mData.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void remove(Movie item) {
+        int position = mData.indexOf(item);
+        mData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void sort() {
+        Collections.sort(mData, new MovieComparator());
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        if (mViewType == 0) {
+            View v1 = inflater.inflate(R.layout.movielist_item, parent, false);
+            return new ViewHolder1(v1);
+        } else {
+            View v2 = inflater.inflate(R.layout.movielist_gallery_item, parent, false);
+            return new ViewHolder2(v2);
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final Movie m = mData.get(position);
+
+        if (mViewType == 0) {
+            ViewHolder1 h = (ViewHolder1) holder;
+            if (m.getYear() != null && !m.getYear().isEmpty())
+                h.tvOriginalName.setText(m.getOriginalName() + " (" + m.getYear() + ")");
+            else
+                h.tvOriginalName.setText(m.getOriginalName());
+
+            if (!TextUtils.isEmpty(m.getOtherName())) {
+                h.tvOtherName.setText(m.getOtherName());
+                h.tvOtherName.setVisibility(View.VISIBLE);
+            } else
+                h.tvOtherName.setVisibility(View.GONE);
+
+            h.tvDirector.setText(m.getDirector());
+
+            if (TextUtils.isEmpty(mOrderTextColumn)) {
+                h.tvFilterText.setVisibility(View.GONE);
+            } else {
+                h.tvFilterText.setVisibility(View.VISIBLE);
+
+                switch (mOrderTextColumn) {
+                    case Movie.COLUMNS.ArchivesNumber:
+                        h.tvFilterText.setText(m.getArchivesNumber());
+                        break;
+                    case Movie.COLUMNS.InsertDate:
+                        h.tvFilterText.setText(m.getInsertDate());
+                        break;
+                    case Movie.COLUMNS.UpdateDate:
+                        h.tvFilterText.setText(m.getUpdateDate());
+                        break;
+                    case Movie.COLUMNS.ImdbUserRating:
+                        h.tvFilterText.setText(m.getImdbUserRating());
+                        break;
+                    case Movie.COLUMNS.TmdbUserRating:
+                        h.tvFilterText.setText(m.getTmdbUserRating());
+                        break;
+                }
+            }
+
+            if (mShowCheckBox) {
+                h.chkSelected.setChecked(m.getIsSelected());
+                h.chkSelected.setVisibility(View.VISIBLE);
+            } else {
+                h.chkSelected.setVisibility(View.GONE);
+            }
+
+            Glide.with(activity)
+                    .load(m.getPoster())
+                    .into(h.imageView);
+
+        } else {
+            ViewHolder2 h = (ViewHolder2) holder;
+            if (m.getYear() != null && !m.getYear().isEmpty())
+                h.tvOriginalName.setText(m.getOriginalName() + " (" + m.getYear() + ")");
+            else
+                h.tvOriginalName.setText(m.getOriginalName());
+
+            Glide.with(activity)
+                    .load(m.getPoster())
+                    .into(h.imageView);
+
+        }
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
+
+    public Movie getItem(int position) {
+        return mData.get(position);
+    }
+
+    public long getItemId(int position) {
+        return mData.get(position).getID();
+    }
+
+    public ArrayList<Movie> getSelecteds() {
+        ArrayList<Movie> returnList = new ArrayList<>();
+        for (Movie c : mData) {
+            if (c.getIsSelected())
+                returnList.add(c);
+        }
+
+        return returnList;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View itemView, int position);
+    }
+
+    public interface OnImageViewClickListener {
+        void onImageViewClick(View itemView, int position);
+    }
+
+//	@Override
+//	public void onBindViewHolder(ViewHolder holder, int position) {
+//		Movie m = mData.get(position);
+//
+//		if (m.getYear() != null && !m.getYear().isEmpty())
+//			holder.tvOriginalName.setText(m.getOriginalName() + " (" + m.getYear() + ")");
+//		else
+//			holder.tvOriginalName.setText(m.getOriginalName());
+//
+//		holder.tvOtherName.setText(m.getOtherName());
+//		holder.tvDirector.setText(m.getDirector());
+//
+//
+//	}
+
+    public interface OnItemSelectedListener {
+        void onSelectedChanged(View itemView, int position);
+    }
+
+    private static class MovieComparator implements Comparator<Movie> {
+        public int compare(Movie o1, Movie o2) {
+
+            Collator trCollator = Collator.getInstance(new Locale("tr", "TR"));
+
+            return trCollator.compare(o1.getOriginalName(), o2.getOriginalName());
+        }
+    }
 
     class ViewHolder1 extends RecyclerView.ViewHolder {
         final ImageView imageView;
@@ -172,179 +340,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
         }
-    }
-
-    public MovieListAdapter(ArrayList<Movie> data) {
-        mData = data;
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.transparent_back).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).build();
-    }
-
-    public void add(Movie item) {
-        mData.add(item);
-        sort();
-        int index = mData.indexOf(item);
-        notifyItemInserted(index);
-    }
-
-    public void addAll(ArrayList<Movie> items, int positionFrom, int positionTo) {
-        mData.addAll(items);
-
-        for (int i = positionFrom; i <= positionTo; i++) {
-            notifyItemInserted(i);
-        }
-    }
-
-    public void addAllEnd(ArrayList<Movie> items) {
-        int positionFrom = mData.size();
-        int positionTo = mData.size() + items.size();
-
-        mData.addAll(items);
-
-        for (int i = positionFrom; i <= positionTo; i++) {
-            notifyItemInserted(i);
-        }
-    }
-
-    public void add(int position, Movie item) {
-        mData.add(position, item);
-        notifyItemInserted(position);
-    }
-
-    public void remove(Movie item) {
-        int position = mData.indexOf(item);
-        mData.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    private void sort() {
-        Collections.sort(mData, new MovieComparator());
-    }
-
-    private class MovieComparator implements Comparator<Movie> {
-        public int compare(Movie o1, Movie o2) {
-
-            Collator trCollator = Collator.getInstance(new Locale("tr", "TR"));
-
-            return trCollator.compare(o1.getOriginalName(), o2.getOriginalName());
-        }
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-        if (mViewType == 0) {
-            View v1 = inflater.inflate(R.layout.movielist_item, parent, false);
-            return new ViewHolder1(v1);
-        } else {
-            View v2 = inflater.inflate(R.layout.movielist_gallery_item, parent, false);
-            return new ViewHolder2(v2);
-        }
-
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final Movie m = mData.get(position);
-
-        if (mViewType == 0) {
-            ViewHolder1 h = (ViewHolder1) holder;
-            if (m.getYear() != null && !m.getYear().isEmpty())
-                h.tvOriginalName.setText(m.getOriginalName() + " (" + m.getYear() + ")");
-            else
-                h.tvOriginalName.setText(m.getOriginalName());
-
-            if (!TextUtils.isEmpty(m.getOtherName())) {
-                h.tvOtherName.setText(m.getOtherName());
-                h.tvOtherName.setVisibility(View.VISIBLE);
-            } else
-                h.tvOtherName.setVisibility(View.GONE);
-
-            h.tvDirector.setText(m.getDirector());
-
-            if (TextUtils.isEmpty(mOrderTextColumn)) {
-                h.tvFilterText.setVisibility(View.GONE);
-            } else {
-                h.tvFilterText.setVisibility(View.VISIBLE);
-
-                switch (mOrderTextColumn) {
-                    case Movie.COLUMNS.ArchivesNumber:
-                        h.tvFilterText.setText(m.getArchivesNumber());
-                        break;
-                    case Movie.COLUMNS.InsertDate:
-                        h.tvFilterText.setText(m.getInsertDate());
-                        break;
-                    case Movie.COLUMNS.UpdateDate:
-                        h.tvFilterText.setText(m.getUpdateDate());
-                        break;
-                    case Movie.COLUMNS.ImdbUserRating:
-                        h.tvFilterText.setText(m.getImdbUserRating());
-                        break;
-                    case Movie.COLUMNS.TmdbUserRating:
-                        h.tvFilterText.setText(m.getTmdbUserRating());
-                        break;
-                }
-            }
-
-            if (mShowCheckBox) {
-                h.chkSelected.setChecked(m.getIsSelected());
-                h.chkSelected.setVisibility(View.VISIBLE);
-            } else {
-                h.chkSelected.setVisibility(View.GONE);
-            }
-
-            ImageLoader.getInstance().displayImage(m.getPoster(), h.imageView, options);
-        } else {
-            ViewHolder2 h = (ViewHolder2) holder;
-            if (m.getYear() != null && !m.getYear().isEmpty())
-                h.tvOriginalName.setText(m.getOriginalName() + " (" + m.getYear() + ")");
-            else
-                h.tvOriginalName.setText(m.getOriginalName());
-
-
-            ImageLoader.getInstance().displayImage(m.getPoster(), h.imageView, options);
-        }
-
-    }
-
-//	@Override
-//	public void onBindViewHolder(ViewHolder holder, int position) {
-//		Movie m = mData.get(position);
-//
-//		if (m.getYear() != null && !m.getYear().isEmpty())
-//			holder.tvOriginalName.setText(m.getOriginalName() + " (" + m.getYear() + ")");
-//		else
-//			holder.tvOriginalName.setText(m.getOriginalName());
-//
-//		holder.tvOtherName.setText(m.getOtherName());
-//		holder.tvDirector.setText(m.getDirector());
-//
-//
-//		imageLoader.displayImage(m.getPoster(), holder.imageView, options);
-//	}
-
-    @Override
-    public int getItemCount() {
-        return mData.size();
-    }
-
-    public Movie getItem(int position) {
-        return mData.get(position);
-    }
-
-    public long getItemId(int position) {
-        return mData.get(position).getID();
-    }
-
-
-    public ArrayList<Movie> getSelecteds() {
-        ArrayList<Movie> returnList = new ArrayList<>();
-        for (Movie c : mData) {
-            if (c.getIsSelected())
-                returnList.add(c);
-        }
-
-        return returnList;
     }
 }
 
