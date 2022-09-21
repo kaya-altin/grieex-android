@@ -41,7 +41,6 @@ import com.grieex.R;
 import com.grieex.adapter.CustomMenuAdapter;
 import com.grieex.core.ImportQueues;
 import com.grieex.core.TraktTv;
-import com.grieex.core.listener.OnTraktTvEventListener;
 import com.grieex.helper.BroadcastNotifier;
 import com.grieex.helper.Constants;
 import com.grieex.helper.DatabaseHelper;
@@ -180,24 +179,6 @@ public class SeriesDetailActivity extends BaseActivity {
             if (EpisodeWatchedCount > 0)
                 viewPager.setCurrentItem(1);
         }
-
-//        for (int i = 0; i <= mAdapter.getCount(); i++) {
-//            Fragment f = mAdapter.getItem(i);
-//            if (f instanceof SeriesDetailInfoFragment) {
-//                ((SeriesDetailInfoFragment) f).setSeries(mSeries);
-//                ((SeriesDetailInfoFragment) f).Load();
-//            } else if (f instanceof SeriesDetailSeasonsFragment) {
-//                ((SeriesDetailSeasonsFragment) f).setSeries(mSeries);
-//                ((SeriesDetailSeasonsFragment) f).Load();
-//            } else if (f instanceof SeriesDetailCastFragment) {
-//                ((SeriesDetailCastFragment) f).setSeries(mSeries);
-//                ((SeriesDetailCastFragment) f).Load();
-//            } else if (f instanceof SeriesDetailCommentsFragment) {
-//                ((SeriesDetailCommentsFragment) f).Load();
-//            }
-//        }
-
-
     }
 
     private void getSeries(String id) {
@@ -205,18 +186,15 @@ public class SeriesDetailActivity extends BaseActivity {
             showProgress();
 
             TraktTv traktTv = new TraktTv();
-            traktTv.setTraktEventListener(new OnTraktTvEventListener() {
-                @Override
-                public void onCompleted(Object m) {
-                    try {
-                        if (m != null) {
-                            mSeries = (Series) m;
-                            Load();
-                        }
-                        hideProgress();
-                    } catch (Exception e) {
-                        NLog.e(TAG, e);
+            traktTv.setTraktEventListener(m -> {
+                try {
+                    if (m != null) {
+                        mSeries = (Series) m;
+                        Load();
                     }
+                    hideProgress();
+                } catch (Exception e) {
+                    NLog.e(TAG, e);
                 }
             });
             traktTv.ParseAsync(id, GrieeXSettings.getLocale(this));
@@ -248,48 +226,45 @@ public class SeriesDetailActivity extends BaseActivity {
             inflater.inflate(R.menu.seriesdetail_actionbar_menu2, menu);
 
             final MenuItem menuAddItem = menu.findItem(R.id.action_add);
-            menuAddItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (!Utils.isProInstalled(SeriesDetailActivity.this)) {
-                        if (DbUtils.getSeriesCount(SeriesDetailActivity.this) >= GrieeXSettings.FreeRecordLimitSeries) {
-                            Toast.makeText(SeriesDetailActivity.this, getResources().getString(R.string.alert7), Toast.LENGTH_LONG).show();
-                            return false;
-                        }
+            menuAddItem.setOnMenuItemClickListener(item -> {
+                if (!Utils.isProInstalled(SeriesDetailActivity.this)) {
+                    if (DbUtils.getSeriesCount(SeriesDetailActivity.this) >= GrieeXSettings.FreeRecordLimitSeries) {
+                        Toast.makeText(SeriesDetailActivity.this, getResources().getString(R.string.alert7), Toast.LENGTH_LONG).show();
+                        return false;
                     }
-
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    Handler handler = new Handler(Looper.getMainLooper());
-
-                    executor.execute(() -> {
-                        if (mSeries == null)
-                            return;
-
-                        mSeries.setIsExisting(true);
-                        mSeries.setContentProvider(Constants.ContentProviders.TraktTv.value);
-                        mSeries.setInsertDate(DateUtils.DateTimeNowString());
-                        mSeries.setUpdateDate(DateUtils.DateTimeNowString());
-
-                        long _id = DatabaseHelper.getInstance(getApplicationContext()).addSeries(mSeries);
-                        mSeries.setID((int) _id);
-
-                        ImportQueues.AddQueue(SeriesDetailActivity.this, _id, String.valueOf(mSeries.getTraktId()), Constants.ContentProviders.TraktTv);
-
-                        BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
-                        mBroadcaster.broadcastIntentWithObject(Constants.STATE_INSERT_SERIES, mSeries);
-
-
-                        handler.post(() -> {
-                            menuAddItem.setVisible(false);
-
-                            Toast.makeText(SeriesDetailActivity.this, getResources().getString(R.string.series_added), Toast.LENGTH_SHORT).show();
-
-                            ServiceManager.startImportDataService(getApplicationContext());
-                        });
-
-                    });
-                    return false;
                 }
+
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Handler handler = new Handler(Looper.getMainLooper());
+
+                executor.execute(() -> {
+                    if (mSeries == null)
+                        return;
+
+                    mSeries.setIsExisting(true);
+                    mSeries.setContentProvider(Constants.ContentProviders.TraktTv.value);
+                    mSeries.setInsertDate(DateUtils.DateTimeNowString());
+                    mSeries.setUpdateDate(DateUtils.DateTimeNowString());
+
+                    long _id = DatabaseHelper.getInstance(getApplicationContext()).addSeries(mSeries);
+                    mSeries.setID((int) _id);
+
+                    ImportQueues.AddQueue(SeriesDetailActivity.this, _id, String.valueOf(mSeries.getTraktId()), Constants.ContentProviders.TraktTv);
+
+                    BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
+                    mBroadcaster.broadcastIntentWithObject(Constants.STATE_INSERT_SERIES, mSeries);
+
+
+                    handler.post(() -> {
+                        menuAddItem.setVisible(false);
+
+                        Toast.makeText(SeriesDetailActivity.this, getResources().getString(R.string.series_added), Toast.LENGTH_SHORT).show();
+
+                        ServiceManager.startImportDataService(getApplicationContext());
+                    });
+
+                });
+                return false;
             });
         }
         return super.onCreateOptionsMenu(menu);
@@ -305,20 +280,17 @@ public class SeriesDetailActivity extends BaseActivity {
                 showProgress();
 
                 TraktTv traktTv = new TraktTv();
-                traktTv.setTraktEventListener(new OnTraktTvEventListener() {
-                    @Override
-                    public void onCompleted(Object m) {
-                        try {
-                            if (m != null) {
-                                Series ss = (Series) m;
-                                updateSeries(ss);
-                                Load();
-                            } else {
-                                hideProgress();
-                            }
-                        } catch (Exception e) {
-                            NLog.e(TAG, e);
+                traktTv.setTraktEventListener(m -> {
+                    try {
+                        if (m != null) {
+                            Series ss = (Series) m;
+                            updateSeries(ss);
+                            Load();
+                        } else {
+                            hideProgress();
                         }
+                    } catch (Exception e) {
+                        NLog.e(TAG, e);
                     }
                 });
                 traktTv.ParseAsync(String.valueOf(mSeries.getTraktId()), GrieeXSettings.getLocale(this));
@@ -326,17 +298,15 @@ public class SeriesDetailActivity extends BaseActivity {
             case R.id.action_delete:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.delete_series);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            dbHelper.deleteSeriesById(mSeries.getID());
+                builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+                    try {
+                        dbHelper.deleteSeriesById(mSeries.getID());
 
-                            BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
-                            mBroadcaster.broadcastIntentWithObject(Constants.STATE_DELETE_SERIES, mSeries);
-                            finish();
-                        } catch (Exception e) {
-                            NLog.e(TAG, e);
-                        }
+                        BroadcastNotifier mBroadcaster = new BroadcastNotifier(SeriesDetailActivity.this);
+                        mBroadcaster.broadcastIntentWithObject(Constants.STATE_DELETE_SERIES, mSeries);
+                        finish();
+                    } catch (Exception e) {
+                        NLog.e(TAG, e);
                     }
                 });
 
@@ -427,9 +397,7 @@ public class SeriesDetailActivity extends BaseActivity {
                     mBroadcaster.broadcastIntentWithObject(Constants.STATE_UPDATE_SERIES, mSeries);
                 });
             } catch (Exception e) {
-                handler.post(() -> {
-                    hideProgress();
-                });
+                handler.post(this::hideProgress);
             }
         });
     }
@@ -447,93 +415,91 @@ public class SeriesDetailActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.share);
         builder.setCancelable(true);
-        builder.setAdapter(a, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                try {
-                    Series series = dbHelper.getSeries(m.getID());
+        builder.setAdapter(a, (dialog, item) -> {
+            try {
+                Series series = dbHelper.getSeries(m.getID());
 
-                    CustomMenuItem menuItem = items.get(item);
+                CustomMenuItem menuItem = items.get(item);
 
-                    switch (menuItem.getId()) {
-                        case 1:
-                            if (ShareDialog.canShow(ShareLinkContent.class)) {
-                                ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                                        .setQuote(m.getSeriesName() + " / " + m.getOverview())
-                                        .setContentUrl(Uri.parse("http://www.imdb.com/title/" + series.getImdbId()))
-                                        .build();
-
-                                ShareDialog shareDialog = new ShareDialog(SeriesDetailActivity.this);
-                                shareDialog.show(linkContent);
-                            }
-                            break;
-                        case 2:
+                switch (menuItem.getId()) {
+                    case 1:
+                        if (ShareDialog.canShow(ShareLinkContent.class)) {
                             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                                     .setQuote(m.getSeriesName() + " / " + m.getOverview())
-                                    .setContentUrl(Uri.parse("https://www.themoviedb.org/movie/" + series.getTmdbId()))
+                                    .setContentUrl(Uri.parse("http://www.imdb.com/title/" + series.getImdbId()))
                                     .build();
 
                             ShareDialog shareDialog = new ShareDialog(SeriesDetailActivity.this);
                             shareDialog.show(linkContent);
-                            break;
-                        case 3: {
-                            TweetComposer.Builder builder = new TweetComposer.Builder(SeriesDetailActivity.this);
-                            builder.text("http://www.imdb.com/title/" + series.getTmdbId());
-
-                            if (!TextUtils.isEmpty(m.getPoster())) {
-                                Glide.with(SeriesDetailActivity.this)
-                                        .asFile()
-                                        .load(m.getPoster())
-                                        .into(new CustomTarget<File>() {
-                                            @Override
-                                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
-                                                Uri myImageUri = Uri.fromFile(resource);
-                                                builder.image(myImageUri);
-                                                builder.show();
-                                            }
-
-                                            @Override
-                                            public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                                            }
-                                        });
-
-                            } else {
-                                builder.show();
-                            }
-                            break;
                         }
-                        case 4: {
-                            TweetComposer.Builder builder = new TweetComposer.Builder(SeriesDetailActivity.this);
-                            builder.text("https://www.themoviedb.org/show/" + series.getImdbId());
+                        break;
+                    case 2:
+                        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                .setQuote(m.getSeriesName() + " / " + m.getOverview())
+                                .setContentUrl(Uri.parse("https://www.themoviedb.org/movie/" + series.getTmdbId()))
+                                .build();
 
-                            if (!TextUtils.isEmpty(m.getPoster())) {
-                                Glide.with(SeriesDetailActivity.this)
-                                        .asFile()
-                                        .load(m.getPoster())
-                                        .into(new CustomTarget<File>() {
-                                            @Override
-                                            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
-                                                Uri myImageUri = Uri.fromFile(resource);
-                                                builder.image(myImageUri);
-                                                builder.show();
-                                            }
+                        ShareDialog shareDialog = new ShareDialog(SeriesDetailActivity.this);
+                        shareDialog.show(linkContent);
+                        break;
+                    case 3: {
+                        TweetComposer.Builder builder1 = new TweetComposer.Builder(SeriesDetailActivity.this);
+                        builder1.text("http://www.imdb.com/title/" + series.getTmdbId());
 
-                                            @Override
-                                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                        if (!TextUtils.isEmpty(m.getPoster())) {
+                            Glide.with(SeriesDetailActivity.this)
+                                    .asFile()
+                                    .load(m.getPoster())
+                                    .into(new CustomTarget<File>() {
+                                        @Override
+                                        public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                            Uri myImageUri = Uri.fromFile(resource);
+                                            builder1.image(myImageUri);
+                                            builder1.show();
+                                        }
 
-                                            }
-                                        });
+                                        @Override
+                                        public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                            } else {
-                                builder.show();
-                            }
+                                        }
+                                    });
 
-                            break;
+                        } else {
+                            builder1.show();
                         }
+                        break;
                     }
-                } catch (Exception e) {
-                    NLog.e(TAG, e);
+                    case 4: {
+                        TweetComposer.Builder builder1 = new TweetComposer.Builder(SeriesDetailActivity.this);
+                        builder1.text("https://www.themoviedb.org/show/" + series.getImdbId());
+
+                        if (!TextUtils.isEmpty(m.getPoster())) {
+                            Glide.with(SeriesDetailActivity.this)
+                                    .asFile()
+                                    .load(m.getPoster())
+                                    .into(new CustomTarget<File>() {
+                                        @Override
+                                        public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
+                                            Uri myImageUri = Uri.fromFile(resource);
+                                            builder1.image(myImageUri);
+                                            builder1.show();
+                                        }
+
+                                        @Override
+                                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                        }
+                                    });
+
+                        } else {
+                            builder1.show();
+                        }
+
+                        break;
+                    }
                 }
+            } catch (Exception e) {
+                NLog.e(TAG, e);
             }
         });
         AlertDialog alert = builder.create();
@@ -546,6 +512,7 @@ public class SeriesDetailActivity extends BaseActivity {
             super(fm, behavior);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             switch (position) {
@@ -569,7 +536,7 @@ public class SeriesDetailActivity extends BaseActivity {
             return CONTENT.length;
         }
 
-        public int getItemPosition(Object object) {
+        public int getItemPosition(@NonNull Object object) {
             return POSITION_NONE;
         }
 
@@ -583,7 +550,7 @@ public class SeriesDetailActivity extends BaseActivity {
                 int iState = intent.getIntExtra(Constants.EXTENDED_DATA_STATUS, Constants.STATE_NOT_COMPLETED);
                 if (iState == Constants.STATE_UPDATE_SERIES) {
                     Object o = intent.getExtras().getSerializable(Constants.EXTENDED_DATA_OBJECT);
-                    if (o != null && o instanceof Series) {
+                    if (o instanceof Series) {
                         Series m = (Series) o;
 
                         if (mSeries != null && mSeries.getID() == m.getID()) {

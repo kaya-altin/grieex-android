@@ -194,39 +194,37 @@ public class BackupRestoreDialog extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FILE_SELECT_CODE:
-                if (resultCode == Activity.RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-                    Log.d(TAG, "File Uri: " + uri.toString());
+        if (requestCode == FILE_SELECT_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Get the Uri of the selected file
+                Uri uri = data.getData();
+                Log.d(TAG, "File Uri: " + uri.toString());
 
 
-                    // Get the path
-                    try {
-                        String path = FileUtils.getPath(mContext, uri);
-                        String ext = FileUtils.getFileExtension(path);
-                        if (!ext.equals(".gbf") && !ext.equals(".db")) {
-                            Toast.makeText(mContext, getString(R.string.alert8), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (ext.equals(".gbf")) {
-                            new Decompress(path).execute();
-                        } else if (ext.equals(".db")) {
-                            if (!TextUtils.isEmpty(path) && path.contains("GrieeX.db")) {
-                                new FileCopy(path).execute();
-                            }
-                        }
-                    } catch (Exception e) {
+                // Get the path
+                try {
+                    String path = FileUtils.getPath(mContext, uri);
+                    String ext = FileUtils.getFileExtension(path);
+                    if (!ext.equals(".gbf") && !ext.equals(".db")) {
                         Toast.makeText(mContext, getString(R.string.alert8), Toast.LENGTH_SHORT).show();
-                        //NLog.e(TAG, e);
+                        return;
                     }
-                    //Log.d(TAG, "File Path: " + path);
-                    // Get the file instance
-                    // File file = new File(path);
-                    // Initiate the upload
+                    if (ext.equals(".gbf")) {
+                        new Decompress(path).execute();
+                    } else if (ext.equals(".db")) {
+                        if (!TextUtils.isEmpty(path) && path.contains("GrieeX.db")) {
+                            new FileCopy(path).execute();
+                        }
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mContext, getString(R.string.alert8), Toast.LENGTH_SHORT).show();
+                    //NLog.e(TAG, e);
                 }
-                break;
+                //Log.d(TAG, "File Path: " + path);
+                // Get the file instance
+                // File file = new File(path);
+                // Initiate the upload
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

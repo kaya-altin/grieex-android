@@ -137,7 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/tmdb" />
+                android:src="@drawable/tmdb"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/ivTrakt"

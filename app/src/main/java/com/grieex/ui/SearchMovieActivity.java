@@ -469,10 +469,9 @@ public class SearchMovieActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -482,20 +481,16 @@ public class SearchMovieActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            switch (requestCode) {
+            if (requestCode == Constants.REFRESH) {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data != null) {
+                        String MovieName = data.getStringExtra(Constants.EXTENDED_DATA_OBJECT);
 
-                case (Constants.REFRESH): {
-                    if (resultCode == Activity.RESULT_OK) {
-                        if (data != null) {
-                            String MovieName = data.getStringExtra(Constants.EXTENDED_DATA_OBJECT);
-
-                            if (!TextUtils.isEmpty(MovieName)) {
-                                etSearch.setText(MovieName);
-                                Search();
-                            }
+                        if (!TextUtils.isEmpty(MovieName)) {
+                            etSearch.setText(MovieName);
+                            Search();
                         }
                     }
-                    break;
                 }
             }
         } catch (Exception e) {

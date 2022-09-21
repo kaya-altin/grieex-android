@@ -1,5 +1,6 @@
 package com.grieex.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Handler;
 
 import com.grieex.R;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends Activity {
 
     @Override
@@ -20,13 +22,12 @@ public class SplashActivity extends Activity {
             public void run() {
                 Intent i = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(i);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
                 //overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                 finish();
             }
         }, SPLASH_TIME_OUT);
     }
-
 
 
 }

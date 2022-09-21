@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,12 +10,12 @@
     app:cardCornerRadius="@dimen/cardCornerRadius">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:gravity="center_vertical"
-                  android:orientation="vertical">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <com.grieex.widget.AspectRatioView
             android:layout_width="fill_parent"
@@ -31,37 +30,38 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 app:ariv_heightRatio="15"
-                app:ariv_widthRatio="10"/>
+                app:ariv_widthRatio="10" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnAdd"
                 android:layout_width="@dimen/cardView_add_button_width"
                 android:layout_height="@dimen/cardView_add_button_width"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/cardView_add_button_margin"
                 android:layout_marginEnd="@dimen/cardView_add_button_margin"
-                android:layout_alignParentEnd="true"
                 android:alpha="0.8"
                 android:clickable="true"
+                android:focusable="true"
                 android:scaleType="center"
-                app:fabCustomSize="@dimen/cardView_add_button_width"
                 android:src="@drawable/ic_content_new_holo_dark"
-                android:focusable="true" />
+                app:fabCustomSize="@dimen/cardView_add_button_width"
+                tools:ignore="ContentDescription" />
         </com.grieex.widget.AspectRatioView>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/infoParent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
@@ -74,7 +74,7 @@
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="?android:attr/textColorSecondary"
-                    tools:text="Title"/>
+                    tools:text="Title" />
 
             </LinearLayout>
 

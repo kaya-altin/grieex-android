@@ -17,8 +17,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <EditText
@@ -27,7 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/textfield5"
-            android:ems="10" android:inputType="text"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="text"
             android:padding="15dp">
 
             <requestFocus />
@@ -65,7 +67,7 @@
         <RelativeLayout
             android:layout_width=".5dp"
             android:layout_height="fill_parent"
-            android:background="@color/gray2"/>
+            android:background="@color/gray2" />
 
         <Button
             android:id="@+id/btnOk"

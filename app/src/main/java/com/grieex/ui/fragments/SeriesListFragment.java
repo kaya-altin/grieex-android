@@ -355,7 +355,7 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
     }
 
     private void setFilter(String str) {
-        Boolean IsFiltered = !mFilter.isEmpty();
+        boolean IsFiltered = !mFilter.isEmpty();
 
         if (IsFiltered | !str.isEmpty()) {
             ResetData();
@@ -366,7 +366,7 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
     }
 
     public void setOrder(String str) {
-        Boolean IsOrdered = !mOrder.isEmpty();
+        boolean IsOrdered = !mOrder.isEmpty();
 
         if (IsOrdered | !str.isEmpty()) {
             ResetData();

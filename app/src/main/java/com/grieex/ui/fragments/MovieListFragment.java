@@ -474,7 +474,7 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
     }
 
     private void setFilter(String str) {
-        Boolean IsFiltered = !mFilter.isEmpty();
+        boolean IsFiltered = !mFilter.isEmpty();
 
         if (IsFiltered | !str.isEmpty()) {
             ResetData();
@@ -485,7 +485,7 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
     }
 
     private void setOrder(String str) {
-        Boolean IsOrdered = !mOrder.isEmpty();
+        boolean IsOrdered = !mOrder.isEmpty();
 
         if (IsOrdered | !str.isEmpty()) {
             ResetData();
@@ -500,7 +500,7 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
             if (iListViewType != 0)
                 return;
 
-            Boolean IsFiltered = !mFilter.isEmpty();
+            boolean IsFiltered = !mFilter.isEmpty();
 
             if (IsFiltered)
                 return;

@@ -37,21 +37,21 @@
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
 -keep class org.codehaus.** { *; }
--keepclassmembers public final enum org.codehaus.jackson.annotate.JsonAutoDetect$Visibility {
- public static final org.codehaus.jackson.annotate.JsonAutoDetect$Visibility *; }
+#-keepclassmembers public final enum org.codehaus.jackson.annotate.JsonAutoDetect$Visibility {
+# public static final org.codehaus.jackson.annotate.JsonAutoDetect$Visibility *; }
 -keep public class your.class.** {
   public void set*(***);
   public *** get*();
 }
 
--dontwarn info.movito.**
--keep class info.movito { *; }
-
--dontwarn com.sburba.tvdbapi.**
--keep class com.sburba.tvdbapi { *; }
-
--dontwarn com.uwetrottmann.trakt.v2.**
--keep class com.uwetrottmann.trakt.v2 { *; }
+#-dontwarn info.movito.**
+#-keep class info.movito { *; }
+#
+#-dontwarn com.sburba.tvdbapi.**
+#-keep class com.sburba.tvdbapi { *; }
+#
+#-dontwarn com.uwetrottmann.trakt.v2.**
+#-keep class com.uwetrottmann.trakt.v2 { *; }
 
 -dontwarn org.joda.**
 -keep class org.joda.**
@@ -80,7 +80,7 @@
 # removes such information by default, so configure it to keep all of it.
 
 # Gson specific classes
--keep class sun.misc.Unsafe { *; }
+#-keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.stream.** { *; }
 
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
@@ -95,7 +95,7 @@
 -keep interface com.squareup.okhttp.** { *; }
 
 -dontwarn retrofit.**
--dontwarn retrofit.appengine.UrlFetchClient
+#-dontwarn retrofit.appengine.UrlFetchClient
 -keep class retrofit.** { *; }
 -keepclasseswithmembers class * {
     @retrofit.http.* <methods>;

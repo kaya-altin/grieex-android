@@ -23,9 +23,27 @@ import com.grieex.helper.GrieeXSettings;
  */
 public class OauthWebViewActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
-
     public static final String AUTHORIZATION_URL = "auth_url";
+    private final WebViewClient webViewClient = new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (url != null && url.startsWith(GrieeXSettings.TraktCallbackUrl)) {
+                Uri uri = Uri.parse(url);
+
+                final String code = uri.getQueryParameter(TraktAuthActivity.QUERY_CODE);
+                //Timber.d("We got a code! %s", code);
+
+                Intent result = new Intent();
+                result.putExtra(TraktAuthActivity.QUERY_CODE, code);
+                setResult(RESULT_OK, result);
+                finish();
+                return true;
+            }
+
+            return false;
+        }
+    };
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,33 +94,12 @@ public class OauthWebViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private final WebViewClient webViewClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url != null && url.startsWith(GrieeXSettings.TraktCallbackUrl)) {
-                Uri uri = Uri.parse(url);
-
-                final String code = uri.getQueryParameter(TraktAuthActivity.QUERY_CODE);
-                //Timber.d("We got a code! %s", code);
-
-                Intent result = new Intent();
-                result.putExtra(TraktAuthActivity.QUERY_CODE, code);
-                setResult(RESULT_OK, result);
-                finish();
-                return true;
-            }
-
-            return false;
-        }
-    };
 
 
 }

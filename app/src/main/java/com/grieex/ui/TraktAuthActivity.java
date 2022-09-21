@@ -30,9 +30,8 @@ import java.security.SecureRandom;
  */
 public class TraktAuthActivity extends AppCompatActivity {
 
-    private static final String TAG = TraktAuthActivity.class.getName();
-
     static final String QUERY_CODE = "code";
+    private static final String TAG = TraktAuthActivity.class.getName();
     private static final int REQUEST_OAUTH = 1;
 
     private Button btnLogin;
@@ -129,7 +128,7 @@ public class TraktAuthActivity extends AppCompatActivity {
             try {
                 int iState = intent.getIntExtra(Constants.EXTENDED_DATA_STATUS, Constants.STATE_NO_STATUS);
                 if (iState == Constants.STATE_TRAKT_LOGIN_STATE) {
-                    Integer result = intent.getExtras().getInt(Constants.EXTENDED_DATA_OBJECT);
+                    int result = intent.getExtras().getInt(Constants.EXTENDED_DATA_OBJECT);
 
                     switch (result) {
                         case TraktResult.SUCCESS:

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/cardViewLayoutMargin"
@@ -31,15 +32,16 @@
                 android:id="@+id/btnAdd"
                 android:layout_width="@dimen/cardView_add_button_width"
                 android:layout_height="@dimen/cardView_add_button_width"
-                app:fabCustomSize="@dimen/cardView_add_button_width"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/cardView_add_button_margin"
                 android:layout_marginTop="@dimen/cardView_add_button_margin"
+                android:layout_marginEnd="@dimen/cardView_add_button_margin"
                 android:alpha="0.8"
                 android:clickable="true"
+                android:focusable="true"
                 android:scaleType="center"
                 android:src="@drawable/ic_content_new_holo_dark"
-                android:focusable="true" />
+                app:fabCustomSize="@dimen/cardView_add_button_width"
+                tools:ignore="ContentDescription" />
         </com.grieex.widget.AspectRatioView>
 
 
