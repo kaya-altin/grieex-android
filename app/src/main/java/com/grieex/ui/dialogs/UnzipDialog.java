@@ -24,149 +24,149 @@ import java.util.zip.ZipInputStream;
 
 class UnzipDialog extends Dialog {
 
-	private final String TAG = UnzipDialog.class.getName();
-	private final Context mContext;
+    private final String TAG = UnzipDialog.class.getName();
+    private final Context mContext;
 
-	private ProgressBar progress;
-	private TextView tvState;
+    private ProgressBar progress;
+    private TextView tvState;
 
-	private OnCustomEventListener mListener;
+    private OnCustomEventListener mListener;
 
-	interface OnCustomEventListener {
-		void onCompleted();
-	}
+    private UnzipDialog(Context context) {
+        super(context);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mContext = context;
+        setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_unzip, null));
 
-	public void setCustomEventListener(OnCustomEventListener eventListener) {
-		mListener = eventListener;
-	}
+        _dirChecker(GrieeXSettings.DB_PATH);
+        // _dirChecker(GrieeXSettings.getImagePath() + "Posters" +
+        // File.separator);
 
-	private UnzipDialog(Context context) {
-		super(context);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		mContext = context;
-		setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_unzip, null));
+        initPopup();
+    }
 
-		_dirChecker(GrieeXSettings.DB_PATH);
-		// _dirChecker(GrieeXSettings.getImagePath() + "Posters" +
-		// File.separator);
+    public void setCustomEventListener(OnCustomEventListener eventListener) {
+        mListener = eventListener;
+    }
 
-		initPopup();
-	}
+    private void initPopup() {
+        try {
+            progress = findViewById(R.id.progress);
+            tvState = findViewById(R.id.tvState);
+        } catch (Exception e) {
+            NLog.e(TAG, e);
+        }
+    }
 
-	private void initPopup() {
-		try {
-			progress = findViewById(R.id.progress);
-			tvState = findViewById(R.id.tvState);
-		} catch (Exception e) {
-			NLog.e(TAG, e);
-		}
-	}
+    public void showDialog() {
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
+        show();
+        getWindow().setAttributes(lp);
 
-	public void showDialog() {
-		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-		lp.copyFrom(getWindow().getAttributes());
-		lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-		lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-		setCancelable(false);
-		setCanceledOnTouchOutside(false);
-		show();
-		getWindow().setAttributes(lp);
+        tvState.setText(R.string.please_wait);
+        new Decompress(Environment.getExternalStorageDirectory() + "/GrieeXAndroid.db").execute();
+    }
 
-		tvState.setText(R.string.please_wait);
-		new Decompress(Environment.getExternalStorageDirectory() + "/GrieeXAndroid.db").execute();
-	}
+    private String GetFileExt(String FileName) {
+        return FileName.substring((FileName.lastIndexOf(".") + 1));
+    }
 
-	private String GetFileExt(String FileName) {
-		return FileName.substring((FileName.lastIndexOf(".") + 1), FileName.length());
-	}
+    private void _dirChecker(String dir) {
+        File f = new File(dir);
 
-	private class Decompress extends AsyncTask<Void, Integer, Integer> {
+        if (!f.isDirectory()) {
+            f.mkdirs();
+        }
+    }
 
-		private final String _zipFile;
+    interface OnCustomEventListener {
+        void onCompleted();
+    }
+
+    private class Decompress extends AsyncTask<Void, Integer, Integer> {
+
+        private final String _zipFile;
         private int per = 0;
 
-		Decompress(String zipFile) {
-			_zipFile = zipFile;
-		}
+        Decompress(String zipFile) {
+            _zipFile = zipFile;
+        }
 
-		@SuppressWarnings("ResourceType")
-		@Override
-		protected Integer doInBackground(Void... params) {
-			try {
+        @SuppressWarnings("ResourceType")
+        @Override
+        protected Integer doInBackground(Void... params) {
+            try {
 
-				byte[] buffer = new byte[1024];
-				int length;
+                byte[] buffer = new byte[1024];
+                int length;
 
-				ZipFile zip = new ZipFile(_zipFile);
-				progress.setMax(zip.size());
+                ZipFile zip = new ZipFile(_zipFile);
+                progress.setMax(zip.size());
 
-				FileInputStream fin = new FileInputStream(_zipFile);
-				ZipInputStream zin = new ZipInputStream(fin);
-				ZipEntry ze;
-				while ((ze = zin.getNextEntry()) != null) {
-					if (ze.isDirectory()) {
-						_dirChecker(ze.getName());
-					} else {
-						per++;
-						publishProgress(per);
+                FileInputStream fin = new FileInputStream(_zipFile);
+                ZipInputStream zin = new ZipInputStream(fin);
+                ZipEntry ze;
+                while ((ze = zin.getNextEntry()) != null) {
+                    if (ze.isDirectory()) {
+                        _dirChecker(ze.getName());
+                    } else {
+                        per++;
+                        publishProgress(per);
 
-						// if (GetFileExt(ze.getName()).equals("jpg")) {
-						// _location = GrieeXSettings.getImagePath() + "Posters"
-						// + File.separator;
-						// } else
+                        // if (GetFileExt(ze.getName()).equals("jpg")) {
+                        // _location = GrieeXSettings.getImagePath() + "Posters"
+                        // + File.separator;
+                        // } else
                         String _location;
                         if (GetFileExt(ze.getName()).equals("db")) {
-							DatabaseHelper.getInstance(mContext).close();
-							_location = GrieeXSettings.DB_PATH;
-						} else {
-							continue;
-						}
+                            DatabaseHelper.getInstance(mContext).close();
+                            _location = GrieeXSettings.DB_PATH;
+                        } else {
+                            continue;
+                        }
 
-						FileOutputStream fout = new FileOutputStream(_location + ze.getName());
+                        FileOutputStream fout = new FileOutputStream(_location + ze.getName());
 
-						while ((length = zin.read(buffer)) > 0) {
-							fout.write(buffer, 0, length);
-						}
+                        while ((length = zin.read(buffer)) > 0) {
+                            fout.write(buffer, 0, length);
+                        }
 
-						zin.closeEntry();
-						fout.close();
-					}
+                        zin.closeEntry();
+                        fout.close();
+                    }
 
-				}
-				zin.close();
-			} catch (Exception e) {
-				NLog.e(TAG, e);
-			}
-			return null;
-		}
+                }
+                zin.close();
+            } catch (Exception e) {
+                NLog.e(TAG, e);
+            }
+            return null;
+        }
 
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			// TODO Auto-generated method stub
-			super.onProgressUpdate(values);
-			progress.setProgress(per);
-		}
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            // TODO Auto-generated method stub
+            super.onProgressUpdate(values);
+            progress.setProgress(per);
+        }
 
-		@Override
-		protected void onPostExecute(Integer result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			File file = new File(Environment.getExternalStorageDirectory(), "GrieeXAndroid.db");
-			file.delete();
+        @Override
+        protected void onPostExecute(Integer result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            File file = new File(Environment.getExternalStorageDirectory(), "GrieeXAndroid.db");
+            file.delete();
 
-			DatabaseHelper.getInstance(mContext).openDataBase();
-			dismiss();
-			if (mListener != null)
-				mListener.onCompleted();
-		}
-	}
-
-	private void _dirChecker(String dir) {
-		File f = new File(dir);
-
-		if (!f.isDirectory()) {
-			f.mkdirs();
-		}
-	}
+            DatabaseHelper.getInstance(mContext).openDataBase();
+            dismiss();
+            if (mListener != null)
+                mListener.onCompleted();
+        }
+    }
 
 }

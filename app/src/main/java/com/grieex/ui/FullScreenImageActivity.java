@@ -65,7 +65,7 @@ public class FullScreenImageActivity extends Activity {
 
             String imageLinkBig = imageLink;
             if (imageLink.contains("._")) {
-                int nEndPos = imageLink.indexOf(".jpg", 0);
+                int nEndPos = imageLink.indexOf(".jpg");
                 imageLinkBig = imageLink.substring(0, nEndPos + 4);
                 imageLinkBig = imageLinkBig.substring(0, imageLink.lastIndexOf("._")) + ".jpg";
             }

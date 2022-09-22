@@ -61,7 +61,7 @@ public class DbUtils {
     public static void SetMovieSeen(Context ctx, int MovieID, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Movie.TABLE_NAME + " Set " + Movie.COLUMNS.Seen + "=" + (bCheck ? "1" : "0") + "," + Movie.COLUMNS.UpdateDate + "='" + DateUtils.DateTimeNowString() + "' Where " + Movie.COLUMNS._ID + "=" + String.valueOf(MovieID));
+            dbHelper.ExecuteQuery("UPDATE " + Movie.TABLE_NAME + " Set " + Movie.COLUMNS.Seen + "=" + (bCheck ? "1" : "0") + "," + Movie.COLUMNS.UpdateDate + "='" + DateUtils.DateTimeNowString() + "' Where " + Movie.COLUMNS._ID + "=" + MovieID);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -70,7 +70,7 @@ public class DbUtils {
     public static void SetEpisodeFavorite(Context ctx, int EpisodeId, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Favorite + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS._ID + "=" + String.valueOf(EpisodeId));
+            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Favorite + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS._ID + "=" + EpisodeId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -79,7 +79,7 @@ public class DbUtils {
     public static void SetSeasonEpisodeAllFavorite(Context ctx, int SeriesId, int SeasonId, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Favorite + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS.SeriesId + "=" + String.valueOf(SeriesId) + " and " + Episode.COLUMNS.SeasonNumber + "=" + String.valueOf(SeasonId));
+            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Favorite + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS.SeriesId + "=" + SeriesId + " and " + Episode.COLUMNS.SeasonNumber + "=" + SeasonId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -88,7 +88,7 @@ public class DbUtils {
     public static void SetEpisodeCollected(Context ctx, int EpisodeId, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Collected + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS._ID + "=" + String.valueOf(EpisodeId));
+            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Collected + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS._ID + "=" + EpisodeId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -97,7 +97,7 @@ public class DbUtils {
     public static void SetSeasonEpisodeAllCollected(Context ctx, int SeriesId, int SeasonId, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Collected + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS.SeriesId + "=" + String.valueOf(SeriesId) + " and " + Episode.COLUMNS.SeasonNumber + "=" + String.valueOf(SeasonId));
+            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Collected + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS.SeriesId + "=" + SeriesId + " and " + Episode.COLUMNS.SeasonNumber + "=" + SeasonId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -106,7 +106,7 @@ public class DbUtils {
     public static void SetEpisodeWatched(Context ctx, int EpisodeId, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Watched + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS._ID + "=" + String.valueOf(EpisodeId));
+            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Watched + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS._ID + "=" + EpisodeId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -115,7 +115,7 @@ public class DbUtils {
     public static void SetSeasonEpisodeAllWatched(Context ctx, int SeriesId, int SeasonId, boolean bCheck) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Watched + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS.SeriesId + "=" + String.valueOf(SeriesId) + " and " + Episode.COLUMNS.SeasonNumber + "=" + String.valueOf(SeasonId));
+            dbHelper.ExecuteQuery("UPDATE " + Episode.TABLE_NAME + " Set " + Episode.COLUMNS.Watched + "=" + (bCheck ? "1" : "0") + " Where " + Episode.COLUMNS.SeriesId + "=" + SeriesId + " and " + Episode.COLUMNS.SeasonNumber + "=" + SeasonId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -124,7 +124,7 @@ public class DbUtils {
     public static void DeleteSeason(Context ctx, int SeriesId, int SeasonId) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("DELETE FROM " + Episode.TABLE_NAME +  " Where " + Episode.COLUMNS.SeriesId + "=" + String.valueOf(SeriesId) + " and " + Episode.COLUMNS.SeasonNumber + "=" + String.valueOf(SeasonId));
+            dbHelper.ExecuteQuery("DELETE FROM " + Episode.TABLE_NAME + " Where " + Episode.COLUMNS.SeriesId + "=" + SeriesId + " and " + Episode.COLUMNS.SeasonNumber + "=" + SeasonId);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -150,7 +150,7 @@ public class DbUtils {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         int iReturn = 0;
         try {
-            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where SeriesId=" + String.valueOf(SeriesId) + " and Watched=1");
+            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where SeriesId=" + SeriesId + " and Watched=1");
             iReturn = Utils.parseInt(str);
         } catch (Exception e) {
             NLog.e(TAG, e);
@@ -162,7 +162,7 @@ public class DbUtils {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         int iReturn = 0;
         try {
-            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where SeriesId=" + String.valueOf(SeriesId) + " and Watched=0");
+            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where SeriesId=" + SeriesId + " and Watched=0");
             iReturn = Utils.parseInt(str);
         } catch (Exception e) {
             NLog.e(TAG, e);
@@ -174,7 +174,7 @@ public class DbUtils {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         int iReturn = 0;
         try {
-            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where SeriesId=" + String.valueOf(SeriesId));
+            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where SeriesId=" + SeriesId);
             iReturn = Utils.parseInt(str);
         } catch (Exception e) {
             NLog.e(TAG, e);
@@ -186,7 +186,7 @@ public class DbUtils {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         int iReturn = 0;
         try {
-            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where Collected=1 and SeriesId=" + String.valueOf(SeriesId));
+            String str = dbHelper.GetOneField("SELECT Count(*) FROM Episodes Where Collected=1 and SeriesId=" + SeriesId);
             iReturn = Utils.parseInt(str);
         } catch (Exception e) {
             NLog.e(TAG, e);

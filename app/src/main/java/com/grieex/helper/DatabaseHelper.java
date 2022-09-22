@@ -39,16 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
     @SuppressLint("StaticFieldLeak")
     private static DatabaseHelper helper;
-
-    private SQLiteDatabase myDataBase;
     private final Context myContext;
-
-    public synchronized static DatabaseHelper getInstance(Context context) {
-        if (helper == null)
-            helper = new DatabaseHelper(context.getApplicationContext());
-
-        return helper;
-    }
+    private SQLiteDatabase myDataBase;
 
     /**
      * Constructor Takes and keeps a reference of the passed context in order to
@@ -59,6 +51,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private DatabaseHelper(Context context) {
         super(context, GrieeXSettings.DB_NAME, null, GrieeXSettings.DB_VERSION);
         this.myContext = context;
+    }
+
+    public synchronized static DatabaseHelper getInstance(Context context) {
+        if (helper == null)
+            helper = new DatabaseHelper(context.getApplicationContext());
+
+        return helper;
     }
 
     /**
@@ -423,12 +422,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
             myDataBase.delete(Movie.TABLE_NAME, Movie.COLUMNS._ID + " = ?", new String[]{String.valueOf(m.getID())});
-            ExecuteQuery("Delete From " + Queue.TABLE_NAME + " Where " + Queue.COLUMNS.ObjectID + "=" + String.valueOf(m.getID()));
-            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + String.valueOf(m.getID()) + " and CollectionType=" + Constants.CollectionType.Movie.value);
-            ExecuteQuery("Delete From " + com.grieex.model.tables.File.TABLE_NAME + " Where " + com.grieex.model.tables.File.COLUMNS.MovieID + "=" + String.valueOf(m.getID()));
-            ExecuteQuery("Delete From " + Backdrop.TABLE_NAME + " Where " + Backdrop.COLUMNS.ObjectID + "=" + String.valueOf(m.getID()) + " and CollectionType=" + Constants.CollectionType.Movie.value);
-            ExecuteQuery("Delete From " + ListsMovie.TABLE_NAME + " Where " + ListsMovie.COLUMNS.MovieID + "=" + String.valueOf(m.getID()));
-            ExecuteQuery("Delete From " + Trailer.TABLE_NAME + " Where " + Trailer.COLUMNS.ObjectID + "=" + String.valueOf(m.getID()) + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + Queue.TABLE_NAME + " Where " + Queue.COLUMNS.ObjectID + "=" + m.getID());
+            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + m.getID() + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + com.grieex.model.tables.File.TABLE_NAME + " Where " + com.grieex.model.tables.File.COLUMNS.MovieID + "=" + m.getID());
+            ExecuteQuery("Delete From " + Backdrop.TABLE_NAME + " Where " + Backdrop.COLUMNS.ObjectID + "=" + m.getID() + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + ListsMovie.TABLE_NAME + " Where " + ListsMovie.COLUMNS.MovieID + "=" + m.getID());
+            ExecuteQuery("Delete From " + Trailer.TABLE_NAME + " Where " + Trailer.COLUMNS.ObjectID + "=" + m.getID() + " and CollectionType=" + Constants.CollectionType.Movie.value);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -448,12 +447,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             myDataBase.delete(Movie.TABLE_NAME, Movie.COLUMNS._ID + " = ?", new String[]{String.valueOf(id)});
 
-            ExecuteQuery("Delete From " + Backdrop.TABLE_NAME + " Where " + Backdrop.COLUMNS.ObjectID + "=" + String.valueOf(id) + " and CollectionType=" + Constants.CollectionType.Movie.value);
-            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + String.valueOf(id) + " and CollectionType=" + Constants.CollectionType.Movie.value);
-            ExecuteQuery("Delete From " + Queue.TABLE_NAME + " Where " + Queue.COLUMNS.ObjectID + "=" + String.valueOf(id));
-            ExecuteQuery("Delete From " + com.grieex.model.tables.File.TABLE_NAME + " Where " + com.grieex.model.tables.File.COLUMNS.MovieID + "=" + String.valueOf(id));
-            ExecuteQuery("Delete From " + ListsMovie.TABLE_NAME + " Where " + ListsMovie.COLUMNS.MovieID + "=" + String.valueOf(id));
-            ExecuteQuery("Delete From " + Trailer.TABLE_NAME + " Where " + Trailer.COLUMNS.ObjectID + "=" + String.valueOf(id) + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + Backdrop.TABLE_NAME + " Where " + Backdrop.COLUMNS.ObjectID + "=" + id + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + id + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + Queue.TABLE_NAME + " Where " + Queue.COLUMNS.ObjectID + "=" + id);
+            ExecuteQuery("Delete From " + com.grieex.model.tables.File.TABLE_NAME + " Where " + com.grieex.model.tables.File.COLUMNS.MovieID + "=" + id);
+            ExecuteQuery("Delete From " + ListsMovie.TABLE_NAME + " Where " + ListsMovie.COLUMNS.MovieID + "=" + id);
+            ExecuteQuery("Delete From " + Trailer.TABLE_NAME + " Where " + Trailer.COLUMNS.ObjectID + "=" + id + " and CollectionType=" + Constants.CollectionType.Movie.value);
         } catch (Exception e) {
             NLog.e(TAG, e);
         }
@@ -953,7 +952,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             openDataBase();
         }
 
-        ExecuteQuery("Delete From " + Backdrop.TABLE_NAME + " Where " + Backdrop.COLUMNS.ObjectID + "=" + String.valueOf(ObjectID) + " and " + Backdrop.COLUMNS.CollectionType + "=" + type.value);
+        ExecuteQuery("Delete From " + Backdrop.TABLE_NAME + " Where " + Backdrop.COLUMNS.ObjectID + "=" + ObjectID + " and " + Backdrop.COLUMNS.CollectionType + "=" + type.value);
 
         try {
 
@@ -992,7 +991,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         try {
-            ExecuteQuery("Delete From " + Trailer.TABLE_NAME + " Where " + Trailer.COLUMNS.ObjectID + "=" + String.valueOf(ObjectID) + " and " + Trailer.COLUMNS.CollectionType + "+" + collectionType.value);
+            ExecuteQuery("Delete From " + Trailer.TABLE_NAME + " Where " + Trailer.COLUMNS.ObjectID + "=" + ObjectID + " and " + Trailer.COLUMNS.CollectionType + "+" + collectionType.value);
 
             String sqlInsert = "insert into " + Trailer.TABLE_NAME + " (" + Trailer.COLUMNS.ObjectID + "," + Trailer.COLUMNS.Url + "," + Trailer.COLUMNS.Type + "," + Trailer.COLUMNS.CollectionType + ") " + " values (?,?,?,?)";
             android.database.sqlite.SQLiteStatement insert = myDataBase.compileStatement(sqlInsert);
@@ -1086,7 +1085,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (!myDataBase.isOpen()) {
                 openDataBase();
             }
-            ExecuteQuery("Delete From " + ListsMovie.TABLE_NAME + " Where " + ListsMovie.COLUMNS.MovieID + "=" + String.valueOf(c.getMovieID()) + " and " + ListsMovie.COLUMNS.ListID + "=" + String.valueOf(c.getListID()));
+            ExecuteQuery("Delete From " + ListsMovie.TABLE_NAME + " Where " + ListsMovie.COLUMNS.MovieID + "=" + c.getMovieID() + " and " + ListsMovie.COLUMNS.ListID + "=" + c.getListID());
 
             iReturn = myDataBase.insert(c.GetTableName(), null, c.GetContentValuesForDB());
         } catch (Exception e) {
@@ -1108,7 +1107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (!myDataBase.isOpen()) {
                 openDataBase();
             }
-            ExecuteQuery("Delete From " + ListsSeries.TABLE_NAME + " Where " + ListsSeries.COLUMNS.SeriesID + "=" + String.valueOf(c.getSeriesID()) + " and " + ListsSeries.COLUMNS.ListID + "=" + String.valueOf(c.getListID()));
+            ExecuteQuery("Delete From " + ListsSeries.TABLE_NAME + " Where " + ListsSeries.COLUMNS.SeriesID + "=" + c.getSeriesID() + " and " + ListsSeries.COLUMNS.ListID + "=" + c.getListID());
 
             iReturn = myDataBase.insert(c.GetTableName(), null, c.GetContentValuesForDB());
         } catch (Exception e) {
@@ -1171,10 +1170,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 openDataBase();
             }
 
-            ExecuteQuery("Delete From " + Series.TABLE_NAME + " Where " + Series.COLUMNS._ID + "=" + String.valueOf(m.getID()));
-            ExecuteQuery("Delete From " + Season.TABLE_NAME + " Where " + Season.COLUMNS.SeriesId + "=" + String.valueOf(m.getID()));
-            ExecuteQuery("Delete From " + Episode.TABLE_NAME + " Where " + Episode.COLUMNS.SeriesId + "=" + String.valueOf(m.getID()));
-            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + String.valueOf(m.getID()) + " and CollectionType=" + Constants.CollectionType.Series.value);
+            ExecuteQuery("Delete From " + Series.TABLE_NAME + " Where " + Series.COLUMNS._ID + "=" + m.getID());
+            ExecuteQuery("Delete From " + Season.TABLE_NAME + " Where " + Season.COLUMNS.SeriesId + "=" + m.getID());
+            ExecuteQuery("Delete From " + Episode.TABLE_NAME + " Where " + Episode.COLUMNS.SeriesId + "=" + m.getID());
+            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + m.getID() + " and CollectionType=" + Constants.CollectionType.Series.value);
             //ExecuteQuery("Delete From " + Queue.TABLE_NAME + " Where " + Queue.COLUMNS.ObjectID + "=" + String.valueOf(m.getID()));
         } catch (Exception e) {
             NLog.e(TAG, e);
@@ -1195,9 +1194,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             myDataBase.delete(Series.TABLE_NAME, Series.COLUMNS._ID + " = ?", new String[]{String.valueOf(id)});
 
-            ExecuteQuery("Delete From " + Season.TABLE_NAME + " Where " + Season.COLUMNS.SeriesId + "=" + String.valueOf(id));
-            ExecuteQuery("Delete From " + Episode.TABLE_NAME + " Where " + Episode.COLUMNS.SeriesId + "=" + String.valueOf(id));
-            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + String.valueOf(id) + " and CollectionType=" + Constants.CollectionType.Movie.value);
+            ExecuteQuery("Delete From " + Season.TABLE_NAME + " Where " + Season.COLUMNS.SeriesId + "=" + id);
+            ExecuteQuery("Delete From " + Episode.TABLE_NAME + " Where " + Episode.COLUMNS.SeriesId + "=" + id);
+            ExecuteQuery("Delete From " + Cast.TABLE_NAME + " Where " + Cast.COLUMNS.ObjectID + "=" + id + " and CollectionType=" + Constants.CollectionType.Movie.value);
             //ExecuteQuery("Delete From " + Queue.TABLE_NAME + " Where " + Queue.COLUMNS.ObjectID + "=" + String.valueOf(id));
         } catch (Exception e) {
             NLog.e(TAG, e);

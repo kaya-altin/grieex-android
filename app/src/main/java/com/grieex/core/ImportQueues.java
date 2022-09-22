@@ -34,7 +34,7 @@ public class ImportQueues {
         ArrayList<Queue> queues;
         try {
             queues = (ArrayList<Queue>) dbHelper.GetCursorWithObject("Select * From Queues LIMIT 0,1", Queue.class);
-            if (queues!= null && queues.size() > 0)
+            if (queues != null && queues.size() > 0)
                 return queues.get(0);
 
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class ImportQueues {
     public static void RemoveQueue(Context ctx, Queue q) {
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(ctx);
         try {
-            dbHelper.ExecuteQuery("Delete From Queues Where _id=" + String.valueOf(q.getID()));
+            dbHelper.ExecuteQuery("Delete From Queues Where _id=" + q.getID());
         } catch (Exception e) {
             NLog.e(TAG, e);
         }

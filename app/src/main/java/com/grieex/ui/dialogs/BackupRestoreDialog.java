@@ -348,7 +348,7 @@ public class BackupRestoreDialog extends DialogFragment {
 
                 ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
 
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
 
                 for (String _file : s) {
                     FileInputStream fi = new FileInputStream(_file);
@@ -479,8 +479,8 @@ public class BackupRestoreDialog extends DialogFragment {
     private class FileCopy extends AsyncTask<Void, Integer, Integer> {
 
         private final String _sourceFile;
+        private final int per = 0;
         private String _location;
-        private int per = 0;
 
         FileCopy(String sourceFile) {
             _sourceFile = sourceFile;

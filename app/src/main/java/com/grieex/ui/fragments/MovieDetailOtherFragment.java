@@ -34,6 +34,10 @@ public class MovieDetailOtherFragment extends Fragment {
     private Context mContext;
 
 
+    public MovieDetailOtherFragment() {
+        // Required empty public constructor
+    }
+
     // TODO: Rename and change types and number of parameters
     public static MovieDetailOtherFragment newInstance(Movie Movie) {
         MovieDetailOtherFragment fragment = new MovieDetailOtherFragment();
@@ -41,10 +45,6 @@ public class MovieDetailOtherFragment extends Fragment {
         args.putSerializable(ARG_Movie, Movie);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public MovieDetailOtherFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvArchivesNumber.setText(str);
                                 mMovie.setArchivesNumber(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set ArchivesNumber=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set ArchivesNumber=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -127,7 +127,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvUserColumn1.setText(str);
                                 mMovie.setUserColumn1(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set UserColumn1=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set UserColumn1=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -156,7 +156,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvUserColumn2.setText(str);
                                 mMovie.setUserColumn2(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set UserColumn2=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set UserColumn2=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -185,7 +185,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvUserColumn3.setText(str);
                                 mMovie.setUserColumn3(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set UserColumn3=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set UserColumn3=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -214,7 +214,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvUserColumn4.setText(str);
                                 mMovie.setUserColumn4(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set UserColumn4=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set UserColumn4=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -234,7 +234,7 @@ public class MovieDetailOtherFragment extends Fragment {
             tvUserColumn5.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   TextDialog d = new TextDialog(mContext);
+                    TextDialog d = new TextDialog(mContext);
                     d.setTitle(getString(R.string.user_column5));
                     d.setText(mMovie.getUserColumn5());
                     d.setCustomEventListener(new OnCustomEventListener() {
@@ -244,7 +244,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvUserColumn5.setText(str);
                                 mMovie.setUserColumn5(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set UserColumn5=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set UserColumn5=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -274,7 +274,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvUserColumn6.setText(str);
                                 mMovie.setUserColumn6(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set UserColumn6=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set UserColumn6=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -304,7 +304,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvRlsType.setText(str);
                                 mMovie.setRlsType(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set RlsType=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set RlsType=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -333,7 +333,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvRlsGroup.setText(str);
                                 mMovie.setRlsGroup(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set RlsGroup=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set RlsGroup=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }
@@ -360,7 +360,7 @@ public class MovieDetailOtherFragment extends Fragment {
                                 tvPersonalRating.setText(str);
                                 mMovie.setPersonalRating(str);
                                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                dbHelper.ExecuteQuery("Update Movies Set PersonalRating=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + String.valueOf(mMovie.getID()));
+                                dbHelper.ExecuteQuery("Update Movies Set PersonalRating=" + DatabaseUtils.sqlEscapeString(str) + " Where _id=" + mMovie.getID());
                             } catch (Exception e) {
                                 NLog.e(TAG, e);
                             }

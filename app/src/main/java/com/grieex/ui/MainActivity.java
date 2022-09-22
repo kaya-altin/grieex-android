@@ -177,8 +177,8 @@ public class MainActivity extends BaseActivity {
                                         try {
                                             com.grieex.model.tables.Lists o = (com.grieex.model.tables.Lists) p.getObject();
                                             DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
-                                            dbHelper.ExecuteQuery("Delete From Lists Where _id=" + String.valueOf(o.getID()));
-                                            dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + String.valueOf(o.getID()));
+                                            dbHelper.ExecuteQuery("Delete From Lists Where _id=" + o.getID());
+                                            dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + o.getID());
 
                                             LoadMenu();
                                         } catch (Exception e) {
@@ -238,8 +238,8 @@ public class MainActivity extends BaseActivity {
                                         try {
                                             com.grieex.model.tables.Lists o = (com.grieex.model.tables.Lists) p.getObject();
                                             DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
-                                            dbHelper.ExecuteQuery("Delete From Lists Where _id=" + String.valueOf(o.getID()));
-                                            dbHelper.ExecuteQuery("Delete From ListsSeries Where ListID=" + String.valueOf(o.getID()));
+                                            dbHelper.ExecuteQuery("Delete From Lists Where _id=" + o.getID());
+                                            dbHelper.ExecuteQuery("Delete From ListsSeries Where ListID=" + o.getID());
 
                                             LoadMenu();
                                         } catch (Exception e) {

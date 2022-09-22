@@ -275,7 +275,7 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
                                 } else {
                                     int iPageID = Utils.parseInt(((MainActivity) activity).getCurrentPage().getPageID());
                                     for (Series series : mAdapter.getSelecteds()) {
-                                        dbHelper.ExecuteQuery("Delete From ListsSeries Where ListID=" + iPageID + " and SeriesID=" + String.valueOf(series.getID()));
+                                        dbHelper.ExecuteQuery("Delete From ListsSeries Where ListID=" + iPageID + " and SeriesID=" + series.getID());
                                         mAdapter.remove(series);
                                     }
 
@@ -753,7 +753,7 @@ public class SeriesListFragment extends Fragment implements SearchView.OnQueryTe
                                                     break;
                                                 case 5:
                                                     int iPageID = Utils.parseInt(((MainActivity) activity).getCurrentPage().getPageID());
-                                                    dbHelper.ExecuteQuery("Delete From ListsSeries Where ListID=" + iPageID + " and SeriesID=" + String.valueOf(m.getID()));
+                                                    dbHelper.ExecuteQuery("Delete From ListsSeries Where ListID=" + iPageID + " and SeriesID=" + m.getID());
                                                     BroadcastNotifier mBroadcaster = new BroadcastNotifier(activity);
                                                     mBroadcaster.broadcastIntentWithState(Constants.STATE_REFRESH_SLIDE_MENU_COUNT);
 

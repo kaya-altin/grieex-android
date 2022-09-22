@@ -1,10 +1,8 @@
 package com.grieex.widget;
 
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
@@ -32,14 +30,13 @@ public class AspectRatioView extends RelativeLayout {
         init(context, attrs, defStyleAttr, 0);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public AspectRatioView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        if(attrs == null) {
+        if (attrs == null) {
             return;
         }
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AspectRatioView, defStyleAttr, defStyleRes);
@@ -83,7 +80,7 @@ public class AspectRatioView extends RelativeLayout {
     }
 
     private void validateRatio(int ratio) {
-        if(ratio <= 0) {
+        if (ratio <= 0) {
             throw new IllegalArgumentException("ratio > 0");
         }
     }

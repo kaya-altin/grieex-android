@@ -113,7 +113,7 @@ public class UpcomingSeriesFragment extends Fragment {
     }
 
     class DataLoader extends AsyncTask<String, Void, ArrayList<Series>> {
-        private Activity activity;
+        private final Activity activity;
         private volatile boolean running = true;
         private volatile String _RunKey;
 

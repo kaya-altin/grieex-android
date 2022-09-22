@@ -373,7 +373,7 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
                                 } else {
                                     int iPageID = Utils.parseInt(((MainActivity) activity).getCurrentPage().getPageID());
                                     for (Movie movie : mAdapter.getSelecteds()) {
-                                        dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + iPageID + " and MovieID=" + String.valueOf(movie.getID()));
+                                        dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + iPageID + " and MovieID=" + movie.getID());
                                         mAdapter.remove(movie);
                                     }
 
@@ -1032,7 +1032,7 @@ public class MovieListFragment extends Fragment implements SearchView.OnQueryTex
                                                     break;
                                                 case 5:
                                                     int iPageID = Utils.parseInt(((MainActivity) activity).getCurrentPage().getPageID());
-                                                    dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + iPageID + " and MovieID=" + String.valueOf(m.getID()));
+                                                    dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + iPageID + " and MovieID=" + m.getID());
                                                     BroadcastNotifier mBroadcaster = new BroadcastNotifier(activity);
                                                     mBroadcaster.broadcastIntentWithState(Constants.STATE_REFRESH_SLIDE_MENU_COUNT);
 

@@ -36,14 +36,25 @@ public class AddToListDialog extends Dialog {
 
     private final String TAG = AddToListDialog.class.getName();
     private final Context mContext;
+    private final ArrayList<Movie> mMovies = new ArrayList<>();
+    private final ArrayList<Series> mSeries = new ArrayList<>();
     private int mListType = 1;
     private EditText etListName;
     private ListView lvList;
-    private final ArrayList<Movie> mMovies = new ArrayList<>();
-    private final ArrayList<Series> mSeries = new ArrayList<>();
     private DatabaseHelper dbHelper;
     private ArrayAdapter mAdapter;
     private ArrayList<com.grieex.model.tables.Lists> mData;
+
+    @SuppressLint("InflateParams")
+    public AddToListDialog(Context context) {
+        super(context);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setTitle(R.string.add_to_list);
+
+        mContext = context;
+        setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_add_to_list, null));
+        mData = new ArrayList<>();
+    }
 
     public void setListType(int ListType) {
         mListType = ListType;
@@ -63,17 +74,6 @@ public class AddToListDialog extends Dialog {
 
     public void setSeries(ArrayList<Series> series) {
         mSeries.addAll(series);
-    }
-
-    @SuppressLint("InflateParams")
-    public AddToListDialog(Context context) {
-        super(context);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setTitle(R.string.add_to_list);
-
-        mContext = context;
-        setContentView(LayoutInflater.from(context).inflate(R.layout.dialog_add_to_list, null));
-        mData = new ArrayList<>();
     }
 
     private void initPopup() {
@@ -113,7 +113,7 @@ public class AddToListDialog extends Dialog {
                                             }
 
                                             DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                            dbHelper.ExecuteQuery("Update Lists Set ListName=" + DatabaseUtils.sqlEscapeString(input.getText().toString()) + " Where _id=" + String.valueOf(p.getID()));
+                                            dbHelper.ExecuteQuery("Update Lists Set ListName=" + DatabaseUtils.sqlEscapeString(input.getText().toString()) + " Where _id=" + p.getID());
 
                                             p.setListName(input.getText().toString());
                                             mAdapter.notifyDataSetChanged();
@@ -139,8 +139,8 @@ public class AddToListDialog extends Dialog {
                                     com.grieex.model.tables.Lists o = (com.grieex.model.tables.Lists) mAdapter.getItem(position);
 
                                     DatabaseHelper dbHelper = DatabaseHelper.getInstance(mContext);
-                                    dbHelper.ExecuteQuery("Delete From Lists Where _id=" + String.valueOf(o.getID()));
-                                    dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + String.valueOf(o.getID()));
+                                    dbHelper.ExecuteQuery("Delete From Lists Where _id=" + o.getID());
+                                    dbHelper.ExecuteQuery("Delete From ListsMovies Where ListID=" + o.getID());
                                     mData.remove(o);
                                     mAdapter.notifyDataSetChanged();
 
@@ -216,7 +216,7 @@ public class AddToListDialog extends Dialog {
                                 }
                             }
                         }
-                    }else if (mListType == 2){
+                    } else if (mListType == 2) {
                         for (int i = 0; i < a.size(); i++) {
                             if (a.valueAt(i)) {
                                 com.grieex.model.tables.Lists item = (com.grieex.model.tables.Lists) mAdapter.getItem(a.keyAt(i));

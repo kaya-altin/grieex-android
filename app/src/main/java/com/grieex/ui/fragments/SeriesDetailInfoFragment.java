@@ -185,21 +185,21 @@ public class SeriesDetailInfoFragment extends Fragment {
             if (mSeries.getTraktId() != 0) {
                 llLinks.setVisibility(View.VISIBLE);
                 btnTrakt.setVisibility(View.VISIBLE);
-                btnTrakt.setText("http://trakt.tv/shows/" + String.valueOf(mSeries.getTraktId()));
+                btnTrakt.setText("http://trakt.tv/shows/" + mSeries.getTraktId());
                 btnTrakt.setOnClickListener(linkClicked);
             }
 
             if (mSeries.getTvdbId() != 0) {
                 llLinks.setVisibility(View.VISIBLE);
                 btnTvdb.setVisibility(View.VISIBLE);
-                btnTvdb.setText("http://thetvdb.com/?id=" + String.valueOf(mSeries.getTvdbId()) + "&tab=series");
+                btnTvdb.setText("http://thetvdb.com/?id=" + mSeries.getTvdbId() + "&tab=series");
                 btnTvdb.setOnClickListener(linkClicked);
             }
 
             if (!TextUtils.isEmpty(mSeries.getImdbId())) {
                 llLinks.setVisibility(View.VISIBLE);
                 btnImdb.setVisibility(View.VISIBLE);
-                btnImdb.setText("http://www.imdb.com/title/" + String.valueOf(mSeries.getImdbId()));
+                btnImdb.setText("http://www.imdb.com/title/" + mSeries.getImdbId());
                 btnImdb.setOnClickListener(linkClicked);
             }
 

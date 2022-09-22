@@ -99,7 +99,7 @@ public class Imdb250Adapter extends RecyclerView.Adapter<Imdb250Adapter.ViewHold
                     holder.tvRating.setText(m.getRating());
                 } else {
                     String strVotes = new DecimalFormat("###,###").format(m.getVotes());
-                    holder.tvRating.setText(String.valueOf(m.getRating()) + " / " + strVotes.replace(",", "."));
+                    holder.tvRating.setText(m.getRating() + " / " + strVotes.replace(",", "."));
                 }
 
                 // holder.rbVotes.setRating(fUserRating);

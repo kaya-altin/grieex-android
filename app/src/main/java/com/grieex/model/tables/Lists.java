@@ -17,6 +17,7 @@ public class Lists implements IDataModelObject, Serializable {
     private String mListName;
     private String mUpdateDate;
     private int mListType;
+
     public Lists() {
 
     }

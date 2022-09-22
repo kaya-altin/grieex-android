@@ -22,7 +22,6 @@ import java.util.Date;
  * A library to show the app rate dialog
  *
  * @author Keisuke Kobayashi <k.kobayashi.122@gmail.com>
- *
  */
 public class RateThisApp {
 
@@ -32,11 +31,6 @@ public class RateThisApp {
     private static final String KEY_INSTALL_DATE = "rta_install_date";
     private static final String KEY_LAUNCH_TIMES = "rta_launch_times";
     private static final String KEY_OPT_OUT = "rta_opt_out";
-
-    private static Date mInstallDate = new Date();
-    private static int mLaunchTimes = 0;
-    private static boolean mOptOut = false;
-
     /**
      * Days after installation until showing rate dialog
      */
@@ -45,11 +39,13 @@ public class RateThisApp {
      * App launching times until showing rate dialog
      */
     private static final int LAUNCH_TIMES = 5000;
-
     /**
      * If true, print LogCat
      */
     private static final boolean DEBUG = false;
+    private static Date mInstallDate = new Date();
+    private static int mLaunchTimes = 0;
+    private static boolean mOptOut = false;
 
     /**
      * Call this API when the launcher activity is launched.<br>
@@ -62,7 +58,7 @@ public class RateThisApp {
         if (pref.getLong(KEY_INSTALL_DATE, 0) == 0L) {
             Date now = new Date();
             editor.putLong(KEY_INSTALL_DATE, now.getTime());
-            log("First install: " + now.toString());
+            log("First install: " + now);
         }
         // Increment launch times
         int launchTimes = pref.getInt(KEY_LAUNCH_TIMES, 0);

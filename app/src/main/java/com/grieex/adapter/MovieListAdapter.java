@@ -24,6 +24,7 @@ import java.util.Locale;
 public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static String TAG = MovieListAdapter.class.getName();
     private final ArrayList<Movie> mData;
+    private final Activity activity;
     private int mViewType = 0;
     private boolean mShowCheckBox = false;
     private String mOrderTextColumn = "";
@@ -31,7 +32,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private OnItemLongClickListener itemLongClickListener;
     private OnImageViewClickListener itemImageViewClickListener;
     private OnItemSelectedListener itemSelectedListener;
-    private Activity activity;
 
     public MovieListAdapter(ArrayList<Movie> data, Activity _Activity) {
         activity = _Activity;
