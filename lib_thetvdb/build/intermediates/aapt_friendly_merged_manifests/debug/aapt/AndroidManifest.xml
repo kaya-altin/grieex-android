@@ -3,7 +3,7 @@
     package="com.sburba.tvdbapi" >
 
     <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="32" />
+        android:minSdkVersion="26"
+        android:targetSdkVersion="33" />
 
 </manifest>

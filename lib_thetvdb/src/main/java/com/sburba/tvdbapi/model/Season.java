@@ -20,12 +20,44 @@ import java.util.Locale;
  * *Warning* Objects not present in the XML will be null, numbers not present will be -1
  */
 public class Season extends TvdbItem implements Parcelable {
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Season> CREATOR = new Parcelable.Creator<Season>() {
+        public Season createFromParcel(Parcel in) {
+            return new Season(in);
+        }
+
+        public Season[] newArray(int size) {
+            return new Season[size];
+        }
+    };
+    private static final String TAG_SERIES_ID = "seriesid";
+    private static final String TAG_SEASON_NUMBER = "SeasonNumber";
+    private static final String TAG_SEASON_ID = "seasonid";
+    private static final String TAG_DVD_SEASON = "DVD_season";
+    private static final String TAG_LANGUAGE = "Language";
     public final int seriesId;
     public final int seasonNumber;
     public final int seasonId;
     public final Banner[] banners;
     public final int dvdSeason;
     public final String language;
+    private Season(int seriesId, int seasonNumber, int seasonId, Banner[] banners, int dvdSeason,
+                   String language) {
+        this.seriesId = seriesId;
+        this.seasonNumber = seasonNumber;
+        this.seasonId = seasonId;
+        this.banners = banners;
+        this.dvdSeason = dvdSeason;
+        this.language = language;
+    }
+    protected Season(Parcel in) {
+        seriesId = in.readInt();
+        seasonNumber = in.readInt();
+        seasonId = in.readInt();
+        banners = in.createTypedArray(Banner.CREATOR);
+        dvdSeason = in.readInt();
+        language = in.readString();
+    }
 
     @Override
     public String getImageUrl() {
@@ -41,39 +73,14 @@ public class Season extends TvdbItem implements Parcelable {
     public String getTitleText() {
         //TODO: Use resources to support different languages
         return (seasonNumber == 0) ? "Specials"
-                                   : String.format((Locale) null, "S%02d", seasonNumber);
+                : String.format((Locale) null, "S%02d", seasonNumber);
     }
 
     @Override
     public String getDescText() {
         //TODO: Use resources to support different languages
         return (seasonNumber == 0) ? "Specials"
-                                   : String.format((Locale) null, "Season %02d", seasonNumber);
-    }
-
-    private static final String TAG_SERIES_ID = "seriesid";
-    private static final String TAG_SEASON_NUMBER = "SeasonNumber";
-    private static final String TAG_SEASON_ID = "seasonid";
-    private static final String TAG_DVD_SEASON = "DVD_season";
-    private static final String TAG_LANGUAGE = "Language";
-
-    private Season(int seriesId, int seasonNumber, int seasonId, Banner[] banners, int dvdSeason,
-                   String language) {
-        this.seriesId = seriesId;
-        this.seasonNumber = seasonNumber;
-        this.seasonId = seasonId;
-        this.banners = banners;
-        this.dvdSeason = dvdSeason;
-        this.language = language;
-    }
-
-    protected Season(Parcel in) {
-        seriesId = in.readInt();
-        seasonNumber = in.readInt();
-        seasonId = in.readInt();
-        banners = in.createTypedArray(Banner.CREATOR);
-        dvdSeason = in.readInt();
-        language = in.readString();
+                : String.format((Locale) null, "Season %02d", seasonNumber);
     }
 
     public int describeContents() {
@@ -89,22 +96,11 @@ public class Season extends TvdbItem implements Parcelable {
         dest.writeString(language);
     }
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Season> CREATOR = new Parcelable.Creator<Season>() {
-        public Season createFromParcel(Parcel in) {
-            return new Season(in);
-        }
-
-        public Season[] newArray(int size) {
-            return new Season[size];
-        }
-    };
-
     public static class Builder {
+        private final Collection<Banner> banners;
         private int seriesId = NOT_PRESENT;
         private int seasonNumber = NOT_PRESENT;
         private int seasonId = NOT_PRESENT;
-        private Collection<Banner> banners;
         private int dvdSeason = NOT_PRESENT;
         private String language;
 
@@ -141,11 +137,6 @@ public class Season extends TvdbItem implements Parcelable {
             return this;
         }
 
-        public Builder setSeasonNumber(int seasonNumber) {
-            this.seasonNumber = seasonNumber;
-            return this;
-        }
-
         public Builder setSeasonId(int seasonId) {
             this.seasonId = seasonId;
             return this;
@@ -170,9 +161,14 @@ public class Season extends TvdbItem implements Parcelable {
             return seasonNumber;
         }
 
+        public Builder setSeasonNumber(int seasonNumber) {
+            this.seasonNumber = seasonNumber;
+            return this;
+        }
+
         public Season build() {
             return new Season(seriesId, seasonNumber, seasonId,
-                              banners.toArray(new Banner[banners.size()]), dvdSeason, language);
+                    banners.toArray(new Banner[banners.size()]), dvdSeason, language);
         }
 
         @Override

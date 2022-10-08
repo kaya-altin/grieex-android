@@ -24,309 +24,309 @@ import java.util.regex.Pattern;
  */
 public final class WebBrowser implements UrlReader {
 
-	//private static final Logger logger = LoggerFactory.getLogger(WebBrowser.class);
-	private static Map<String, String> browserProperties = new HashMap<String, String>();
-	private static Map<String, Map<String, String>> cookies = new HashMap<String, Map<String, String>>();
-	private static String proxyHost = null;
-	private static String proxyPort = null;
-	private static String proxyUsername = null;
-	private static String proxyPassword = null;
-	private static String proxyEncodedPassword = null;
-	private static int webTimeoutConnect = 25000; // 25 second timeout
-	private static int webTimeoutRead = 90000; // 90 second timeout
+    //private static final Logger logger = LoggerFactory.getLogger(WebBrowser.class);
+    private static final Map<String, String> browserProperties = new HashMap<String, String>();
+    private static final Map<String, Map<String, String>> cookies = new HashMap<String, Map<String, String>>();
+    private static final String proxyEncodedPassword = null;
+    private static String proxyHost = null;
+    private static String proxyPort = null;
+    private static String proxyUsername = null;
+    private static String proxyPassword = null;
+    private static int webTimeoutConnect = 25000; // 25 second timeout
+    private static int webTimeoutRead = 90000; // 90 second timeout
 
-	/**
-	 * Set the proxy information
-	 *
-	 * @param host
-	 * @param port
-	 * @param username
-	 * @param password
-	 */
-	public void setProxy(String host, String port, String username, String password) {
+    /**
+     * Populate the browser properties
+     */
+    private static void populateBrowserProperties() {
+        if (browserProperties.isEmpty()) {
+            browserProperties.put("User-Agent", "Mozilla/5.25 Netscape/5.0 (Windows; I; Win95)");
+            browserProperties.put("Accept", "application/json");
+            browserProperties.put("Content-type", "application/json");
+        }
+    }
 
-		WebBrowser.setProxyHost(host);
-		WebBrowser.setProxyPort(port);
-		WebBrowser.setProxyUsername(username);
-		WebBrowser.setProxyPassword(password);
-	}
+    public static URLConnection openProxiedConnection(URL url) {
+        try {
+            if (proxyHost != null) {
+                System.getProperties().put("proxySet", "true");
+                System.getProperties().put("proxyHost", proxyHost);
+                System.getProperties().put("proxyPort", proxyPort);
+            }
 
-	/**
-	 * Set the connection and read time out values
-	 *
-	 * @param connect
-	 * @param read
-	 */
-	public void setTimeout(int connect, int read) {
+            URLConnection cnx = url.openConnection();
 
-		WebBrowser.setWebTimeoutConnect(connect);
-		WebBrowser.setWebTimeoutRead(read);
-	}
+            if (proxyUsername != null) {
+                cnx.setRequestProperty("Proxy-Authorization", proxyEncodedPassword);
+            }
 
-	/**
-	 * Populate the browser properties
-	 */
-	private static void populateBrowserProperties() {
-		if (browserProperties.isEmpty()) {
-			browserProperties.put("User-Agent", "Mozilla/5.25 Netscape/5.0 (Windows; I; Win95)");
-			browserProperties.put("Accept", "application/json");
-			browserProperties.put("Content-type", "application/json");
-		}
-	}
+            return cnx;
+        } catch (IOException ex) {
+            throw new TvDbException(url.toString(), ex);
+        }
+    }
 
-	public String request(String url) {
-		try {
-			return request(new URL(url), null, RequestMethod.GET);
-		} catch (MalformedURLException ex) {
-			throw new TvDbException(url, ex);
-		}
-	}
+    public static String request(URL url, String jsonBody, boolean isDeleteRequest) {
 
-	public static URLConnection openProxiedConnection(URL url) {
-		try {
-			if (proxyHost != null) {
-				System.getProperties().put("proxySet", "true");
-				System.getProperties().put("proxyHost", proxyHost);
-				System.getProperties().put("proxyPort", proxyPort);
-			}
+        StringWriter content = null;
 
-			URLConnection cnx = url.openConnection();
+        try {
+            content = new StringWriter();
 
-			if (proxyUsername != null) {
-				cnx.setRequestProperty("Proxy-Authorization", proxyEncodedPassword);
-			}
+            BufferedReader in = null;
+            HttpURLConnection cnx = null;
+            try {
+                cnx = (HttpURLConnection) openProxiedConnection(url);
 
-			return cnx;
-		} catch (IOException ex) {
-			throw new TvDbException(url.toString(), ex);
-		}
-	}
+                if (isDeleteRequest) {
+                    cnx.setDoOutput(true);
+                    cnx.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    cnx.setRequestMethod("DELETE");
+                }
 
-	public String request(URL url, String jsonBody, RequestMethod requestMethod) {
-		return request(url, jsonBody, requestMethod.equals(RequestMethod.DELETE));
-	}
+                sendHeader(cnx);
 
-	public static String request(URL url, String jsonBody, boolean isDeleteRequest) {
+                if (jsonBody != null) {
+                    cnx.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(cnx.getOutputStream());
+                    wr.write(jsonBody);
+                    wr.flush();
+                }
 
-		StringWriter content = null;
+                readHeader(cnx);
 
-		try {
-			content = new StringWriter();
+                // http://stackoverflow.com/questions/4633048/httpurlconnection-reading-response-content-on-403-error
+                if (cnx.getResponseCode() >= 400) {
+                    // for some strange reason the error stream is sometimes
+                    // null
+                    // see
+                    // http://stackoverflow.com/questions/6070350/errorstream-in-httpurlconnection
+                    if (cnx.getErrorStream() == null) {
+                        throw new TvDbException("error stream was null");
+                    }
 
-			BufferedReader in = null;
-			HttpURLConnection cnx = null;
-			try {
-				cnx = (HttpURLConnection) openProxiedConnection(url);
+                    in = new BufferedReader(new InputStreamReader(cnx.getErrorStream(), getCharset(cnx)));
 
-				if (isDeleteRequest) {
-					cnx.setDoOutput(true);
-					cnx.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-					cnx.setRequestMethod("DELETE");
-				}
+                } else {
+                    in = new BufferedReader(new InputStreamReader(cnx.getInputStream(), getCharset(cnx)));
+                }
 
-				sendHeader(cnx);
+                String line;
+                while ((line = in.readLine()) != null) {
+                    content.write(line);
+                }
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
 
-				if (jsonBody != null) {
-					cnx.setDoOutput(true);
-					OutputStreamWriter wr = new OutputStreamWriter(cnx.getOutputStream());
-					wr.write(jsonBody);
-					wr.flush();
-				}
+                if (cnx != null) {
+                    cnx.disconnect();
+                }
+            }
+            return content.toString();
+        } catch (IOException ex) {
+            throw new TvDbException(url.toString(), ex);
 
-				readHeader(cnx);
+        } finally {
+            if (content != null) {
+                try {
+                    content.close();
+                } catch (IOException ex) {
+                    //logger.debug("Failed to close connection: " + ex.getMessage());
+                }
+            }
+        }
+    }
 
-				// http://stackoverflow.com/questions/4633048/httpurlconnection-reading-response-content-on-403-error
-				if (cnx.getResponseCode() >= 400) {
-					// for some strange reason the error stream is sometimes
-					// null
-					// see
-					// http://stackoverflow.com/questions/6070350/errorstream-in-httpurlconnection
-					if (cnx.getErrorStream() == null) {
-						throw new TvDbException("error stream was null");
-					}
+    private static void sendHeader(URLConnection cnx) {
+        populateBrowserProperties();
 
-					in = new BufferedReader(new InputStreamReader(cnx.getErrorStream(), getCharset(cnx)));
+        // send browser properties
+        for (Map.Entry<String, String> browserProperty : browserProperties.entrySet()) {
+            cnx.setRequestProperty(browserProperty.getKey(), browserProperty.getValue());
+        }
+        // send cookies
+        String cookieHeader = createCookieHeader(cnx);
+        if (!TextUtils.isEmpty(cookieHeader)) {
+            cnx.setRequestProperty("Cookie", cookieHeader);
+        }
+    }
 
-				} else {
-					in = new BufferedReader(new InputStreamReader(cnx.getInputStream(), getCharset(cnx)));
-				}
+    private static String createCookieHeader(URLConnection cnx) {
+        String host = cnx.getURL().getHost();
+        StringBuilder cookiesHeader = new StringBuilder();
+        for (Map.Entry<String, Map<String, String>> domainCookies : cookies.entrySet()) {
+            if (host.endsWith(domainCookies.getKey())) {
+                for (Map.Entry<String, String> cookie : domainCookies.getValue().entrySet()) {
+                    cookiesHeader.append(cookie.getKey());
+                    cookiesHeader.append("=");
+                    cookiesHeader.append(cookie.getValue());
+                    cookiesHeader.append(";");
+                }
+            }
+        }
+        if (cookiesHeader.length() > 0) {
+            // remove last ; char
+            cookiesHeader.deleteCharAt(cookiesHeader.length() - 1);
+        }
+        return cookiesHeader.toString();
+    }
 
-				String line;
-				while ((line = in.readLine()) != null) {
-					content.write(line);
-				}
-			} finally {
-				if (in != null) {
-					in.close();
-				}
+    private static void readHeader(URLConnection cnx) {
+        // read new cookies and update our cookies
+        for (Map.Entry<String, List<String>> header : cnx.getHeaderFields().entrySet()) {
+            if ("Set-Cookie".equals(header.getKey())) {
+                for (String cookieHeader : header.getValue()) {
+                    String[] cookieElements = cookieHeader.split(" *; *");
+                    if (cookieElements.length >= 1) {
+                        String[] firstElem = cookieElements[0].split(" *= *");
+                        String cookieName = firstElem[0];
+                        String cookieValue = firstElem.length > 1 ? firstElem[1] : null;
+                        String cookieDomain = null;
+                        // find cookie domain
+                        for (int i = 1; i < cookieElements.length; i++) {
+                            String[] cookieElement = cookieElements[i].split(" *= *");
+                            if ("domain".equals(cookieElement[0])) {
+                                cookieDomain = cookieElement.length > 1 ? cookieElement[1] : null;
+                                break;
+                            }
+                        }
+                        if (cookieDomain == null) {
+                            // if domain isn't set take current host
+                            cookieDomain = cnx.getURL().getHost();
+                        }
+                        Map<String, String> domainCookies = cookies.get(cookieDomain);
+                        if (domainCookies == null) {
+                            domainCookies = new HashMap<String, String>();
+                            cookies.put(cookieDomain, domainCookies);
+                        }
+                        // add or replace cookie
+                        domainCookies.put(cookieName, cookieValue);
+                    }
+                }
+            }
+        }
+    }
 
-				if (cnx != null) {
-					cnx.disconnect();
-				}
-			}
-			return content.toString();
-		} catch (IOException ex) {
-			throw new TvDbException(url.toString(), ex);
+    private static Charset getCharset(URLConnection cnx) {
+        Charset charset = null;
+        // content type will be string like "text/html; charset=UTF-8" or
+        // "text/html"
+        String contentType = cnx.getContentType();
+        if (contentType != null) {
+            // changed 'charset' to 'harset' in regexp because some sites send
+            // 'Charset'
+            Matcher m = Pattern.compile("harset *=[ '\"]*([^ ;'\"]+)[ ;'\"]*").matcher(contentType);
+            if (m.find()) {
+                String encoding = m.group(1);
+                try {
+                    charset = Charset.forName(encoding);
+                } catch (UnsupportedCharsetException e) {
+                    // there will be used default charset
+                }
+            }
+        }
+        if (charset == null) {
+            charset = Charset.defaultCharset();
+        }
 
-		} finally {
-			if (content != null) {
-				try {
-					content.close();
-				} catch (IOException ex) {
-					//logger.debug("Failed to close connection: " + ex.getMessage());
-				}
-			}
-		}
-	}
+        return charset;
+    }
 
-	private static void sendHeader(URLConnection cnx) {
-		populateBrowserProperties();
+    public static String getProxyHost() {
+        return proxyHost;
+    }
 
-		// send browser properties
-		for (Map.Entry<String, String> browserProperty : browserProperties.entrySet()) {
-			cnx.setRequestProperty(browserProperty.getKey(), browserProperty.getValue());
-		}
-		// send cookies
-		String cookieHeader = createCookieHeader(cnx);
-		if (!TextUtils.isEmpty(cookieHeader)) {
-			cnx.setRequestProperty("Cookie", cookieHeader);
-		}
-	}
+    public static void setProxyHost(String myProxyHost) {
+        WebBrowser.proxyHost = myProxyHost;
+    }
 
-	private static String createCookieHeader(URLConnection cnx) {
-		String host = cnx.getURL().getHost();
-		StringBuilder cookiesHeader = new StringBuilder();
-		for (Map.Entry<String, Map<String, String>> domainCookies : cookies.entrySet()) {
-			if (host.endsWith(domainCookies.getKey())) {
-				for (Map.Entry<String, String> cookie : domainCookies.getValue().entrySet()) {
-					cookiesHeader.append(cookie.getKey());
-					cookiesHeader.append("=");
-					cookiesHeader.append(cookie.getValue());
-					cookiesHeader.append(";");
-				}
-			}
-		}
-		if (cookiesHeader.length() > 0) {
-			// remove last ; char
-			cookiesHeader.deleteCharAt(cookiesHeader.length() - 1);
-		}
-		return cookiesHeader.toString();
-	}
+    public static String getProxyPort() {
+        return proxyPort;
+    }
 
-	private static void readHeader(URLConnection cnx) {
-		// read new cookies and update our cookies
-		for (Map.Entry<String, List<String>> header : cnx.getHeaderFields().entrySet()) {
-			if ("Set-Cookie".equals(header.getKey())) {
-				for (String cookieHeader : header.getValue()) {
-					String[] cookieElements = cookieHeader.split(" *; *");
-					if (cookieElements.length >= 1) {
-						String[] firstElem = cookieElements[0].split(" *= *");
-						String cookieName = firstElem[0];
-						String cookieValue = firstElem.length > 1 ? firstElem[1] : null;
-						String cookieDomain = null;
-						// find cookie domain
-						for (int i = 1; i < cookieElements.length; i++) {
-							String[] cookieElement = cookieElements[i].split(" *= *");
-							if ("domain".equals(cookieElement[0])) {
-								cookieDomain = cookieElement.length > 1 ? cookieElement[1] : null;
-								break;
-							}
-						}
-						if (cookieDomain == null) {
-							// if domain isn't set take current host
-							cookieDomain = cnx.getURL().getHost();
-						}
-						Map<String, String> domainCookies = cookies.get(cookieDomain);
-						if (domainCookies == null) {
-							domainCookies = new HashMap<String, String>();
-							cookies.put(cookieDomain, domainCookies);
-						}
-						// add or replace cookie
-						domainCookies.put(cookieName, cookieValue);
-					}
-				}
-			}
-		}
-	}
+    public static void setProxyPort(String myProxyPort) {
+        WebBrowser.proxyPort = myProxyPort;
+    }
 
-	private static Charset getCharset(URLConnection cnx) {
-		Charset charset = null;
-		// content type will be string like "text/html; charset=UTF-8" or
-		// "text/html"
-		String contentType = cnx.getContentType();
-		if (contentType != null) {
-			// changed 'charset' to 'harset' in regexp because some sites send
-			// 'Charset'
-			Matcher m = Pattern.compile("harset *=[ '\"]*([^ ;'\"]+)[ ;'\"]*").matcher(contentType);
-			if (m.find()) {
-				String encoding = m.group(1);
-				try {
-					charset = Charset.forName(encoding);
-				} catch (UnsupportedCharsetException e) {
-					// there will be used default charset
-				}
-			}
-		}
-		if (charset == null) {
-			charset = Charset.defaultCharset();
-		}
+    public static String getProxyUsername() {
+        return proxyUsername;
+    }
 
-		return charset;
-	}
+    public static void setProxyUsername(String myProxyUsername) {
+        WebBrowser.proxyUsername = myProxyUsername;
+    }
 
-	public static String getProxyHost() {
-		return proxyHost;
-	}
+    public static String getProxyPassword() {
+        return proxyPassword;
+    }
 
-	public static void setProxyHost(String myProxyHost) {
-		WebBrowser.proxyHost = myProxyHost;
-	}
+    public static void setProxyPassword(String myProxyPassword) {
+        WebBrowser.proxyPassword = myProxyPassword;
 
-	public static String getProxyPort() {
-		return proxyPort;
-	}
+        // if (proxyUsername != null) {
+        // proxyEncodedPassword = proxyUsername + ":" + proxyPassword;
+        // proxyEncodedPassword = "Basic " + new
+        // String(Base64.encodeBase64((proxyUsername + ":" +
+        // proxyPassword).getBytes()));
+        // }
+    }
 
-	public static void setProxyPort(String myProxyPort) {
-		WebBrowser.proxyPort = myProxyPort;
-	}
+    public static int getWebTimeoutConnect() {
+        return webTimeoutConnect;
+    }
 
-	public static String getProxyUsername() {
-		return proxyUsername;
-	}
+    public static void setWebTimeoutConnect(int webTimeoutConnect) {
+        WebBrowser.webTimeoutConnect = webTimeoutConnect;
+    }
 
-	public static void setProxyUsername(String myProxyUsername) {
-		WebBrowser.proxyUsername = myProxyUsername;
-	}
+    public static int getWebTimeoutRead() {
+        return webTimeoutRead;
+    }
 
-	public static String getProxyPassword() {
-		return proxyPassword;
-	}
+    public static void setWebTimeoutRead(int webTimeoutRead) {
+        WebBrowser.webTimeoutRead = webTimeoutRead;
+    }
 
-	public static void setProxyPassword(String myProxyPassword) {
-		WebBrowser.proxyPassword = myProxyPassword;
+    /**
+     * Set the proxy information
+     *
+     * @param host
+     * @param port
+     * @param username
+     * @param password
+     */
+    public void setProxy(String host, String port, String username, String password) {
 
-		// if (proxyUsername != null) {
-		// proxyEncodedPassword = proxyUsername + ":" + proxyPassword;
-		// proxyEncodedPassword = "Basic " + new
-		// String(Base64.encodeBase64((proxyUsername + ":" +
-		// proxyPassword).getBytes()));
-		// }
-	}
+        WebBrowser.setProxyHost(host);
+        WebBrowser.setProxyPort(port);
+        WebBrowser.setProxyUsername(username);
+        WebBrowser.setProxyPassword(password);
+    }
 
-	public static int getWebTimeoutConnect() {
-		return webTimeoutConnect;
-	}
+    /**
+     * Set the connection and read time out values
+     *
+     * @param connect
+     * @param read
+     */
+    public void setTimeout(int connect, int read) {
 
-	public static int getWebTimeoutRead() {
-		return webTimeoutRead;
-	}
+        WebBrowser.setWebTimeoutConnect(connect);
+        WebBrowser.setWebTimeoutRead(read);
+    }
 
-	public static void setWebTimeoutConnect(int webTimeoutConnect) {
-		WebBrowser.webTimeoutConnect = webTimeoutConnect;
-	}
+    public String request(String url) {
+        try {
+            return request(new URL(url), null, RequestMethod.GET);
+        } catch (MalformedURLException ex) {
+            throw new TvDbException(url, ex);
+        }
+    }
 
-	public static void setWebTimeoutRead(int webTimeoutRead) {
-		WebBrowser.webTimeoutRead = webTimeoutRead;
-	}
+    public String request(URL url, String jsonBody, RequestMethod requestMethod) {
+        return request(url, jsonBody, requestMethod.equals(RequestMethod.DELETE));
+    }
 
 }
