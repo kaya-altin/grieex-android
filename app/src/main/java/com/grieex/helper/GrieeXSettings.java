@@ -15,7 +15,7 @@ import java.util.Locale;
 public class GrieeXSettings {
     public static final int DB_VERSION = 11;
     public static final boolean RELEASE_MODE = true;
-    private static final String GrieeXPackageName = "com.grieex.pro";
+    private static final String GrieeXPackageName = "com.grieex";
     public static final String GrieeXPro = "com.grieex.pro";
 
     public static final int FreeRecordLimitMovie = 500;

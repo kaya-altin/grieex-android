@@ -75,11 +75,16 @@
         <activity
             android:name=".ui.TraktAuthActivity"
             android:launchMode="singleTask" />
+
+
         <activity
             android:name="com.dropbox.core.android.AuthActivity"
-            android:configChanges="orientation|keyboard"
             android:exported="true"
+            android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
+            <!-- Your activity starting authorization flow should also configured with android:launchMode="singleTask".
+                 If that activity is configured with android:taskAffinity, this AuthActivity should also configured
+                 with the same android:taskAffinity so the auth result can be correctly passed back. -->
             <intent-filter>
                 <data android:scheme="db-v949u8qg4zk87kq" />
 
@@ -88,8 +93,14 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <!-- Additional intent-filter required as a workaround for Apps using targetSdk=33 until the fix in the Dropbox app is available to all users. https://github.com/dropbox/dropbox-sdk-java/issues/406 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
-        <!-- Include the AdActivity configChanges and theme. -->
+
+
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
@@ -125,7 +136,6 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
 
@@ -174,10 +184,13 @@
             tools:ignore="ExportedContentProvider" />
 
         <receiver android:name=".receiver.NotificationPublisher" />
+
     </application>
     <queries>
+        <package android:name="com.dropbox.android" />
         <provider
             android:authorities="com.facebook.katana.provider.PlatformProvider"
             android:exported="false" />
+
     </queries>
 </manifest>
